@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReadIt! — Preview</title>
+  <link rel="stylesheet" href="wwwroot/lib/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="wwwroot/css/site.css" />
+  <style>
+    .page { display: none; }
+    .page.active { display: block; }
+    .nav-tab-btn { cursor: pointer; }
+    .preview-banner {
+      background: #fff3cd;
+      border-bottom: 1px solid #ffc107;
+      padding: 6px 16px;
+      font-size: 0.85rem;
+      color: #856404;
+    }
+  </style>
+</head>
+<body>
+
+<div class="preview-banner">
+  Static preview — .NET SDK not installed. Data shown is from <code>BookLoader.cs</code>.
+</div>
+
+<header>
+  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-danger box-shadow mb-3">
+    <div class="container">
+      <a class="navbar-brand nav-tab-btn" onclick="showPage('index')">
+        <img width="100" src="wwwroot/images/logo.jpg" onerror="this.style.display='none'" />
+      </a>
+      <a class="navbar-brand nav-tab-btn" onclick="showPage('index')">Home</a>
+      <a class="navbar-brand nav-tab-btn" onclick="showPage('weather')">Weather</a>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+  <main role="main" class="pb-3">
+
+    <!-- INDEX PAGE -->
+    <div id="page-index" class="page active">
+      <img width="40" src="wwwroot/images/cart.JPG" onerror="this.replaceWith('🛒')" /> (0)
+      <br/>
+      <div class="text-center">
+        <h1 class="display-5">Our Books:</h1>
+        <table class="table">
+          <tr>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Pages</th>
+            <th>Price</th>
+            <th></th>
+          </tr>
+          <tr>
+            <td>Rama II</td>
+            <td>Arthur C. Clark</td>
+            <td>281</td>
+            <td>$44.23</td>
+            <td><button class="btn btn-sm btn-outline-secondary" onclick="addToCart(this)">Add to shopping cart</button></td>
+          </tr>
+          <tr>
+            <td>Exhalation</td>
+            <td>Ted Chiang</td>
+            <td>556</td>
+            <td>$50.99</td>
+            <td><button class="btn btn-sm btn-outline-secondary" onclick="addToCart(this)">Add to shopping cart</button></td>
+          </tr>
+          <tr>
+            <td>Traffic Secrets</td>
+            <td>Russell Brunson</td>
+            <td>306</td>
+            <td>$18.97</td>
+            <td><button class="btn btn-sm btn-outline-secondary" onclick="addToCart(this)">Add to shopping cart</button></td>
+          </tr>
+          <tr>
+            <td>Clean Code</td>
+            <td>Robert Martin</td>
+            <td>464</td>
+            <td>$87.00</td>
+            <td><button class="btn btn-sm btn-outline-secondary" onclick="addToCart(this)">Add to shopping cart</button></td>
+          </tr>
+          <tr>
+            <td>Out-of-Stock Example</td>
+            <td>Sample Author</td>
+            <td>200</td>
+            <td>$9.99</td>
+            <td><p>Out of stock :-(</p></td>
+          </tr>
+        </table>
+
+        <button class="btn btn-secondary">Load Books to DB</button>
+      </div>
+    </div>
+
+    <!-- WEATHER PAGE -->
+    <div id="page-weather" class="page">
+      <div class="text-center">
+        <h1 class="display-5">Our Weather:</h1>
+        <form onsubmit="return false;">
+          Weather Server IP:
+          <input type="text" name="ip" placeholder="e.g. 192.168.1.1" />
+          <button class="btn btn-secondary">Get Weather</button>
+        </form>
+        <br /><br />
+        <p>No weather data</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer class="border-top footer text-muted">
+  <div class="container">
+    &copy; 2026 - ReadIt!
+  </div>
+</footer>
+
+<script>
+  var cartCount = 0;
+
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+  }
+
+  function addToCart(btn) {
+    cartCount++;
+    var cartEl = document.querySelector('img[src*="cart"]') || document.querySelector('#page-index');
+    var text = cartEl.nextSibling;
+    if (text) text.textContent = ' (' + cartCount + ')';
+    btn.disabled = true;
+    btn.textContent = 'Added ✓';
+  }
+</script>
+</body>
+</html>
