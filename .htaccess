@@ -1,0 +1,73 @@
+# ============================================================
+#  Bhekisizwe School System — Apache Security Configuration
+# ============================================================
+
+Options -Indexes
+ServerSignature Off
+
+# ── Security headers ────────────────────────────────────────
+<IfModule mod_headers.c>
+    # Unset first to prevent duplicates when PHP also sets these headers
+    Header always unset X-Frame-Options
+    Header always unset X-Content-Type-Options
+    Header always unset Referrer-Policy
+    Header always unset Permissions-Policy
+    Header always unset X-XSS-Protection
+    Header always unset X-Powered-By
+    Header always unset Server
+    Header always unset Access-Control-Allow-Origin
+
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+
+    # Set to 0: the legacy "1; mode=block" value introduces its own XSS vector in old IE
+    Header always set X-XSS-Protection "0"
+
+    # Prevent cross-origin window access (Spectre-class attacks)
+    Header always set Cross-Origin-Opener-Policy "same-origin"
+
+    # Prevent other origins reading our responses
+    Header always set Cross-Origin-Resource-Policy "same-origin"
+
+    # Content Security Policy
+    # NOTE: 'unsafe-inline' in script-src is temporary.
+    #       Move all inline <script> blocks to external JS files, then remove it.
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com https://cdn.jsdelivr.net https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: blob: https://maps.gstatic.com https://maps.googleapis.com https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com; frame-src 'self' https://maps.google.com https://www.google.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://formsubmit.co"
+</IfModule>
+
+# ── Block direct access to PHP config and sensitive files ───
+<FilesMatch "^(db\.php|auth_check\.php|\.env|.*\.sql|.*\.bak|.*\.log|.*\.ini)$">
+    <RequireAll>
+        Require all denied
+    </RequireAll>
+</FilesMatch>
+
+# ── Block access to version control and build files ─────────
+<FilesMatch "^\.(git|svn|DS_Store|htpasswd)">
+    <RequireAll>
+        Require all denied
+    </RequireAll>
+</FilesMatch>
+
+# ── Force dashboard access via PHP wrapper only ─────────────
+<Files "bhekisizwe_dashboard.html">
+    <RequireAll>
+        Require all denied
+    </RequireAll>
+</Files>
+
+# ── Prevent HTML pages from being cached by the browser ─────
+<FilesMatch "\.html$">
+    Header always set Cache-Control "no-store, no-cache, must-revalidate"
+    Header always set Pragma "no-cache"
+    Header always set Expires "0"
+</FilesMatch>
+
+# ── Disable HTTP TRACE method ───────────────────────────────
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_METHOD} ^TRACE
+    RewriteRule .* - [F]
+</IfModule>

@@ -1,0 +1,24 @@
+# Student document uploads — sensitive personal files
+uploads/
+
+# Node modules
+node_modules/
+BhekisizweHighSchool/node_modules/
+
+# Claude Code internal settings
+.claude/
+
+# Archives
+*.zip
+
+# Sensitive folders
+_pw/
+
+# Development screenshots at root level
+ss_*.png
+screenshot_*.png
+ss_*.jpg
+
+# OS files
+Thumbs.db
+.DS_Store

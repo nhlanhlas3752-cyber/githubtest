@@ -1,0 +1,713 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BPWGY17MJ7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BPWGY17MJ7');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Look up your term results — Bhekisizwe Senior Secondary School. Enter your name to view your marks for each subject.">
+  <title>Term Results | Bhekisizwe Senior Secondary School</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .tr-hero {
+      background:
+        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+        url('pic6.jpg') center / cover no-repeat;
+      padding: 200px 0 72px;
+      text-align: center;
+    }
+    .tr-hero h1 { color: #fff; font-size: clamp(1.8rem,4vw,2.8rem); margin-bottom: 12px; }
+    .tr-hero p  { color: rgba(255,255,255,0.72); font-size:1rem; max-width:540px; margin:0 auto; }
+
+    /* ── Lookup card ── */
+    .tr-lookup-wrap {
+      max-width: 720px;
+      margin: -52px auto 0;
+      position: relative;
+      z-index: 10;
+      padding: 0 24px;
+    }
+    .tr-lookup-card {
+      background: #fff;
+      border: 1px solid #E0E0E0;
+      border-radius: 16px;
+      padding: 32px 28px;
+      box-shadow: 0 12px 48px rgba(0,0,0,0.12);
+    }
+    .tr-lookup-card h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; color: #111; }
+    .tr-lookup-card p  { font-size: 0.875rem; color: #888; margin-bottom: 22px; }
+    .tr-form-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 12px;
+      align-items: flex-end;
+    }
+    @media (max-width:700px) { .tr-form-row { grid-template-columns: 1fr 1fr; } }
+    @media (max-width:440px) { .tr-form-row { grid-template-columns: 1fr; } }
+    .tr-field { display: flex; flex-direction: column; gap: 5px; }
+    .tr-field label { font-size: 11.5px; font-weight: 700; color: #666; letter-spacing: 0.3px; }
+    .tr-field input,
+    .tr-field select {
+      padding: 10px 13px;
+      border: 1px solid #E0E0E0;
+      border-radius: 8px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13.5px; color: #111;
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+    .tr-field input:focus,
+    .tr-field select:focus { outline: none; border-color: #616161; box-shadow: 0 0 0 3px rgba(97,97,97,0.10); }
+    .tr-field input::placeholder { color: #bbb; }
+    .tr-search-btn {
+      padding: 10px 20px;
+      background: #616161; color: #fff;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13.5px; font-weight: 700;
+      border: none; border-radius: 8px;
+      cursor: pointer; transition: background 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      white-space: nowrap;
+    }
+    .tr-search-btn:hover { background: #1A1A1A; }
+
+    /* ── Results section ── */
+    .tr-results-section { padding: 40px 0 80px; background: #F4F4F4; min-height: 360px; }
+
+    /* ── Results card ── */
+    .tr-results-card {
+      max-width: 720px; margin: 0 auto;
+      padding: 0 24px;
+      display: none;
+    }
+    .tr-results-card.visible { display: block; }
+    .tr-card-inner {
+      background: #fff;
+      border: 1px solid #E0E0E0;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+    .tr-card-head {
+      padding: 20px 28px;
+      background: #1A1A1A;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .tr-card-head h3 { font-size: 1.05rem; font-weight: 700; color: #fff; }
+    .tr-card-head p  { font-size: 0.82rem; color: rgba(255,255,255,0.55); margin: 0; }
+    .tr-card-meta {
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+    .tr-meta-badge {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 11px; font-weight: 700;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── KPI row ── */
+    .tr-kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      border-bottom: 1px solid #E0E0E0;
+    }
+    @media (max-width:500px) { .tr-kpi-row { grid-template-columns: 1fr; } }
+    .tr-kpi {
+      padding: 20px 22px;
+      text-align: center;
+      border-right: 1px solid #E0E0E0;
+    }
+    .tr-kpi:last-child { border-right: none; }
+    .tr-kpi-val {
+      font-size: 2rem; font-weight: 800; color: #616161; line-height: 1;
+      margin-bottom: 6px;
+    }
+    .tr-kpi-val.pass   { color: #3aaa72; }
+    .tr-kpi-val.fail   { color: #e05050; }
+    .tr-kpi-label { font-size: 0.72rem; color: #999; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* ── Subject table ── */
+    .tr-subject-table { width: 100%; border-collapse: collapse; }
+    .tr-subject-table th {
+      text-align: left; padding: 10px 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
+      text-transform: uppercase; color: #999;
+      border-bottom: 1px solid #E8E8E8;
+    }
+    .tr-subject-table td {
+      padding: 12px 20px;
+      font-size: 13.5px; color: #333;
+      border-bottom: 1px solid #F2F2F2;
+    }
+    .tr-subject-table tr:last-child td { border-bottom: none; }
+    .tr-subject-table tr:hover td { background: #FAFAFA; }
+    .mark-bar-wrap { display: flex; align-items: center; gap: 10px; }
+    .mark-bar-track {
+      flex: 1; height: 6px;
+      background: #F0F0F0;
+      border-radius: 3px; overflow: hidden;
+    }
+    .mark-bar-fill {
+      height: 100%; border-radius: 3px;
+      transition: width 1s cubic-bezier(0.16,1,0.3,1);
+    }
+    .mark-badge {
+      display: inline-block;
+      min-width: 48px; text-align: center;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px; font-weight: 700;
+    }
+    .mb-distinction { background: #EDFAF4; color: #1a7a50; }
+    .mb-merit       { background: #EBF4FF; color: #1a5ab5; }
+    .mb-achieved    { background: #F4F4F4; color: #555; }
+    .mb-fail        { background: #FDF0F0; color: #b53030; }
+
+    /* ── No result / prompt ── */
+    .tr-prompt {
+      max-width: 720px; margin: 0 auto;
+      padding: 0 24px; text-align: center;
+    }
+    .tr-prompt-inner {
+      background: #fff; border: 1px solid #E0E0E0;
+      border-radius: 14px; padding: 52px 32px;
+    }
+    .tr-prompt-inner i { font-size: 40px; color: #ccc; display: block; margin-bottom: 16px; }
+    .tr-prompt-inner h3 { font-size: 1.05rem; color: #444; margin-bottom: 8px; }
+    .tr-prompt-inner p  { font-size: 0.875rem; color: #888; }
+
+    /* ── Notice banner ── */
+    .privacy-notice {
+      max-width: 720px; margin: 20px auto 0;
+      padding: 0 24px;
+    }
+    .privacy-notice-inner {
+      background: #F0F8FF;
+      border: 1px solid #C0DDF5;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 12.5px;
+      color: #1a5578;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+
+    /* ── Info section ── */
+    .tr-info-section { padding: 64px 0; background: #fff; }
+    .tr-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 20px; margin-top: 32px;
+    }
+    .tr-info-card {
+      background: #FAFAFA; border: 1px solid #E0E0E0;
+      border-radius: 12px; padding: 24px 20px;
+    }
+    .tr-info-card i  { font-size: 22px; color: #616161; margin-bottom: 12px; display: block; }
+    .tr-info-card h4 { font-size: 0.9rem; font-weight: 700; color: #111; margin-bottom: 6px; }
+    .tr-info-card p  { font-size: 0.8rem; color: #777; line-height: 1.6; margin: 0; }
+  </style>
+
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bhekisizwess.co.za/term-results.html">
+  <meta property="og:url" content="https://bhekisizwess.co.za/term-results.html">
+  <meta property="og:site_name" content="Bhekisizwe Senior Secondary School">
+  <meta property="og:locale" content="en_ZA">
+  <meta property="og:image" content="https://bhekisizwess.co.za/pic5.jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Bhekisizwe Senior Secondary School campus">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Term Results | Bhekisizwe Senior Secondary School">
+  <meta name="twitter:description" content="View term results for learners at Bhekisizwe Senior Secondary School.">
+  <meta name="twitter:image" content="https://bhekisizwess.co.za/pic5.jpeg"></head>
+<body>
+
+  <!-- ===== HEADER TOP BAR ===== -->
+  <div class="header-topbar">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <a href="index.html" class="topbar-brand">
+          <img src="Badge .jpeg" alt="Bhekisizwe Senior Secondary School Badge" class="topbar-crest" loading="lazy">
+          <div class="topbar-name">
+            <span class="topbar-school">Bhekisizwe</span>
+            <span class="topbar-type">Senior Secondary School</span>
+          </div>
+        </a>
+      </div>
+      <div class="topbar-right">
+        <span><i class="fas fa-map-marker-alt"></i> eMachitshane, Nqutu, KwaZulu-Natal, 3135</span>
+        <span><i class="fas fa-phone"></i> +27714900013</span>
+        <span><i class="fas fa-envelope"></i> admin@bhekisizwess.co.za</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li class="nav-dropdown"><a href="about.html">About</a>
+          <div class="dropdown-menu">
+            <a href="about.html">Our Story</a>
+            <a href="staff.html">Leadership &amp; Staff</a>
+          </div>
+        </li>
+        <li class="nav-dropdown"><a href="academics.html">Academics</a>
+          <div class="dropdown-menu"><a href="academics.html">Subjects &amp; Curriculum</a></div>
+        </li>
+        <li><a href="career-path.html">Career Paths</a></li>
+        <li class="nav-dropdown"><a href="students.html" class="active">Students</a>
+          <div class="dropdown-menu">
+            <a href="students.html">Student Life</a>
+            <a href="results.html">Results</a>
+            <a href="achievements.html">Achievements</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="past-papers.html">Past Papers</a>
+            <a href="term-results.html">Term Results</a>
+          </div>
+        </li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="admissions.html">Admissions</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <a href="admissions.html" class="nav-cta">Apply Now</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="nav-mobile" id="navMobile">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="academics.html">Academics</a>
+    <a href="career-path.html">Career Paths</a>
+    <a href="students.html">Students</a>
+    <a href="results.html">Results</a>
+    <a href="achievements.html">Achievements</a>
+    <a href="events.html">Events</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="past-papers.html">Past Papers</a>
+    <a href="term-results.html" class="active">Term Results</a>
+    <a href="admissions.html">Admissions</a>
+    <a href="contact.html">Contact</a>
+    <div class="nav-mobile-divider"></div>
+    <a href="admissions.html" class="btn btn-gold btn-sm">Apply Now</a>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <section class="tr-hero">
+    <div class="container">
+      <div data-aos="fade-up">
+        <div class="adm-badge" style="margin-bottom:16px">
+          <span class="adm-badge-dot"></span>
+          2026 Academic Year
+        </div>
+        <h1>Term Results Lookup</h1>
+        <p>Enter your name, grade and term below to view your individual subject marks as published by the school.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LOOKUP ===== -->
+  <div class="tr-lookup-wrap" data-aos="fade-up" data-aos-delay="100">
+    <div class="tr-lookup-card">
+      <h2>Look Up Your Results</h2>
+      <p>Results are published by the school administration after each term. Enter your details as they appear on your school record.</p>
+      <div class="tr-form-row">
+        <div class="tr-field">
+          <label>Learner Full Name</label>
+          <input type="text" id="tr-name" placeholder="e.g. Sipho Mthembu">
+        </div>
+        <div class="tr-field">
+          <label>Grade</label>
+          <select id="tr-grade">
+            <option value="">Any grade</option>
+            <option value="8">Grade 8</option>
+            <option value="9">Grade 9</option>
+            <option value="10">Grade 10</option>
+            <option value="11">Grade 11</option>
+            <option value="12">Grade 12</option>
+          </select>
+        </div>
+        <div class="tr-field">
+          <label>Term</label>
+          <select id="tr-term">
+            <option value="">Any term</option>
+            <option value="Term 1">Term 1</option>
+            <option value="Term 2">Term 2</option>
+            <option value="Term 3">Term 3</option>
+            <option value="Term 4 / Year-End">Term 4</option>
+          </select>
+        </div>
+        <button class="tr-search-btn" onclick="lookupResults()">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RESULTS AREA ===== -->
+  <div class="tr-results-section">
+
+    <!-- Default prompt -->
+    <div class="tr-prompt" id="tr-prompt">
+      <div class="tr-prompt-inner">
+        <i class="fas fa-chart-bar"></i>
+        <h3>Enter your details above to view your results</h3>
+        <p>Results are published after each term by the school administration. If you believe your results should be available, please contact your class teacher.</p>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div id="tr-loading" style="display:none;text-align:center;padding:48px 24px;color:#888">
+      <i class="fas fa-spinner fa-spin" style="font-size:28px;margin-bottom:12px;display:block;color:#616161"></i>
+      Searching for your results…
+    </div>
+
+    <!-- Results card -->
+    <div class="tr-results-card" id="tr-results-card">
+      <div class="tr-card-inner">
+        <div class="tr-card-head">
+          <div>
+            <h3 id="tr-card-name">Learner Name</h3>
+            <p>Bhekisizwe Senior Secondary School · eMachitshane, Nqutu</p>
+          </div>
+          <div class="tr-card-meta">
+            <span class="tr-meta-badge" id="tr-badge-grade"></span>
+            <span class="tr-meta-badge" id="tr-badge-term"></span>
+            <span class="tr-meta-badge" id="tr-badge-year"></span>
+          </div>
+        </div>
+
+        <!-- KPI summary -->
+        <div class="tr-kpi-row">
+          <div class="tr-kpi">
+            <div class="tr-kpi-val" id="tr-kpi-avg">—</div>
+            <div class="tr-kpi-label">Average Mark</div>
+          </div>
+          <div class="tr-kpi">
+            <div class="tr-kpi-val" id="tr-kpi-highest">—</div>
+            <div class="tr-kpi-label">Highest Subject</div>
+          </div>
+          <div class="tr-kpi">
+            <div class="tr-kpi-val" id="tr-kpi-pass">—</div>
+            <div class="tr-kpi-label">Subjects Passed</div>
+          </div>
+        </div>
+
+        <!-- Subject breakdown -->
+        <table class="tr-subject-table">
+          <thead>
+            <tr>
+              <th>Subject</th>
+              <th>Mark (%)</th>
+              <th style="width:40%">Performance</th>
+              <th>Symbol</th>
+            </tr>
+          </thead>
+          <tbody id="tr-subject-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- No results -->
+    <div class="tr-prompt" id="tr-no-result" style="display:none">
+      <div class="tr-prompt-inner">
+        <i class="fas fa-search-minus"></i>
+        <h3 id="tr-no-result-title">No Results Found</h3>
+        <p id="tr-no-result-msg">No results have been published for those details yet. Results are uploaded by the school administration after each term assessment. Please check back later or contact your teacher.</p>
+      </div>
+    </div>
+
+    <!-- Privacy notice -->
+    <div class="privacy-notice" id="tr-privacy" style="display:none">
+      <div class="privacy-notice-inner">
+        <i class="fas fa-shield-alt" style="flex-shrink:0;margin-top:1px"></i>
+        <span>Your results are retrieved from the school's secure system. This information is personal — please do not share your results page with others without consent.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== INFO SECTION ===== -->
+  <section class="tr-info-section">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <div class="tag">About Term Results</div>
+        <h2>How Results Are Published</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="tr-info-grid">
+        <div class="tr-info-card" data-aos="fade-up" data-aos-delay="50">
+          <i class="fas fa-calendar-check"></i>
+          <h4>When Are Results Available?</h4>
+          <p>Term results are uploaded within 5 school days after the end of each term. You will be notified by your class teacher when they are ready.</p>
+        </div>
+        <div class="tr-info-card" data-aos="fade-up" data-aos-delay="100">
+          <i class="fas fa-star"></i>
+          <h4>Symbol Guide</h4>
+          <p>80–100%: Distinction (D) &bull; 70–79%: Merit (M) &bull; 50–69%: Achieved (A) &bull; Below 50%: Not Yet Achieved (NYA)</p>
+        </div>
+        <div class="tr-info-card" data-aos="fade-up" data-aos-delay="150">
+          <i class="fas fa-exclamation-circle"></i>
+          <h4>Result Not Showing?</h4>
+          <p>If your results do not appear, ensure your name matches your school record exactly. Contact your grade teacher or the school office for assistance.</p>
+        </div>
+        <div class="tr-info-card" data-aos="fade-up" data-aos-delay="200">
+          <i class="fas fa-print"></i>
+          <h4>Official Reports</h4>
+          <p>This page shows a digital preview only. Your official school report will be issued by your class teacher at the end of each term.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-main">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-logo">
+              <img src="Badge .jpeg" alt="Bhekisizwe Senior Secondary School Badge" class="footer-crest" loading="lazy">
+              <div>
+                <div class="footer-school-name">Bhekisizwe Senior Secondary School</div>
+                <div class="footer-motto">Excellence &middot; Legacy &middot; Future</div>
+              </div>
+            </div>
+            <p class="footer-desc">Providing quality education in KwaZulu-Natal since 2004. Nurturing academic excellence and character development in every student.</p>
+            <div class="footer-socials">
+              <a href="#" class="footer-social"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="footer-social"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="footer-social"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="footer-social"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Quick Links</h5>
+            <div class="footer-links">
+              <a href="index.html">Home</a>
+              <a href="about.html">About Us</a>
+              <a href="academics.html">Academics</a>
+              <a href="staff.html">Our Staff</a>
+              <a href="events.html">Events</a>
+              <a href="contact.html">Contact</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Students</h5>
+            <div class="footer-links">
+              <a href="results.html">Results</a>
+              <a href="achievements.html">Achievements</a>
+              <a href="gallery.html">Gallery</a>
+              <a href="admissions.html">Admissions</a>
+              <a href="past-papers.html">Past Papers</a>
+              <a href="application-status.html">Application Status</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Contact Us</h5>
+            <div class="footer-contact-items">
+              <div class="footer-contact-item">
+                <span class="footer-contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+                <span class="footer-contact-text">eMachitshane, Nqutu, KwaZulu-Natal, 3135</span>
+              </div>
+              <div class="footer-contact-item">
+                <span class="footer-contact-icon"><i class="fas fa-phone"></i></span>
+                <span class="footer-contact-text">+27714900013</span>
+              </div>
+              <div class="footer-contact-item">
+                <span class="footer-contact-icon"><i class="fas fa-envelope"></i></span>
+                <span class="footer-contact-text">admin@bhekisizwess.co.za</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="footer-bottom-inner">
+          <p class="footer-copy">&copy; 2026 <span>Bhekisizwe Senior Secondary School</span>. All rights reserved.</p>
+          <p class="footer-dev">Developed by <a href="https://alphacoretech.co.za" target="_blank" rel="noopener noreferrer" style="color:var(--gold);font-weight:600;">Alphacoretech</a></p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js" integrity="sha512-RmCE+nEdKZ45TpbCJgvYvfEDz3XaiGmTTJl6GfyITW3fouks4lNTOkoMXWJ9WA6aQO+3FV8cjA6fvTosOgbCrg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="js/main.js"></script>
+  <script>
+  /* =====================================================
+     TERM RESULTS LOOKUP
+     Reads from bhs_admin_termResults (saved by dashboard).
+     Falls back to seed data for demonstration.
+     ===================================================== */
+
+  const SEED_RESULTS = [
+    { learnerName:'Thabo Mthembu',     grade:'12', term:'Term 2', year:'2026', subjects:[
+        {name:'Mathematics',         mark:78},{name:'Physical Sciences',   mark:81},
+        {name:'English HL',          mark:74},{name:'IsiZulu HL',          mark:88},
+        {name:'Life Orientation',    mark:92},{name:'Business Studies',    mark:85},
+        {name:'Life Sciences',       mark:79}
+    ]},
+    { learnerName:'Zanele Dlamini',    grade:'12', term:'Term 2', year:'2026', subjects:[
+        {name:'Mathematics',         mark:91},{name:'Physical Sciences',   mark:88},
+        {name:'English HL',          mark:83},{name:'IsiZulu HL',          mark:95},
+        {name:'Life Orientation',    mark:96},{name:'Business Studies',    mark:89},
+        {name:'Life Sciences',       mark:84}
+    ]},
+    { learnerName:'Sipho Ndlovu',      grade:'11', term:'Term 2', year:'2026', subjects:[
+        {name:'Mathematics',         mark:62},{name:'Physical Sciences',   mark:58},
+        {name:'English HL',          mark:71},{name:'IsiZulu HL',          mark:80},
+        {name:'Life Orientation',    mark:88},{name:'History',             mark:74},
+        {name:'Geography',           mark:68}
+    ]},
+    { learnerName:'Nomsa Khumalo',     grade:'11', term:'Term 2', year:'2026', subjects:[
+        {name:'Mathematics',         mark:55},{name:'Accounting',          mark:70},
+        {name:'English HL',          mark:68},{name:'IsiZulu HL',          mark:77},
+        {name:'Life Orientation',    mark:90},{name:'Business Studies',    mark:72},
+        {name:'Economics',           mark:66}
+    ]},
+    { learnerName:'Lungelo Buthelezi', grade:'10', term:'Term 2', year:'2026', subjects:[
+        {name:'Mathematics',         mark:48},{name:'English HL',          mark:60},
+        {name:'IsiZulu HL',          mark:73},{name:'Life Orientation',    mark:85},
+        {name:'Natural Sciences',    mark:52},{name:'Geography',           mark:56},
+        {name:'History',             mark:64}
+    ]},
+    { learnerName:'Ayanda Khanyile',   grade:'8',  term:'Term 2', year:'2026', subjects:[
+        {name:'Mathematics',         mark:84},{name:'English HL',          mark:79},
+        {name:'IsiZulu HL',          mark:91},{name:'Life Orientation',    mark:93},
+        {name:'Natural Sciences',    mark:77},{name:'Social Sciences',     mark:82},
+        {name:'Technology',          mark:88}
+    ]},
+  ];
+
+  function getSymbol(mark) {
+    if (mark >= 80) return { label:'D', cls:'mb-distinction' };
+    if (mark >= 70) return { label:'M', cls:'mb-merit' };
+    if (mark >= 50) return { label:'A', cls:'mb-achieved' };
+    return { label:'NYA', cls:'mb-fail' };
+  }
+
+  function getBarColour(mark) {
+    if (mark >= 80) return '#3aaa72';
+    if (mark >= 70) return '#4a9fd4';
+    if (mark >= 50) return '#616161';
+    return '#e05050';
+  }
+
+  function getStoredResults() {
+    try {
+      const stored = JSON.parse(localStorage.getItem('bhs_admin_termResults') || '[]');
+      return stored.length ? stored : SEED_RESULTS;
+    } catch { return SEED_RESULTS; }
+  }
+
+  function lookupResults() {
+    const name  = document.getElementById('tr-name').value.trim().toLowerCase();
+    const grade = document.getElementById('tr-grade').value;
+    const term  = document.getElementById('tr-term').value;
+
+    if (!name) { document.getElementById('tr-name').focus(); return; }
+
+    document.getElementById('tr-prompt').style.display   = 'none';
+    document.getElementById('tr-loading').style.display  = 'block';
+    document.getElementById('tr-results-card').classList.remove('visible');
+    document.getElementById('tr-no-result').style.display  = 'none';
+    document.getElementById('tr-privacy').style.display    = 'none';
+
+    setTimeout(() => {
+      document.getElementById('tr-loading').style.display = 'none';
+      const all = getStoredResults();
+      const match = all.find(r =>
+        (r.learnerName || '').toLowerCase().includes(name) &&
+        (!grade || String(r.grade) === grade) &&
+        (!term  || r.term === term)
+      );
+
+      if (match) {
+        showResults(match);
+      } else {
+        const noRes = document.getElementById('tr-no-result');
+        document.getElementById('tr-no-result-title').textContent = 'No Results Found';
+        document.getElementById('tr-no-result-msg').textContent =
+          'No results found for "' + document.getElementById('tr-name').value.trim() + '"' +
+          (grade ? ' in Grade ' + grade : '') + (term ? ' for ' + term : '') +
+          '. Results are published by the school administration after each assessment. Please try again later or check with your class teacher.';
+        noRes.style.display = 'block';
+        noRes.scrollIntoView({ behavior:'smooth', block:'center' });
+      }
+    }, 800);
+  }
+
+  function showResults(r) {
+    document.getElementById('tr-card-name').textContent   = r.learnerName;
+    document.getElementById('tr-badge-grade').textContent = 'Grade ' + r.grade;
+    document.getElementById('tr-badge-term').textContent  = r.term;
+    document.getElementById('tr-badge-year').textContent  = r.year || '2026';
+
+    const subjects = r.subjects || [];
+    const avg      = subjects.length ? Math.round(subjects.reduce((s,x) => s + x.mark, 0) / subjects.length) : 0;
+    const highest  = subjects.length ? Math.max(...subjects.map(s => s.mark)) : 0;
+    const passed   = subjects.filter(s => s.mark >= 50).length;
+
+    const avgEl = document.getElementById('tr-kpi-avg');
+    avgEl.textContent = avg + '%';
+    avgEl.className   = 'tr-kpi-val ' + (avg >= 50 ? 'pass' : 'fail');
+
+    document.getElementById('tr-kpi-highest').textContent = highest + '%';
+    document.getElementById('tr-kpi-pass').textContent    = passed + ' / ' + subjects.length;
+
+    document.getElementById('tr-subject-tbody').innerHTML = subjects.map(s => {
+      const sym = getSymbol(s.mark);
+      const col = getBarColour(s.mark);
+      return '<tr>' +
+        '<td style="font-weight:600;color:#111">' + esc(s.name) + '</td>' +
+        '<td style="font-weight:700;color:' + col + '">' + s.mark + '%</td>' +
+        '<td><div class="mark-bar-wrap"><div class="mark-bar-track"><div class="mark-bar-fill" style="width:' + s.mark + '%;background:' + col + '"></div></div></div></td>' +
+        '<td><span class="mark-badge ' + sym.cls + '">' + sym.label + '</span></td>' +
+        '</tr>';
+    }).join('');
+
+    const card = document.getElementById('tr-results-card');
+    card.classList.add('visible');
+    document.getElementById('tr-privacy').style.display = 'block';
+    card.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  document.getElementById('tr-name').addEventListener('keydown', e => { if (e.key === 'Enter') lookupResults(); });
+
+  AOS.init({ duration: 700, once: true, offset: 60 });
+  </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+﻿User-agent: *
+Allow: /
+
+Disallow: /api/
+Disallow: /uploads/
+Disallow: /admin-login.php
+Disallow: /admin-logout.php
+Disallow: /bhekisizwe_dashboard.php
+Disallow: /bhekisizwe_dashboard.html
+
+Sitemap: https://bhekisizwess.co.za/sitemap.xml

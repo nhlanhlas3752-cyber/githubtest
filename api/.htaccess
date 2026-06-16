@@ -1,0 +1,15 @@
+# API directory — block direct browser access to config files
+Options -Indexes
+
+<FilesMatch "^(db\.php|auth_check\.php)$">
+    <RequireAll>
+        Require all denied
+    </RequireAll>
+</FilesMatch>
+
+# Security headers on all API responses
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always unset X-Powered-By
+</IfModule>

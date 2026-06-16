@@ -1,0 +1,943 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BPWGY17MJ7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BPWGY17MJ7');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Student Life at Bhekisizwe Senior Secondary School — SRC, sports, clubs, wellness, and resources for every learner.">
+  <title>Student Life | Bhekisizwe Senior Secondary School</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  <!-- AOS Animation -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  <!-- Site Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    /* ── Student Life page header with photo ── */
+    .students-page-header {
+      background:
+        linear-gradient(rgba(0,0,0,0.58), rgba(0,0,0,0.58)),
+        url('pic1.jpeg') center 35% / cover no-repeat;
+    }
+    .students-page-header .page-header-overlay { display: none; }
+
+    /* ── Stats strip ── */
+    .students-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      background: var(--bg-elevated, #111);
+      border: 1px solid rgba(212,175,55,0.18);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: -2px;
+    }
+    .students-stat {
+      padding: 36px 24px;
+      text-align: center;
+      border-right: 1px solid rgba(212,175,55,0.12);
+      transition: background 0.3s;
+    }
+    .students-stat:last-child { border-right: none; }
+    .students-stat:hover { background: rgba(212,175,55,0.05); }
+    .students-stat-value {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 900;
+      color: var(--gold, #D4AF37);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .students-stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted, #888);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    @media (max-width: 700px) {
+      .students-stats { grid-template-columns: repeat(2, 1fr); }
+      .students-stat:nth-child(2) { border-right: none; }
+      .students-stat:nth-child(1),
+      .students-stat:nth-child(2) { border-bottom: 1px solid rgba(212,175,55,0.12); }
+    }
+    @media (max-width: 400px) {
+      .students-stats { grid-template-columns: 1fr; }
+      .students-stat { border-right: none; border-bottom: 1px solid rgba(212,175,55,0.12); }
+      .students-stat:last-child { border-bottom: none; }
+    }
+
+    /* ── SRC Section ── */
+    .src-intro {
+      max-width: 680px;
+      margin: 0 auto 48px;
+      text-align: center;
+      color: var(--text-secondary, #aaa);
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+    .src-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 900px) { .src-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .src-grid { grid-template-columns: 1fr; } }
+
+    .src-card {
+      background: var(--bg-elevated, #111);
+      border: 1px solid rgba(212,175,55,0.15);
+      border-radius: 16px;
+      padding: 32px 20px 28px;
+      text-align: center;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+    .src-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--gold, #D4AF37);
+      box-shadow: 0 12px 40px rgba(212,175,55,0.12);
+    }
+    .src-avatar {
+      width: 70px; height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold, #D4AF37), #b8962e);
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.3rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .src-role {
+      display: inline-block;
+      background: rgba(212,175,55,0.12);
+      border: 1px solid rgba(212,175,55,0.3);
+      color: var(--gold, #D4AF37);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    .src-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary, #fff);
+      margin: 8px 0 4px;
+    }
+    .src-mandate {
+      font-size: 0.82rem;
+      color: var(--text-muted, #888);
+      line-height: 1.5;
+    }
+
+    /* ── Sports grid ── */
+    .sports-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 800px) { .sports-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .sports-grid { grid-template-columns: 1fr; } }
+
+    .sport-card {
+      background: var(--bg-elevated, #111);
+      border: 1px solid rgba(212,175,55,0.12);
+      border-radius: 16px;
+      padding: 32px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+    .sport-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(212,175,55,0.4);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .sport-icon {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      background: rgba(212,175,55,0.1);
+      border: 1px solid rgba(212,175,55,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .sport-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary, #fff);
+      margin-bottom: 6px;
+    }
+    .sport-desc {
+      font-size: 0.83rem;
+      color: var(--text-muted, #888);
+      line-height: 1.55;
+      margin-bottom: 10px;
+    }
+    .sport-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(212,175,55,0.08);
+      color: var(--gold, #D4AF37);
+      border: 1px solid rgba(212,175,55,0.2);
+    }
+
+    /* ── Clubs grid ── */
+    .clubs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 800px) { .clubs-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .clubs-grid { grid-template-columns: 1fr; } }
+
+    .club-card {
+      background: var(--bg-elevated, #111);
+      border: 1px solid rgba(212,175,55,0.12);
+      border-radius: 16px;
+      padding: 28px 22px;
+      text-align: center;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+    .club-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(212,175,55,0.4);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .club-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      background: rgba(212,175,55,0.1);
+      border: 1px solid rgba(212,175,55,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 16px;
+    }
+    .club-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary, #fff);
+      margin-bottom: 8px;
+    }
+    .club-desc {
+      font-size: 0.83rem;
+      color: var(--text-muted, #888);
+      line-height: 1.6;
+    }
+    .club-meeting {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 12px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--gold, #D4AF37);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Wellness cards ── */
+    .wellness-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 800px) { .wellness-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .wellness-grid { grid-template-columns: 1fr; } }
+
+    .wellness-card {
+      background: linear-gradient(135deg, rgba(212,175,55,0.07) 0%, rgba(212,175,55,0.02) 100%);
+      border: 1px solid rgba(212,175,55,0.18);
+      border-radius: 18px;
+      padding: 36px 28px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .wellness-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(212,175,55,0.1);
+    }
+    .wellness-icon {
+      width: 64px; height: 64px;
+      border-radius: 16px;
+      background: rgba(212,175,55,0.12);
+      border: 1px solid rgba(212,175,55,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem;
+      margin: 0 auto 20px;
+    }
+    .wellness-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary, #fff);
+      margin-bottom: 12px;
+    }
+    .wellness-desc {
+      font-size: 0.87rem;
+      color: var(--text-muted, #888);
+      line-height: 1.7;
+    }
+
+    /* ── Code of Conduct ── */
+    .conduct-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    @media (max-width: 700px) { .conduct-grid { grid-template-columns: 1fr; } }
+
+    .conduct-block {
+      background: var(--bg-elevated, #111);
+      border: 1px solid rgba(212,175,55,0.13);
+      border-radius: 16px;
+      padding: 32px 28px;
+    }
+    .conduct-block-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gold, #D4AF37);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .conduct-list {
+      list-style: none;
+      padding: 0; margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .conduct-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.88rem;
+      color: var(--text-secondary, #ccc);
+      line-height: 1.55;
+    }
+    .conduct-list li i {
+      color: var(--gold, #D4AF37);
+      margin-top: 2px;
+      flex-shrink: 0;
+      font-size: 0.75rem;
+    }
+
+    /* ── Resources grid ── */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 800px) { .resources-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .resources-grid { grid-template-columns: 1fr; } }
+
+    .resource-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg-elevated, #111);
+      border: 1px solid rgba(212,175,55,0.12);
+      border-radius: 12px;
+      padding: 20px 22px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+    .resource-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--gold, #D4AF37);
+      box-shadow: 0 8px 24px rgba(212,175,55,0.1);
+    }
+    .resource-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: rgba(212,175,55,0.1);
+      border: 1px solid rgba(212,175,55,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      color: var(--gold, #D4AF37);
+      flex-shrink: 0;
+    }
+    .resource-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary, #fff);
+    }
+    .resource-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted, #888);
+      margin-top: 2px;
+    }
+    .resource-arrow {
+      margin-left: auto;
+      color: var(--gold, #D4AF37);
+      font-size: 0.75rem;
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+    }
+    .resource-card:hover .resource-arrow {
+      opacity: 1;
+      transform: translateX(3px);
+    }
+  </style>
+
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bhekisizwess.co.za/students.html">
+  <meta property="og:url" content="https://bhekisizwess.co.za/students.html">
+  <meta property="og:site_name" content="Bhekisizwe Senior Secondary School">
+  <meta property="og:locale" content="en_ZA">
+  <meta property="og:image" content="https://bhekisizwess.co.za/pic5.jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Bhekisizwe Senior Secondary School campus">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Student Life | Bhekisizwe Senior Secondary School">
+  <meta name="twitter:description" content="Discover student life, activities and opportunities at Bhekisizwe Senior Secondary School in Nqutu.">
+  <meta name="twitter:image" content="https://bhekisizwess.co.za/pic5.jpeg"></head>
+<body>
+
+  <!-- ===== HEADER TOP BAR ===== -->
+  <div class="header-topbar">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <a href="index.html" class="topbar-brand">
+          <img src="Badge .jpeg" alt="Bhekisizwe Senior Secondary School Badge" class="topbar-crest" loading="lazy">
+          <div class="topbar-name">
+            <span class="topbar-school">Bhekisizwe</span>
+            <span class="topbar-type">Senior Secondary School</span>
+          </div>
+        </a>
+      </div>
+      <div class="topbar-right">
+        <span><i class="fas fa-map-marker-alt"></i> eMachitshane, Nqutu, KwaZulu-Natal, 3135</span>
+        <span><i class="fas fa-phone"></i> +27714900013</span>
+        <span><i class="fas fa-envelope"></i> admin@bhekisizwess.co.za</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li class="nav-dropdown">
+          <a href="about.html">About</a>
+          <div class="dropdown-menu">
+            <a href="about.html">Our Story</a>
+            <a href="staff.html">Leadership &amp; Staff</a>
+          </div>
+        </li>
+        <li><a href="academics.html">Academics</a></li>
+        <li><a href="career-path.html">Career Paths</a></li>
+        <li class="nav-dropdown">
+          <a href="students.html" class="active">Students</a>
+          <div class="dropdown-menu">
+            <a href="students.html">Student Life</a>
+            <a href="exams.html">Exams</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="past-papers.html">Past Papers</a>
+            <a href="term-results.html">Term Results</a>
+            <a href="application-status.html">Application Status</a>
+          </div>
+        </li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="admissions.html">Admissions</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <a href="admissions.html" class="nav-cta">Apply Now</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="nav-mobile" id="navMobile">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="academics.html">Academics</a>
+    <a href="career-path.html">Career Paths</a>
+    <a href="students.html" class="active">Student Life</a>
+    <a href="exams.html">Exams</a>
+    <a href="staff.html">Staff</a>
+    <a href="events.html">Events</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="past-papers.html">Past Papers</a>
+    <a href="term-results.html">Term Results</a>
+    <a href="application-status.html">Application Status</a>
+    <a href="admissions.html">Admissions</a>
+    <a href="contact.html">Contact</a>
+    <div class="nav-mobile-divider"></div>
+    <a href="admissions.html" class="btn btn-gold btn-sm">Apply Now</a>
+  </div>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <section class="page-header students-page-header">
+    <div class="page-header-overlay"></div>
+    <div class="container">
+      <div class="page-header-content" data-aos="fade-up">
+        <span class="section-tag">Our Learners</span>
+        <h1>Student <span>Life</span></h1>
+        <p>Discover the vibrant community, opportunities, and support that shape every learner at Bhekisizwe</p>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+          <span class="breadcrumb-current">Student Life</span>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS STRIP ===== -->
+  <section class="section" style="padding-top: 56px; padding-bottom: 24px;">
+    <div class="container">
+      <div class="students-stats" data-aos="fade-up">
+        <div class="students-stat">
+          <div class="students-stat-value">1 200+</div>
+          <div class="students-stat-label">Learners Enrolled</div>
+        </div>
+        <div class="students-stat">
+          <div class="students-stat-value">6+</div>
+          <div class="students-stat-label">Sports Teams</div>
+        </div>
+        <div class="students-stat">
+          <div class="students-stat-value">8+</div>
+          <div class="students-stat-label">Clubs &amp; Societies</div>
+        </div>
+        <div class="students-stat">
+          <div class="students-stat-value">98%</div>
+          <div class="students-stat-label">2025 Pass Rate</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SRC — STUDENT REPRESENTATIVE COUNCIL ===== -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-tag">Student Governance</span>
+        <h2 class="section-title">Student Representative <span class="gold">Council</span></h2>
+      </div>
+      <p class="src-intro" data-aos="fade-up">
+        The SRC is the official voice of the student body at Bhekisizwe. Elected annually by their peers, SRC members serve as the bridge between learners and school management, driving initiatives that improve school life for everyone.
+      </p>
+      <div class="src-grid">
+
+        <div class="src-card" data-aos="fade-up" data-aos-delay="0">
+          <div class="src-avatar">SP</div>
+          <div class="src-role">President</div>
+          <div class="src-name">Sibonelo Phiri</div>
+          <p class="src-mandate">Leads the council, chairs meetings, and represents learners at school management level.</p>
+        </div>
+
+        <div class="src-card" data-aos="fade-up" data-aos-delay="80">
+          <div class="src-avatar">LN</div>
+          <div class="src-role">Deputy President</div>
+          <div class="src-name">Londiwe Nkosi</div>
+          <p class="src-mandate">Supports the president, oversees sub-committees, and steps in during the president's absence.</p>
+        </div>
+
+        <div class="src-card" data-aos="fade-up" data-aos-delay="160">
+          <div class="src-avatar">TM</div>
+          <div class="src-role">Secretary</div>
+          <div class="src-name">Thabo Mthembu</div>
+          <p class="src-mandate">Records meeting minutes, manages communications, and keeps the council's calendar.</p>
+        </div>
+
+        <div class="src-card" data-aos="fade-up" data-aos-delay="240">
+          <div class="src-avatar">ZD</div>
+          <div class="src-role">Treasurer</div>
+          <div class="src-name">Zanele Dlamini</div>
+          <p class="src-mandate">Manages SRC funds, budgets for events, and ensures financial accountability.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPORTS & RECREATION ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-tag">Active &amp; Healthy</span>
+        <h2 class="section-title">Sports &amp; <span class="gold">Recreation</span></h2>
+        <p class="section-sub">Sport at Bhekisizwe builds discipline, teamwork, and resilience. We compete in district and provincial tournaments across multiple codes.</p>
+      </div>
+      <div class="sports-grid">
+
+        <div class="sport-card" data-aos="fade-up" data-aos-delay="0">
+          <div class="sport-icon"><i class="fas fa-futbol"></i></div>
+          <div>
+            <div class="sport-name">Football</div>
+            <p class="sport-desc">Our football team competes in the Nqutu District league and the Transnet Schools Cup. Training every Tuesday and Thursday.</p>
+            <span class="sport-tag">District Level</span>
+          </div>
+        </div>
+
+        <div class="sport-card" data-aos="fade-up" data-aos-delay="80">
+          <div class="sport-icon"><i class="fas fa-volleyball-ball"></i></div>
+          <div>
+            <div class="sport-name">Netball</div>
+            <p class="sport-desc">A powerhouse in the district, our netball team has placed in the top 3 for the past four consecutive years.</p>
+            <span class="sport-tag">Provincial Contender</span>
+          </div>
+        </div>
+
+        <div class="sport-card" data-aos="fade-up" data-aos-delay="160">
+          <div class="sport-icon"><i class="fas fa-running"></i></div>
+          <div>
+            <div class="sport-name">Athletics</div>
+            <p class="sport-desc">Track and field events including 100m, 400m, long jump, and cross-country. Multiple district medal winners every year.</p>
+            <span class="sport-tag">Multi-Event</span>
+          </div>
+        </div>
+
+        <div class="sport-card" data-aos="fade-up" data-aos-delay="0">
+          <div class="sport-icon"><i class="fas fa-basketball-ball"></i></div>
+          <div>
+            <div class="sport-name">Basketball</div>
+            <p class="sport-desc">A growing programme with both boys' and girls' teams. Zanele Shabalala was selected for the KZN U18 Provincial team in 2025.</p>
+            <span class="sport-tag">Boys &amp; Girls Teams</span>
+          </div>
+        </div>
+
+        <div class="sport-card" data-aos="fade-up" data-aos-delay="80">
+          <div class="sport-icon"><i class="fas fa-cricket-ball"></i></div>
+          <div>
+            <div class="sport-name">Cricket</div>
+            <p class="sport-desc">Competitive cricket with summer fixtures against district schools. Coaching provided by qualified SACA-registered coaches.</p>
+            <span class="sport-tag">Summer Sport</span>
+          </div>
+        </div>
+
+        <div class="sport-card" data-aos="fade-up" data-aos-delay="160">
+          <div class="sport-icon"><i class="fas fa-table-tennis"></i></div>
+          <div>
+            <div class="sport-name">Table Tennis</div>
+            <p class="sport-desc">Indoor sport available to all learners with equipment provided by the school. Inter-grade tournaments held each term.</p>
+            <span class="sport-tag">All Grades</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CLUBS & SOCIETIES ===== -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-tag">Beyond the Classroom</span>
+        <h2 class="section-title">Clubs &amp; <span class="gold">Societies</span></h2>
+        <p class="section-sub">Co-curricular activities develop leadership, creativity, and critical thinking. Every learner is encouraged to join at least one club.</p>
+      </div>
+      <div class="clubs-grid">
+
+        <div class="club-card" data-aos="fade-up" data-aos-delay="0">
+          <div class="club-icon"><i class="fas fa-calculator" style="color:var(--gold)"></i></div>
+          <div class="club-name">Mathematics Club</div>
+          <p class="club-desc">Strengthen problem-solving skills through competitions, olympiads, and peer tutoring sessions for all levels.</p>
+          <span class="club-meeting"><i class="fas fa-clock"></i> Wednesdays · 14:30</span>
+        </div>
+
+        <div class="club-card" data-aos="fade-up" data-aos-delay="80">
+          <div class="club-icon"><i class="fas fa-comments" style="color:var(--gold)"></i></div>
+          <div class="club-name">Debating Society</div>
+          <p class="club-desc">Three-time district champions. Learners develop public speaking, argumentation, and critical thinking skills.</p>
+          <span class="club-meeting"><i class="fas fa-clock"></i> Mondays · 14:30</span>
+        </div>
+
+        <div class="club-card" data-aos="fade-up" data-aos-delay="160">
+          <div class="club-icon"><i class="fas fa-leaf" style="color:var(--gold)"></i></div>
+          <div class="club-name">Environmental Club</div>
+          <p class="club-desc">Winner of the KZN Green Schools Award. Runs campus recycling, tree planting, and community clean-up initiatives.</p>
+          <span class="club-meeting"><i class="fas fa-clock"></i> Thursdays · 14:30</span>
+        </div>
+
+        <div class="club-card" data-aos="fade-up" data-aos-delay="0">
+          <div class="club-icon"><i class="fas fa-theater-masks" style="color:var(--gold)"></i></div>
+          <div class="club-name">Drama &amp; Arts</div>
+          <p class="club-desc">Our drama club produced 'Ubuntu Rising', which won 1st place at the KZN Schools Drama Festival 2025.</p>
+          <span class="club-meeting"><i class="fas fa-clock"></i> Tuesdays · 14:30</span>
+        </div>
+
+        <div class="club-card" data-aos="fade-up" data-aos-delay="80">
+          <div class="club-icon"><i class="fas fa-music" style="color:var(--gold)"></i></div>
+          <div class="club-name">Choir &amp; Music</div>
+          <p class="club-desc">The BHS Choir placed 2nd at the National Schools Choral Festival. Rehearsals are open to all learners with a love of music.</p>
+          <span class="club-meeting"><i class="fas fa-clock"></i> Fridays · 14:00</span>
+        </div>
+
+        <div class="club-card" data-aos="fade-up" data-aos-delay="160">
+          <div class="club-icon"><i class="fas fa-flask" style="color:var(--gold)"></i></div>
+          <div class="club-name">Science &amp; Technology</div>
+          <p class="club-desc">Experiments, robotics challenges, and Science Olympiad preparation. 2nd place KZN Science Olympiad 2024.</p>
+          <span class="club-meeting"><i class="fas fa-clock"></i> Wednesdays · 14:30</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STUDENT SUPPORT & WELLNESS ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-tag">Learner Wellbeing</span>
+        <h2 class="section-title">Support &amp; <span class="gold">Wellness</span></h2>
+        <p class="section-sub">We believe a healthy, supported learner performs at their best. Our wellness programmes ensure no student faces challenges alone.</p>
+      </div>
+      <div class="wellness-grid">
+
+        <div class="wellness-card" data-aos="fade-up" data-aos-delay="0">
+          <div class="wellness-icon"><i class="fas fa-book-reader" style="color:var(--gold)"></i></div>
+          <div class="wellness-title">Academic Support</div>
+          <p class="wellness-desc">Peer tutoring, extra classes, and subject-specific workshops for learners who need additional help. Available to all grades free of charge.</p>
+        </div>
+
+        <div class="wellness-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="wellness-icon"><i class="fas fa-heart" style="color:var(--gold)"></i></div>
+          <div class="wellness-title">Counselling &amp; Wellbeing</div>
+          <p class="wellness-desc">Our school counsellor provides confidential one-on-one sessions. A safe space for learners dealing with personal, social, or emotional challenges.</p>
+        </div>
+
+        <div class="wellness-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="wellness-icon"><i class="fas fa-users" style="color:var(--gold)"></i></div>
+          <div class="wellness-title">Peer Mentorship</div>
+          <p class="wellness-desc">Senior learners are trained as peer mentors, guiding junior students through academic pressures and the transition into senior secondary school life.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CODE OF CONDUCT ===== -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-tag">Discipline &amp; Values</span>
+        <h2 class="section-title">Code of <span class="gold">Conduct</span></h2>
+        <p class="section-sub">Our code of conduct exists to maintain a safe, respectful, and productive learning environment for every learner and staff member.</p>
+      </div>
+      <div class="conduct-grid">
+
+        <div class="conduct-block" data-aos="fade-up" data-aos-delay="0">
+          <div class="conduct-block-title"><i class="fas fa-tshirt"></i> Uniform Policy</div>
+          <ul class="conduct-list">
+            <li><i class="fas fa-check-circle"></i> Full school uniform is compulsory every school day.</li>
+            <li><i class="fas fa-check-circle"></i> Grey trousers or skirt, white shirt, and school tie for formal days.</li>
+            <li><i class="fas fa-check-circle"></i> Sports kit is only permitted during PE and practice sessions.</li>
+            <li><i class="fas fa-check-circle"></i> Neat, clean appearance is expected at all times on school property.</li>
+            <li><i class="fas fa-check-circle"></i> Jewellery must be minimal — one pair of plain stud earrings allowed.</li>
+          </ul>
+        </div>
+
+        <div class="conduct-block" data-aos="fade-up" data-aos-delay="100">
+          <div class="conduct-block-title"><i class="fas fa-clock"></i> Attendance &amp; Punctuality</div>
+          <ul class="conduct-list">
+            <li><i class="fas fa-check-circle"></i> Learners must be on school premises by 07:30 each day.</li>
+            <li><i class="fas fa-check-circle"></i> Absence must be explained by a written note or parent call within 24 hours.</li>
+            <li><i class="fas fa-check-circle"></i> Minimum 80% attendance is required to qualify for year-end examinations.</li>
+            <li><i class="fas fa-check-circle"></i> All periods, including afternoon activities, must be attended punctually.</li>
+          </ul>
+        </div>
+
+        <div class="conduct-block" data-aos="fade-up" data-aos-delay="0">
+          <div class="conduct-block-title"><i class="fas fa-shield-alt"></i> Behaviour &amp; Respect</div>
+          <ul class="conduct-list">
+            <li><i class="fas fa-check-circle"></i> Respectful conduct towards all staff, learners, and school property.</li>
+            <li><i class="fas fa-check-circle"></i> Bullying, discrimination, and harassment in any form is strictly prohibited.</li>
+            <li><i class="fas fa-check-circle"></i> Mobile phones must be stored away during instructional time.</li>
+            <li><i class="fas fa-check-circle"></i> Violence, alcohol, and substances on school property result in suspension.</li>
+          </ul>
+        </div>
+
+        <div class="conduct-block" data-aos="fade-up" data-aos-delay="100">
+          <div class="conduct-block-title"><i class="fas fa-pen-nib"></i> Academic Integrity</div>
+          <ul class="conduct-list">
+            <li><i class="fas fa-check-circle"></i> All submitted work must be the learner's own original effort.</li>
+            <li><i class="fas fa-check-circle"></i> Plagiarism and copying in assessments results in a zero and disciplinary action.</li>
+            <li><i class="fas fa-check-circle"></i> Classwork, homework, and projects must be completed on time.</li>
+            <li><i class="fas fa-check-circle"></i> Any form of cheating during examinations is a serious offence.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STUDENT RESOURCES ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-tag">Quick Access</span>
+        <h2 class="section-title">Student <span class="gold">Resources</span></h2>
+        <p class="section-sub">Everything you need — results, gallery, admissions, and more — all in one place.</p>
+      </div>
+      <div class="resources-grid">
+
+        <a href="academics.html" class="resource-card" data-aos="fade-up" data-aos-delay="0">
+          <div class="resource-icon"><i class="fas fa-book-open"></i></div>
+          <div>
+            <div class="resource-label">Subjects &amp; Curriculum</div>
+            <div class="resource-sub">What we offer per grade</div>
+          </div>
+          <i class="fas fa-arrow-right resource-arrow"></i>
+        </a>
+
+        <a href="events.html" class="resource-card" data-aos="fade-up" data-aos-delay="80">
+          <div class="resource-icon"><i class="fas fa-calendar-alt"></i></div>
+          <div>
+            <div class="resource-label">Events &amp; Term Dates</div>
+            <div class="resource-sub">School calendar &amp; fixtures</div>
+          </div>
+          <i class="fas fa-arrow-right resource-arrow"></i>
+        </a>
+
+        <a href="admissions.html" class="resource-card" data-aos="fade-up" data-aos-delay="160">
+          <div class="resource-icon"><i class="fas fa-file-alt"></i></div>
+          <div>
+            <div class="resource-label">Admissions</div>
+            <div class="resource-sub">Apply for 2027 intake</div>
+          </div>
+          <i class="fas fa-arrow-right resource-arrow"></i>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BANNER ===== -->
+  <section class="cta-banner" data-aos="fade-up">
+    <div class="container">
+      <div class="cta-inner">
+        <h2 class="cta-title">Become Part of the <span class="gold">Bhekisizwe</span> Family</h2>
+        <p class="cta-sub">Applications for Grade 8 — 2027 are now open. Give your child the foundation they deserve.</p>
+        <div class="cta-actions">
+          <a href="admissions.html" class="btn btn-gold">Apply Now <i class="fas fa-arrow-right" style="margin-left:8px;"></i></a>
+          <a href="contact.html" class="btn btn-outline">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-main">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-logo">
+              <img src="Badge .jpeg" alt="Bhekisizwe Senior Secondary School Badge" class="footer-crest" loading="lazy">
+              <div>
+                <div class="footer-school-name">Bhekisizwe Senior Secondary School</div>
+                <div class="footer-motto">Excellence &middot; Legacy &middot; Future</div>
+              </div>
+            </div>
+            <p class="footer-desc">Providing quality education in KwaZulu-Natal since 2004. Nurturing academic excellence and character development in every student.</p>
+            <div class="footer-socials">
+              <a href="#" class="footer-social" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="footer-social" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="footer-social" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="footer-social" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Quick Links</h5>
+            <div class="footer-links">
+              <a href="index.html">Home</a>
+              <a href="about.html">About Us</a>
+              <a href="academics.html">Academics</a>
+              <a href="staff.html">Our Staff</a>
+              <a href="events.html">Events</a>
+              <a href="contact.html">Contact</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Students</h5>
+            <div class="footer-links">
+              <a href="students.html">Student Life</a>
+              <a href="results.html">Results</a>
+              <a href="gallery.html">Gallery</a>
+              <a href="past-papers.html">Past Papers</a>
+              <a href="term-results.html">Term Results</a>
+              <a href="application-status.html">Application Status</a>
+              <a href="admissions.html">Admissions</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Contact Us</h5>
+            <div class="footer-contact-items">
+              <div class="footer-contact-item">
+                <span class="footer-contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+                <span class="footer-contact-text">eMachitshane, Nqutu, KwaZulu-Natal, 3135</span>
+              </div>
+              <div class="footer-contact-item">
+                <span class="footer-contact-icon"><i class="fas fa-phone"></i></span>
+                <span class="footer-contact-text">+27714900013</span>
+              </div>
+              <div class="footer-contact-item">
+                <span class="footer-contact-icon"><i class="fas fa-envelope"></i></span>
+                <span class="footer-contact-text">admin@bhekisizwess.co.za</span>
+              </div>
+            </div>
+            <div class="footer-newsletter" style="margin-top:24px;">
+              <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:8px;">Subscribe to school updates</p>
+              <div class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Your email">
+                <button class="newsletter-btn" aria-label="Subscribe">&rarr;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="footer-bottom-inner">
+          <p class="footer-copy">&copy; 2026 <span>Bhekisizwe Senior Secondary School</span>. All rights reserved.</p>
+          <p class="footer-dev">Developed by <a href="https://alphacoretech.co.za" target="_blank" rel="noopener noreferrer" style="color:var(--gold);font-weight:600;">Alphacoretech</a></p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">&#8679;</button>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js" integrity="sha512-RmCE+nEdKZ45TpbCJgvYvfEDz3XaiGmTTJl6GfyITW3fouks4lNTOkoMXWJ9WA6aQO+3FV8cjA6fvTosOgbCrg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+

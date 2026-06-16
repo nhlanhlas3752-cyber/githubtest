@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Checklist — Project Auditor</title>
+<!--
+╔══════════════════════════════════════════════════════════════════════╗
+║                  AI AGENT USAGE INSTRUCTIONS                       ║
+╠══════════════════════════════════════════════════════════════════════╣
+║  1. Call createProject("Project Name", "Auditor Name") in console  ║
+║  2. Note the returned project ID                                   ║
+║  3. For each item in SECTIONS, audit the codebase and call:        ║
+║     setStatus(id, "s{secId}-{itemIdx}", "pass"|"fail"|"risk"|"na") ║
+║     setNote(id, "s{secId}-{itemIdx}", "finding text")              ║
+║  4. Call saveApp() when done                                       ║
+║  5. Open in browser — results auto-render                          ║
+║                                                                    ║
+║  Item keys are 1-based: s1-1 = Section 1, Item 1                  ║
+╚══════════════════════════════════════════════════════════════════════╝
+-->
+<style>
+:root{
+  --bg:#07071a;--s1:#0d0d26;--s2:#131338;--border:#1c1c48;--border2:#252560;
+  --purple:#7c3aed;--purple2:#a78bfa;--gold:#eab308;--gold2:#fde047;
+  --pass:#059669;--pass2:#34d399;--fail:#dc2626;--fail2:#f87171;
+  --risk:#d97706;--risk2:#fbbf24;--na:#374151;--na2:#9ca3af;
+  --text:#f0f0ff;--muted:#8888bb;--dim:#555588;--r:8px;--r2:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6}
+
+/* ── SHARED ──────────────────────────────────────────────── */
+.hidden{display:none!important}
+.btn{border:none;border-radius:var(--r);padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:linear-gradient(135deg,var(--purple),#5b21b6);color:#fff}
+.btn-primary:hover{box-shadow:0 6px 20px rgba(124,58,237,.4)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.btn-ghost:hover{border-color:var(--purple2);color:var(--purple2)}
+.btn-danger{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.btn-danger:hover{border-color:var(--fail);color:var(--fail)}
+input[type=text],textarea{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:9px 13px;color:var(--text);font-size:13px;font-family:inherit;transition:.2s;outline:none}
+input[type=text]:focus,textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.2)}
+input[type=text]::placeholder,textarea::placeholder{color:var(--dim)}
+
+/* ── MODAL ───────────────────────────────────────────────── */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--s1);border:1px solid var(--border2);border-radius:var(--r2);padding:32px;width:100%;max-width:480px;box-shadow:0 25px 80px rgba(0,0,0,.6)}
+.modal-title{font-size:1.2rem;font-weight:700;margin-bottom:20px}
+.modal-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.modal-field label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.modal-field input{width:100%}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
+
+/* ── DASHBOARD ───────────────────────────────────────────── */
+.dash-header{position:sticky;top:0;z-index:100;background:rgba(7,7,26,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--purple),var(--gold));border-radius:var(--r);display:grid;place-items:center;font-size:20px;flex-shrink:0}
+.logo-text{font-size:1.1rem;font-weight:700;background:linear-gradient(135deg,var(--purple2),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.dash-header-actions{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+.dash-stats{display:flex;gap:10px;padding:18px 24px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.dstat{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);padding:14px 20px;display:flex;flex-direction:column;gap:2px;min-width:130px}
+.dstat-num{font-size:1.6rem;font-weight:800;line-height:1}
+.dstat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+.dash-main{max-width:1300px;margin:0 auto;padding:24px}
+.dash-section-title{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.dash-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.empty-state{text-align:center;padding:80px 24px;color:var(--muted)}
+.empty-state-icon{font-size:3rem;margin-bottom:16px}
+.empty-state-title{font-size:1.1rem;font-weight:600;color:var(--text);margin-bottom:8px}
+.empty-state-sub{font-size:13px;margin-bottom:24px}
+
+/* ── PROJECT CARD ────────────────────────────────────────── */
+.proj-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:.2s;cursor:pointer}
+.proj-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.proj-card-header{padding:20px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border)}
+.proj-score-circle{width:54px;height:54px;border-radius:50%;border:3px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.proj-score-num{font-size:1.1rem;font-weight:800;line-height:1}
+.proj-score-grade{font-size:9px;font-weight:700;opacity:.8;letter-spacing:.5px}
+.proj-info{flex:1;min-width:0}
+.proj-name{font-size:.95rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proj-auditor{font-size:11px;color:var(--muted);margin-top:2px}
+.proj-date{font-size:10px;color:var(--dim);margin-top:4px}
+.proj-card-stats{padding:12px 20px;display:flex;gap:8px;flex-wrap:wrap}
+.proj-stat{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600}
+.proj-stat .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.proj-card-footer{padding:10px 14px;display:flex;gap:6px;border-top:1px solid var(--border);background:rgba(0,0,0,.15)}
+.proj-card-footer .btn{padding:6px 12px;font-size:11px}
+
+/* ── AUDIT VIEW ──────────────────────────────────────────── */
+#app-header{position:sticky;top:0;z-index:100;background:rgba(7,7,26,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#btn-back{background:transparent;border:1px solid var(--border);border-radius:var(--r);padding:7px 12px;color:var(--muted);font-size:12px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+#btn-back:hover{border-color:var(--purple2);color:var(--purple2)}
+.audit-project-name{font-size:1rem;font-weight:700;flex:1;min-width:120px;background:transparent;border:1px solid transparent;border-radius:var(--r);padding:5px 8px;color:var(--text);cursor:text;transition:.15s}
+.audit-project-name:hover{border-color:var(--border)}
+.audit-project-name:focus{border-color:var(--purple);outline:none;background:var(--s1)}
+#score-badge{display:flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--border);border-radius:100px;padding:5px 12px;font-size:12px;white-space:nowrap}
+.score-num{font-size:1.2rem;font-weight:800;color:var(--gold)}
+.score-label{color:var(--muted);font-size:10px}
+#audit-header-actions{display:flex;gap:6px;align-items:center}
+#btn-report{background:linear-gradient(135deg,var(--purple),#5b21b6);color:#fff;border:none;border-radius:var(--r);padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:5px}
+#btn-report:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(124,58,237,.4)}
+#btn-reset-audit{background:transparent;border:1px solid var(--border);border-radius:var(--r);padding:7px 12px;color:var(--muted);font-size:11px;cursor:pointer;transition:.2s}
+#btn-reset-audit:hover{border-color:var(--fail);color:var(--fail)}
+
+/* ── PROGRESS / STATS ────────────────────────────────────── */
+#global-progress{height:3px;background:var(--border);position:sticky;top:57px;z-index:99}
+#global-progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--gold));transition:width .4s}
+#stats-bar{display:flex;gap:6px;padding:12px 20px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.stat-pill{display:flex;align-items:center;gap:5px;background:var(--s1);border:1px solid var(--border);border-radius:100px;padding:4px 12px;font-size:12px;white-space:nowrap}
+.stat-pill .dot{width:7px;height:7px;border-radius:50%}
+.dot-pass{background:var(--pass2)}.dot-fail{background:var(--fail2)}.dot-risk{background:var(--risk2)}.dot-na{background:var(--na2)}.dot-pend{background:var(--dim)}
+.stat-count{font-weight:700;font-size:13px}
+
+/* ── CHECKLIST ───────────────────────────────────────────── */
+#main{max-width:1100px;margin:0 auto;padding:18px 20px 80px}
+.section-grid{display:grid;gap:14px}
+.sec-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:.15s}
+.sec-card:hover{border-color:var(--border2)}
+.sec-header{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;user-select:none;transition:.15s}
+.sec-header:hover{background:rgba(255,255,255,.03)}
+.sec-icon{font-size:18px;width:30px;text-align:center;flex-shrink:0}
+.sec-title{font-weight:600;font-size:.9rem;flex:1}
+.sec-meta{display:flex;align-items:center;gap:8px}
+.sec-score{font-size:11px;color:var(--muted);white-space:nowrap}
+.sec-pbar{width:70px;height:4px;background:var(--border);border-radius:4px;overflow:hidden;flex-shrink:0}
+.sec-pbar-fill{height:100%;border-radius:4px;transition:width .4s}
+.sec-chevron{color:var(--muted);font-size:11px;transition:transform .25s;flex-shrink:0}
+.sec-card.open .sec-chevron{transform:rotate(180deg)}
+.sec-body{display:none;border-top:1px solid var(--border)}
+.sec-card.open .sec-body{display:block}
+.item-row{display:flex;align-items:flex-start;gap:10px;padding:10px 18px;border-bottom:1px solid rgba(255,255,255,.04);transition:.15s}
+.item-row:last-child{border-bottom:none}
+.item-row:hover{background:rgba(255,255,255,.02)}
+.item-num{font-size:10px;color:var(--dim);padding-top:3px;min-width:28px;font-weight:600}
+.item-content{flex:1;min-width:0}
+.item-text{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:7px}
+.item-controls{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.status-btn{border:none;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;transition:.15s;letter-spacing:.3px}
+.status-btn:hover{transform:translateY(-1px)}
+.btn-pass{background:rgba(5,150,105,.15);color:var(--pass2);border:1px solid rgba(52,211,153,.25)}
+.btn-pass.active{background:var(--pass);color:#fff;border-color:var(--pass)}
+.btn-fail{background:rgba(220,38,38,.15);color:var(--fail2);border:1px solid rgba(248,113,113,.25)}
+.btn-fail.active{background:var(--fail);color:#fff;border-color:var(--fail)}
+.btn-risk{background:rgba(217,119,6,.15);color:var(--risk2);border:1px solid rgba(251,191,36,.25)}
+.btn-risk.active{background:var(--risk);color:#fff;border-color:var(--risk)}
+.btn-na{background:rgba(55,65,81,.3);color:var(--na2);border:1px solid rgba(156,163,175,.2)}
+.btn-na.active{background:var(--na);color:#fff;border-color:var(--na)}
+.item-note{flex:1;min-width:180px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:4px 9px;color:var(--muted);font-size:11px;resize:none;height:28px;transition:.2s;font-family:inherit}
+.item-note:focus{outline:none;border-color:var(--purple);color:var(--text);height:54px}
+.item-row[data-status="pass"]{border-left:3px solid var(--pass)}
+.item-row[data-status="fail"]{border-left:3px solid var(--fail);background:rgba(220,38,38,.04)}
+.item-row[data-status="risk"]{border-left:3px solid var(--risk);background:rgba(217,119,6,.04)}
+.item-row[data-status="na"]{border-left:3px solid var(--na);opacity:.55}
+
+/* ── REPORT ──────────────────────────────────────────────── */
+#report-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);overflow-y:auto;padding:24px 16px}
+#report-overlay.open{display:flex;align-items:flex-start;justify-content:center}
+#report-box{background:var(--s1);border:1px solid var(--border2);border-radius:var(--r2);max-width:860px;width:100%;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.6)}
+.rpt-header{background:linear-gradient(135deg,#1a0a3e 0%,#0a0a2e 100%);padding:28px 32px;border-bottom:1px solid var(--border)}
+.rpt-header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.rpt-title{font-size:1.3rem;font-weight:800}
+.rpt-subtitle{color:var(--muted);font-size:12px;margin-top:3px}
+#btn-close-report{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:7px 14px;color:var(--text);cursor:pointer;font-size:12px;transition:.2s;flex-shrink:0}
+#btn-close-report:hover{background:rgba(255,255,255,.2)}
+.rpt-score-row{display:flex;align-items:center;gap:20px;margin-top:20px;flex-wrap:wrap}
+.rpt-score-circle{width:80px;height:80px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:4px solid;flex-shrink:0}
+.rpt-score-big{font-size:1.6rem;font-weight:900;line-height:1}
+.rpt-score-pct{font-size:10px;font-weight:600;opacity:.8}
+.rpt-grade{font-size:2.5rem;font-weight:900;line-height:1}
+.rpt-grade-label{font-size:12px;color:var(--muted);margin-top:3px}
+.rpt-summary-pills{display:flex;gap:7px;flex-wrap:wrap}
+.rpt-pill{display:flex;flex-direction:column;align-items:center;background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:8px 14px;min-width:62px}
+.rpt-pill-num{font-size:1.3rem;font-weight:800}
+.rpt-pill-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.rpt-body{padding:24px 32px;display:flex;flex-direction:column;gap:20px}
+.rpt-section-title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.rpt-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.rpt-issues{display:flex;flex-direction:column;gap:5px}
+.rpt-issue{border-radius:var(--r);padding:9px 12px;font-size:12px;border:1px solid}
+.rpt-issue.fail{background:rgba(220,38,38,.08);border-color:rgba(220,38,38,.3);color:var(--fail2)}
+.rpt-issue.risk{background:rgba(217,119,6,.08);border-color:rgba(217,119,6,.3);color:var(--risk2)}
+.rpt-issue-id{font-weight:700;margin-right:6px;opacity:.8}
+.rpt-issue-note{display:block;font-size:11px;opacity:.7;margin-top:2px}
+.rpt-section-rows{display:flex;flex-direction:column;gap:5px}
+.rpt-sec-row{display:flex;align-items:center;gap:10px;font-size:12px}
+.rpt-sec-name{flex:1;color:var(--muted)}
+.rpt-sec-counts{display:flex;gap:5px;font-size:10px;font-weight:700}
+.rpt-sec-bar{width:120px;height:5px;background:var(--border);border-radius:4px;overflow:hidden;flex-shrink:0}
+.rpt-sec-bar-fill{height:100%;border-radius:4px}
+.rpt-sec-pct{font-size:10px;color:var(--muted);min-width:28px;text-align:right}
+.rpt-empty{color:var(--dim);font-size:12px;font-style:italic;padding:3px 0}
+.rpt-footer{padding:16px 32px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:rgba(0,0,0,.15)}
+.rpt-footer-meta{color:var(--dim);font-size:11px}
+#btn-print{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:7px 14px;color:var(--text);cursor:pointer;font-size:12px;transition:.2s}
+#btn-print:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── PRINT ───────────────────────────────────────────────── */
+@media print{
+  body{background:#fff;color:#000}
+  #app-header,#global-progress,#stats-bar,#main,.dash-header,.dash-stats,.dash-main,
+  #btn-close-report,#btn-print,#view-dashboard{display:none!important}
+  #report-overlay{display:block!important;position:static;background:none;padding:0}
+  #report-box{border:none;box-shadow:none;max-width:100%}
+  .rpt-header{background:#f0f0f0}
+  .rpt-issue.fail{background:#fee;border-color:#fcc}
+  .rpt-issue.risk{background:#fff7e6;border-color:#ffd}
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media(max-width:640px){
+  .dash-header,.dash-stats{padding:12px 14px}
+  .dash-main{padding:14px}
+  #app-header{padding:10px 14px}
+  #stats-bar{padding:10px 14px}
+  #main{padding:12px 12px 80px}
+  .rpt-body,.rpt-header,.rpt-footer{padding-left:18px;padding-right:18px}
+  .rpt-sec-bar{display:none}
+  .projects-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     DASHBOARD VIEW
+═══════════════════════════════════════════════════════════ -->
+<div id="view-dashboard">
+  <header class="dash-header">
+    <div class="logo">
+      <div class="logo-icon">🔒</div>
+      <span class="logo-text">Security Auditor</span>
+    </div>
+    <div class="dash-header-actions">
+      <button class="btn btn-ghost" id="btn-import-all" title="Import projects from JSON">⬆ Import</button>
+      <button class="btn btn-ghost" id="btn-export-all" title="Export all projects as JSON">⬇ Export All</button>
+      <button class="btn btn-ghost" id="btn-download-md" title="Download blank checklist as Markdown">📄 Download MD</button>
+      <button class="btn btn-primary" id="btn-new-project">+ New Project</button>
+    </div>
+  </header>
+
+  <div class="dash-stats" id="dash-stats-bar"></div>
+
+  <main class="dash-main">
+    <div class="dash-section-title" id="projects-heading">Projects</div>
+    <div class="projects-grid" id="projects-grid"></div>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     AUDIT VIEW
+═══════════════════════════════════════════════════════════ -->
+<div id="view-audit" class="hidden">
+  <header id="app-header">
+    <button id="btn-back">← Dashboard</button>
+    <input class="audit-project-name" id="audit-proj-name" type="text" placeholder="Project name…" />
+    <div id="score-badge">
+      <div>
+        <div class="score-num" id="hdr-score">—</div>
+        <div class="score-label">SECURITY SCORE</div>
+      </div>
+    </div>
+    <div id="audit-header-actions">
+      <button id="btn-reset-audit">↺ Reset</button>
+      <button id="btn-export-project" class="btn btn-ghost" style="padding:7px 12px;font-size:11px">⬇ Export</button>
+      <button id="btn-report">📋 Report</button>
+    </div>
+  </header>
+
+  <div id="global-progress"><div id="global-progress-fill"></div></div>
+
+  <div id="stats-bar">
+    <div class="stat-pill"><div class="dot dot-pass"></div><span class="stat-count" id="cnt-pass">0</span>&nbsp;Passed</div>
+    <div class="stat-pill"><div class="dot dot-fail"></div><span class="stat-count" id="cnt-fail">0</span>&nbsp;Failed</div>
+    <div class="stat-pill"><div class="dot dot-risk"></div><span class="stat-count" id="cnt-risk">0</span>&nbsp;Risk</div>
+    <div class="stat-pill"><div class="dot dot-na"></div><span class="stat-count" id="cnt-na">0</span>&nbsp;N/A</div>
+    <div class="stat-pill"><div class="dot dot-pend"></div><span class="stat-count" id="cnt-pend">0</span>&nbsp;Pending</div>
+    <div class="stat-pill" style="margin-left:auto"><span style="color:var(--muted)">Total</span>&nbsp;<span class="stat-count" id="cnt-total">0</span></div>
+  </div>
+
+  <main id="main"><div class="section-grid" id="checklist-root"></div></main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     REPORT OVERLAY
+═══════════════════════════════════════════════════════════ -->
+<div id="report-overlay">
+  <div id="report-box">
+    <div class="rpt-header">
+      <div class="rpt-header-top">
+        <div>
+          <div class="rpt-title">🔒 Security Assessment Report</div>
+          <div class="rpt-subtitle" id="rpt-meta"></div>
+        </div>
+        <button id="btn-close-report" onclick="closeReport()">✕ Close</button>
+      </div>
+      <div class="rpt-score-row">
+        <div class="rpt-score-circle" id="rpt-circle">
+          <div class="rpt-score-big" id="rpt-score-big">—</div>
+          <div class="rpt-score-pct">/ 100</div>
+        </div>
+        <div>
+          <div class="rpt-grade" id="rpt-grade">—</div>
+          <div class="rpt-grade-label" id="rpt-grade-label">Not yet assessed</div>
+        </div>
+        <div class="rpt-summary-pills" id="rpt-pills"></div>
+      </div>
+    </div>
+    <div class="rpt-body">
+      <div><div class="rpt-section-title">🔴 Critical Issues — Must Fix</div><div class="rpt-issues" id="rpt-fails"></div></div>
+      <div><div class="rpt-section-title">🟡 Accepted Risks — Review &amp; Document</div><div class="rpt-issues" id="rpt-risks"></div></div>
+      <div><div class="rpt-section-title">📊 Section Breakdown</div><div class="rpt-section-rows" id="rpt-sections"></div></div>
+      <div><div class="rpt-section-title">💡 Recommendations</div><div id="rpt-recs" style="font-size:12px;color:var(--muted);line-height:1.8"></div></div>
+    </div>
+    <div class="rpt-footer">
+      <div class="rpt-footer-meta" id="rpt-footer-date"></div>
+      <button id="btn-print" onclick="window.print()">🖨 Print / Save PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     NEW PROJECT MODAL
+═══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-new-project">
+  <div class="modal-box">
+    <div class="modal-title">New Project Audit</div>
+    <div class="modal-field">
+      <label>Project Name</label>
+      <input type="text" id="new-proj-name" placeholder="e.g. MyApp v2.0, Client Portal…" autocomplete="off" />
+    </div>
+    <div class="modal-field">
+      <label>Auditor Name</label>
+      <input type="text" id="new-proj-auditor" placeholder="Your name or team…" autocomplete="off" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="btn-modal-cancel">Cancel</button>
+      <button class="btn btn-primary" id="btn-modal-create">Create Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden file input for import -->
+<input type="file" id="file-import" accept=".json" style="display:none" />
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   CHECKLIST DATA  —  24 Sections, 207 Items
+═══════════════════════════════════════════════════════════════ */
+const SECTIONS = [
+  {
+    id:1, icon:'🔐', title:'Authentication & Passwords', items:[
+      'Passwords hashed with bcrypt or Argon2 — never MD5, SHA1, or plain text',
+      'Password minimum length enforced server-side (12+ characters for sensitive apps)',
+      'Password reset uses a cryptographically random token — not sequential IDs or guessable values',
+      'Password reset tokens expire within 1 hour and are invalidated after first use',
+      'Default / test passwords never used in production (no admin/admin, password123)',
+      'Login error messages are generic — never reveal if the email OR the password was wrong separately',
+      'Account lockout or progressive delay after 5–10 failed login attempts per account',
+      'Re-authentication required before sensitive actions (password change, transfer, account delete)',
+      'MFA / 2FA is REQUIRED (not just available) for admin and privileged accounts',
+      'FIDO2 / Passkeys supported as the preferred second factor where possible',
+      'Passwords never logged, never stored in plain text anywhere',
+      'API keys and secrets stored in environment variables — never hardcoded in source code',
+      'Credentials must be secrets the user controls — not public data (ID numbers, DOB, phone)',
+      'Login and password-reset endpoints respond in constant time regardless of whether the account exists (constant-time comparison; dummy hash on missing account)',
+    ]
+  },
+  {
+    id:2, icon:'🍪', title:'Session Management', items:[
+      'Session ID regenerated immediately after every successful login (prevents session fixation)',
+      'Sessions expire after inactivity period (15–30 min for financial / sensitive apps)',
+      'Absolute session timeout enforced regardless of activity (4–8 hours max)',
+      'Session cookies: HttpOnly, Secure (HTTPS only), SameSite=Lax or Strict',
+      'Sessions fully destroyed server-side on logout — not just cookie deletion',
+      'No sensitive data stored in session beyond necessity (no passwords, card numbers)',
+      'Session IDs never appear in URLs (visible in logs, browser history, referrer headers)',
+    ]
+  },
+  {
+    id:3, icon:'💉', title:'SQL Injection', items:[
+      'All database queries use parameterized / prepared statements — no string concatenation with user input',
+      'ORM or query builder used consistently — never bypassed with raw variable strings',
+      'Native prepared statements enforced (PDO ATTR_EMULATE_PREPARES = false in PHP)',
+      'Dynamic ORDER BY / LIMIT values whitelisted from a fixed allowed list — never passed raw from user input',
+      'Database user has minimum privileges — no DROP, no full admin access from the app',
+      'Database errors never shown to users — logged server-side only',
+      'Separate database credentials per environment (dev / staging / prod)',
+    ]
+  },
+  {
+    id:4, icon:'🧨', title:'Cross-Site Scripting (XSS)', items:[
+      'All user-supplied data HTML-escaped before rendering (htmlspecialchars, template auto-escaping)',
+      'JavaScript output uses JSON.stringify / proper encoding — no raw echo inside <script> blocks',
+      'Content-Security-Policy (CSP) header is set on all responses',
+      "CSP avoids 'unsafe-inline' in script-src — uses nonces or hashes for any inline scripts",
+      'X-Content-Type-Options: nosniff header set — prevents MIME-type sniffing attacks',
+      'Rich text / HTML from users sanitised with an allowlist library (DOMPurify, HTMLPurifier)',
+      'Uploaded files cannot be served as HTML, SVG with scripts, or JavaScript from web root',
+      'CSP includes report-uri or report-to directive to log real-world violations',
+      "CSP includes base-uri 'self' to prevent base tag injection attacks",
+    ]
+  },
+  {
+    id:5, icon:'🛡️', title:'Cross-Site Request Forgery (CSRF)', items:[
+      'Every state-changing form (POST/DELETE/PUT) includes a unique CSRF token',
+      'Every AJAX endpoint that mutates data validates the CSRF token server-side',
+      'CSRF token is tied to the session and validated server-side — not just present in the form',
+      'Session cookies set with SameSite=Lax or Strict (partial CSRF mitigation)',
+      'JSON APIs verify Origin or Referer header when relying on Content-Type: application/json',
+    ]
+  },
+  {
+    id:6, icon:'📎', title:'File Uploads', items:[
+      'Allowed file types whitelisted (not blocklisted) — e.g. only PDF, JPG, PNG, DOCX',
+      'MIME type validated server-side using content inspection (finfo, python-magic) — not just extension',
+      'Uploaded files stored outside web root or in directory blocked by .htaccess / nginx config',
+      'Uploaded filenames sanitised or replaced with a UUID — original name never used directly on disk',
+      'Maximum file size enforced server-side (not just MAX_FILE_SIZE in HTML)',
+      'Uploaded files never executed by the server (no PHP, .htaccess, or shell files uploadable)',
+      'Images re-processed (resized / re-encoded) to strip any embedded payloads',
+      'Malware scanning in place for uploads on high-risk apps (HR, finance, healthcare)',
+    ]
+  },
+  {
+    id:7, icon:'🔑', title:'Access Control & IDOR', items:[
+      'Every request accessing a record by ID verifies the current user owns or is permitted to access it',
+      'Authorisation checks happen server-side — never rely on client-side role checks alone',
+      'ID comparisons use strict equality with correct types (===, !==, int cast) — never loose ==',
+      'Admin and privileged pages check role/permission on every request — not just at login',
+      'API endpoints return only data belonging to the authenticated user — no cross-account leakage',
+      'Horizontal escalation tested: can User A access User B\'s data by changing an ID in the URL?',
+      'Vertical escalation tested: can a regular user reach admin-only endpoints?',
+      'Sensitive operations (approve, disburse, delete, change role) require a specific elevated permission',
+      'Permission checks fail closed — unauthenticated users denied by default when a flag is absent',
+    ]
+  },
+  {
+    id:8, icon:'🔏', title:'Sensitive Data Exposure & Cryptography', items:[
+      'HTTPS enforced everywhere — HTTP redirects to HTTPS (301)',
+      'TLS 1.0 and 1.1 disabled — only TLS 1.2+ accepted; TLS 1.3 preferred',
+      'Weak cipher suites disabled (RC4, 3DES, NULL, export-grade ciphers removed)',
+      'Forward secrecy enabled (ECDHE cipher suites preferred)',
+      'Strict-Transport-Security (HSTS) header set with long max-age and includeSubDomains',
+      'Passwords, tokens, and card numbers never logged anywhere',
+      'PII (phone, ID number, email, address) not written to error logs or debug output',
+      'API responses do not expose other users\' IDs, stack traces, or internal error codes',
+      '.env files are web-inaccessible and listed in .gitignore',
+      'SQL schema files, database backups, and seed data not in a publicly accessible directory',
+      'autocomplete="off" on sensitive form fields (passwords, card numbers, ID numbers)',
+      'Sensitive data at rest encrypted where required (card numbers, medical data, PII)',
+      'Cryptographically secure random number generators (CSPRNG) used for all tokens and nonces — never Math.random()',
+      'No custom or home-grown cryptographic implementations — only vetted libraries used',
+    ]
+  },
+  {
+    id:9, icon:'🪖', title:'Security Headers', items:[
+      'Content-Security-Policy header set on all responses',
+      'X-Frame-Options: SAMEORIGIN header set — prevents clickjacking',
+      'frame-ancestors \'self\' in CSP (modern replacement for X-Frame-Options)',
+      'X-Content-Type-Options: nosniff header set',
+      'Referrer-Policy: strict-origin-when-cross-origin header set',
+      'Strict-Transport-Security header set with includeSubDomains',
+      'Permissions-Policy header disabling unused features (camera, microphone, geolocation)',
+      'X-Powered-By and Server version headers removed — tech stack not revealed',
+      'Cross-Origin-Opener-Policy: same-origin set — prevents cross-origin window access (Spectre attacks)',
+      'Cross-Origin-Resource-Policy: same-origin set — prevents other origins from reading responses',
+    ]
+  },
+  {
+    id:10, icon:'✅', title:'Input Validation', items:[
+      'All user input validated server-side — client-side JS validation is UX only, not security',
+      'Input length limits enforced server-side (prevents DoS via massive payloads)',
+      'Numeric fields cast to int/float before use — never passed as raw strings to queries',
+      'Email addresses validated properly (filter_var FILTER_VALIDATE_EMAIL or equivalent)',
+      'Phone numbers, ID numbers, postcodes validated against expected format',
+      'File path inputs use realpath() checked against an allowed base directory (path traversal prevention)',
+      'Shell / system calls use argument arrays — never string interpolation with user input',
+      'XML inputs parsed with external entity expansion disabled (XXE protection)',
+      'Deserialization (unserialize / pickle) never called on untrusted data',
+      'Open redirect: redirect targets validated to be internal paths only — external URLs stripped or rejected',
+    ]
+  },
+  {
+    id:11, icon:'🚨', title:'Error Handling & Information Disclosure', items:[
+      'Production error pages show a friendly message — never stack traces or database errors',
+      'Debug mode disabled in production (APP_DEBUG=false, display_errors=Off)',
+      'Error logs written server-side only — never output to the browser',
+      '404 pages do not reveal directory structure or file paths',
+      'API errors return generic messages — raw exception text never sent to the client',
+      'Framework / server version numbers hidden from HTTP headers and HTML source',
+      'Directory listing disabled (Options -Indexes in Apache, autoindex off in Nginx)',
+    ]
+  },
+  {
+    id:12, icon:'⏱️', title:'Rate Limiting & Brute Force', items:[
+      'Login endpoints rate-limited per IP (e.g. 5 attempts / 15 minutes)',
+      'Login endpoints rate-limited per account (e.g. 10 attempts, then 30-min lockout)',
+      'Password reset endpoints rate-limited per IP and per user/email',
+      'OTP / verification code endpoints rate-limited',
+      'Public API endpoints rate-limited to prevent scraping or abuse',
+      'CAPTCHA or proof-of-work on high-traffic public forms (registration, login, contact)',
+      'Monitoring alerts set up for unusual login failure spikes',
+    ]
+  },
+  {
+    id:13, icon:'📦', title:'Dependencies & Supply Chain', items:[
+      'All third-party packages kept up to date',
+      'npm audit / composer audit / pip-audit run regularly (automated in CI/CD)',
+      'Package lock files committed to version control (package-lock.json, composer.lock)',
+      'No packages installed from untrusted sources (unknown GitHub forks, random URLs)',
+      'CDN-loaded scripts use Subresource Integrity (SRI) hashes',
+      'Old / abandoned packages with known CVEs identified and replaced',
+      'CI/CD service accounts use least-privilege permissions — not admin tokens',
+      'Third-party CI/CD actions (GitHub Actions etc.) pinned to a full commit SHA — not floating tags',
+      'No secrets hardcoded in pipeline config files (.github/workflows, .gitlab-ci.yml, Jenkinsfile)',
+    ]
+  },
+  {
+    id:14, icon:'🏗️', title:'Infrastructure & Deployment', items:[
+      'Sensitive config stored in server environment variables — not in code or web-accessible files',
+      '.env, .git, *.sql, *.log, composer.json, package.json not web-accessible',
+      'Migration scripts and setup tools removed or disabled after deployment',
+      'Staging and dev environments use separate credentials from production',
+      'Database backups encrypted and stored offsite',
+      'Firewall: only necessary ports open (80, 443; SSH with key auth only)',
+      'SSH root login disabled; key-based authentication only',
+      'Unnecessary services and ports closed on the server',
+      'Server OS and software patched regularly — auto security updates enabled',
+      'Deployment config excludes sensitive dev-only files (tests, docs, migration scripts)',
+      'Cloud storage buckets (S3, Azure Blob, GCS) are not publicly readable or listable',
+      'HTTP TRACE method disabled on all web servers',
+    ]
+  },
+  {
+    id:15, icon:'📋', title:'Logging & Monitoring', items:[
+      'Successful and failed logins logged with timestamp and IP address',
+      'Privileged actions logged with user identity (admin changes, data deletion, approvals)',
+      'Log entries include who, what, when, from where — never passwords or tokens',
+      'Logs stored in a location not accessible via the web',
+      'Log rotation configured so disk does not fill up',
+      'Alerts set up for: repeated failed logins, unexpected admin activity, error spikes',
+      'Audit trail for financial / sensitive operations is immutable (append-only, no delete)',
+    ]
+  },
+  {
+    id:16, icon:'🔌', title:'API Security', items:[
+      'All API endpoints require authentication — no unauthenticated data access',
+      'API tokens sent in Authorization header — not in query strings (appear in server logs)',
+      'Sensitive API responses include Cache-Control: no-store',
+      'GraphQL introspection disabled in production',
+      'Webhooks validate the HMAC signature of incoming payloads before processing',
+      'API endpoints rate-limited per key / user',
+      'Mass assignment prevented: API endpoints use explicit field allowlists — client cannot set arbitrary fields (e.g. role, is_admin)',
+      'CORS policy explicitly configured for each API endpoint (see Section 19)',
+    ]
+  },
+  {
+    id:17, icon:'🏪', title:'CMS & Third-Party Platforms', items:[
+      'Default admin username changed (no "admin" username in WordPress)',
+      'CMS admin login page restricted by IP or an extra authentication layer',
+      'Only necessary plugins / themes installed — unused ones deleted (not just deactivated)',
+      'All plugins and themes kept updated; auto-updates enabled where safe',
+      'In-CMS file / code editor disabled (prevents browser-based PHP / template editing)',
+      'Security plugin installed and configured (Wordfence, Sucuri for WordPress)',
+      'xmlrpc.php disabled if not needed (WordPress — common brute force target)',
+      'Third-party API tokens scoped to minimum required permissions',
+    ]
+  },
+  {
+    id:18, icon:'🚀', title:'Pre-Launch Final Checks', items:[
+      'Automated scanner run (OWASP ZAP or Burp Suite) against the staging environment',
+      'Security headers tested at securityheaders.com — score B or above',
+      'SSL/TLS graded at ssllabs.com/ssltest — aim for A or A+',
+      'Google confirms no sensitive files indexed (site:domain filetype:sql OR filetype:env)',
+      'All TODO / FIXME / HACK comments reviewed — fixed or formally documented',
+      'Debug routes, test endpoints, seed scripts removed from production build',
+      'Custom error pages in place (403, 404, 500) — no stack traces or file paths shown',
+      'Manual login test: non-admin user cannot access admin pages',
+      'Manual IDOR test: changing an ID in the URL does not return another user\'s data',
+      '.env confirmed in .gitignore and never committed (git log -- .env)',
+      'Full git history scanned for accidental credential commits (git log -p | grep -iE "password|secret|api_key|token")',
+      'Annual penetration test scheduled or completed for production systems',
+    ]
+  },
+  {
+    id:19, icon:'🌐', title:'CORS Policy', items:[
+      'Access-Control-Allow-Origin is never * on authenticated or sensitive endpoints',
+      'Server does not blindly reflect the request Origin header as the allowed origin',
+      'Access-Control-Allow-Credentials: true is only set alongside a specific (non-wildcard) origin',
+      'CORS allowed origins use exact domain matching — not prefix, suffix, or substring matching',
+      'Null origin is not whitelisted (ACAO: null enables attacks from sandboxed iframes)',
+      'Preflight OPTIONS responses do not expose overly permissive methods or headers',
+      'CORS configuration tested: send Origin: https://evil.com and confirm it is not reflected in the response',
+    ]
+  },
+  {
+    id:20, icon:'🔄', title:'Server-Side Request Forgery (SSRF)', items:[
+      'Any user-supplied URL the server fetches is validated against an explicit allowlist of permitted domains',
+      'Requests resolving to RFC1918 addresses (10.x, 172.16.x, 192.168.x) are blocked',
+      'Requests to loopback (127.x, ::1) and cloud metadata endpoints (169.254.169.254, fd00:ec2::254) are blocked',
+      'Only http and https URI schemes permitted — file://, gopher://, dict://, ftp:// and others blocked',
+      'DNS rebinding protection: IP address re-validated after DNS resolution before the connection is made',
+      'URL redirect following is disabled or strictly limited on server-initiated requests',
+      'Outbound firewall rules restrict which external hosts the server can reach',
+    ]
+  },
+  {
+    id:21, icon:'⚙️', title:'Business Logic & Race Conditions', items:[
+      'Multi-step workflows enforce step order server-side — skipping directly to later steps is blocked',
+      'Negative, zero, and extreme values (max int, overflow) rejected server-side on numeric and financial fields',
+      'Mass assignment prevented: server uses explicit field allowlists, not client-supplied field lists',
+      'Race conditions on limited-use operations (vouchers, transfers, one-time tokens) prevented with atomic DB operations or advisory locks',
+      'Server always recalculates totals and prices — client-submitted monetary amounts are never trusted',
+      'One-time-use tokens (invite links, reset links) are marked used atomically before the action completes',
+      'Privilege escalation via parameter tampering tested (role=admin, is_verified=true in POST body)',
+      'Abuse cases documented for each major feature (what could an attacker do with this flow?)',
+    ]
+  },
+  {
+    id:22, icon:'🛡️', title:'Privacy & GDPR', items:[
+      'Non-essential cookies (analytics, advertising, tracking) are blocked until explicit user consent',
+      'Cookie consent is granular — separate toggles per category, no pre-ticked boxes, no "accept all or leave" dark patterns',
+      'Data minimisation: only personal data strictly required for the service is collected',
+      'Users can request a full export of their personal data (right of access / portability)',
+      'Users can request deletion of their personal data (right to erasure / right to be forgotten)',
+      'Data retention policy documented — personal data automatically purged after the retention period expires',
+      'Data breach notification procedure exists and is tested — supervisory authority notified within 72 hours',
+      'Third-party data processors have signed Data Processing Agreements (DPAs)',
+      'Privacy policy accurately describes what data is collected, why, with whom it is shared, and for how long',
+      'International data transfers comply with applicable frameworks (SCCs, adequacy decisions, POPIA, etc.)',
+    ]
+  },
+  {
+    id:23, icon:'🎟️', title:'JWT & Token Security', items:[
+      'JWT signatures always verified server-side — unsigned tokens (alg: none) are rejected',
+      'Accepted algorithm fixed server-side from a whitelist — the alg header value is never trusted blindly',
+      'exp (expiry) claim is set on all JWTs and validated on every request',
+      'aud (audience) claim validated when multiple services share the same token issuer',
+      'JWTs for sensitive apps stored in HttpOnly cookies — not in localStorage or sessionStorage',
+      'Refresh token rotation enforced — old refresh token is invalidated after each use',
+      'JWT signing keys are long random secrets (HS256) or proper asymmetric keys (RS256 / ES256)',
+      'Token revocation mechanism exists for logout and account-compromise scenarios (blocklist or short expiry + refresh)',
+    ]
+  },
+  {
+    id:24, icon:'🏛️', title:'Insecure Design & Threat Modeling', items:[
+      'Threat model produced before or during initial implementation — adversaries, assets, and attack vectors documented',
+      'Abuse cases documented alongside use cases for each major feature',
+      'Trust boundaries defined between components — internal services not reachable from public network without authentication',
+      'Principle of least privilege applied at the architecture level (component-to-component access, not just user permissions)',
+      'Security design review conducted before major features or architectural changes are built',
+      'Defense in depth applied to critical operations — multiple independent controls, not a single gate',
+      'Fail-safe defaults: all components default to deny-all; access is granted explicitly, never implicitly',
+      'Sensitive functionality (admin, financial, medical) isolated into separate modules or services',
+    ]
+  },
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   STORAGE
+═══════════════════════════════════════════════════════════════ */
+const STORAGE_KEY = 'sec_checklist_app_v2';
+
+let appState = { projects: [] };
+
+function loadApp() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) appState = JSON.parse(raw);
+    if (!Array.isArray(appState.projects)) appState.projects = [];
+  } catch(e) { appState = { projects: [] }; }
+}
+
+function saveApp() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(appState)); } catch(e) {}
+}
+
+function getProject(id) {
+  return appState.projects.find(p => p.id === id) || null;
+}
+
+function newId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PROJECT CRUD
+═══════════════════════════════════════════════════════════════ */
+function createProject(name, auditor) {
+  const proj = {
+    id: newId(),
+    name: name || 'Untitled Project',
+    auditor: auditor || '',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    results: {},
+    notes: {}
+  };
+  appState.projects.unshift(proj);
+  saveApp();
+  return proj;
+}
+
+function deleteProject(id) {
+  appState.projects = appState.projects.filter(p => p.id !== id);
+  saveApp();
+}
+
+function duplicateProject(id) {
+  const src = getProject(id);
+  if (!src) return null;
+  const proj = {
+    ...src,
+    id: newId(),
+    name: src.name + ' (Copy)',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    results: { ...src.results },
+    notes: { ...src.notes }
+  };
+  appState.projects.unshift(proj);
+  saveApp();
+  return proj;
+}
+
+function resetProject(id) {
+  const proj = getProject(id);
+  if (!proj) return;
+  proj.results = {};
+  proj.notes = {};
+  proj.updatedAt = new Date().toISOString();
+  saveApp();
+}
+
+function setStatus(projectId, key, status, btn) {
+  const proj = getProject(projectId);
+  if (!proj) return;
+  const prev = proj.results[key];
+  if (prev === status) {
+    delete proj.results[key];
+    status = 'pending';
+  } else {
+    proj.results[key] = status;
+  }
+  proj.updatedAt = new Date().toISOString();
+  saveApp();
+
+  const row = document.getElementById('row-' + key);
+  if (row) {
+    row.dataset.status = status;
+    row.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
+    if (status !== 'pending' && btn) btn.classList.add('active');
+  }
+  const secId = parseInt(key.split('-')[0].replace('s',''));
+  updateSectionBar(secId, proj);
+  updateGlobalStats(proj);
+}
+
+function setNote(projectId, key, value) {
+  const proj = getProject(projectId);
+  if (!proj) return;
+  if (value.trim()) proj.notes[key] = value;
+  else delete proj.notes[key];
+  proj.updatedAt = new Date().toISOString();
+  saveApp();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════════════════════════ */
+function itemKey(secId, idx) { return `s${secId}-${idx + 1}`; }
+
+function getSectionStats(sec, proj) {
+  let pass=0,fail=0,risk=0,na=0,done=0;
+  sec.items.forEach((_,i) => {
+    const s = (proj.results[itemKey(sec.id,i)] || 'pending');
+    if(s==='pass') pass++;
+    if(s==='fail') fail++;
+    if(s==='risk') risk++;
+    if(s==='na')   na++;
+    if(s!=='pending') done++;
+  });
+  const pct = sec.items.length ? Math.round(done/sec.items.length*100) : 0;
+  const color = fail>0?'var(--fail)':risk>0?'var(--risk)':pass>0||na>0?'var(--pass)':'var(--dim)';
+  return {pass,fail,risk,na,done,pct,color};
+}
+
+function getGlobalStats(proj) {
+  let pass=0,fail=0,risk=0,na=0,pend=0;
+  SECTIONS.forEach(sec => {
+    sec.items.forEach((_,i) => {
+      const s = (proj.results[itemKey(sec.id,i)] || 'pending');
+      if(s==='pass') pass++;
+      else if(s==='fail') fail++;
+      else if(s==='risk') risk++;
+      else if(s==='na')   na++;
+      else pend++;
+    });
+  });
+  const reviewed = pass+fail+risk+na;
+  const total = reviewed+pend;
+  const score = reviewed ? Math.round((pass+na + risk*0.5)/reviewed*100) : null;
+  return {pass,fail,risk,na,pend,total,reviewed,score};
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ROUTER
+═══════════════════════════════════════════════════════════════ */
+let currentProjectId = null;
+
+function showDashboard() {
+  currentProjectId = null;
+  document.getElementById('view-dashboard').classList.remove('hidden');
+  document.getElementById('view-audit').classList.add('hidden');
+  document.getElementById('report-overlay').classList.remove('open');
+  renderDashboard();
+}
+
+function showAudit(id) {
+  const proj = getProject(id);
+  if (!proj) return;
+  currentProjectId = id;
+  document.getElementById('view-dashboard').classList.add('hidden');
+  document.getElementById('view-audit').classList.remove('hidden');
+  renderAudit(proj);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════════════════════════════ */
+function renderDashboard() {
+  renderDashStats();
+  renderProjectGrid();
+}
+
+function renderDashStats() {
+  const projects = appState.projects;
+  const total = projects.length;
+  let avgScore = 0, totalFails = 0, totalReviewed = 0;
+  projects.forEach(p => {
+    const g = getGlobalStats(p);
+    if (g.score !== null) avgScore += g.score;
+    totalFails += g.fail;
+    totalReviewed += g.reviewed;
+  });
+  if (total > 0) avgScore = Math.round(avgScore / total);
+
+  const bar = document.getElementById('dash-stats-bar');
+  bar.innerHTML = `
+    <div class="dstat">
+      <div class="dstat-num" style="color:var(--purple2)">${total}</div>
+      <div class="dstat-label">Total Projects</div>
+    </div>
+    <div class="dstat">
+      <div class="dstat-num" style="color:${total?gradeInfo(avgScore).color:'var(--dim)'}">${total ? avgScore : '—'}</div>
+      <div class="dstat-label">Avg Security Score</div>
+    </div>
+    <div class="dstat">
+      <div class="dstat-num" style="color:${totalFails>0?'var(--fail2)':'var(--pass2)'}">${totalFails}</div>
+      <div class="dstat-label">Total Critical Issues</div>
+    </div>
+    <div class="dstat">
+      <div class="dstat-num" style="color:var(--muted)">${totalReviewed}</div>
+      <div class="dstat-label">Items Reviewed</div>
+    </div>`;
+}
+
+function renderProjectGrid() {
+  const grid = document.getElementById('projects-grid');
+  const projects = appState.projects;
+
+  if (projects.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="empty-state-icon">🔒</div>
+        <div class="empty-state-title">No projects yet</div>
+        <div class="empty-state-sub">Create your first security audit to get started.</div>
+        <button class="btn btn-primary" onclick="openNewProjectModal()">+ New Project</button>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = projects.map(proj => {
+    const g = getGlobalStats(proj);
+    const gi = g.score !== null ? gradeInfo(g.score) : {grade:'—',color:'var(--dim)'};
+    const score = g.score !== null ? g.score : '—';
+    const date = new Date(proj.updatedAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    return `
+      <div class="proj-card" onclick="showAudit('${proj.id}')">
+        <div class="proj-card-header">
+          <div class="proj-score-circle" style="border-color:${gi.color};color:${gi.color}">
+            <div class="proj-score-num">${score}</div>
+            <div class="proj-score-grade">${gi.grade}</div>
+          </div>
+          <div class="proj-info">
+            <div class="proj-name">${esc(proj.name)}</div>
+            <div class="proj-auditor">${esc(proj.auditor||'No auditor set')}</div>
+            <div class="proj-date">Updated ${date}</div>
+          </div>
+        </div>
+        <div class="proj-card-stats">
+          <div class="proj-stat"><div class="dot dot-pass"></div>${g.pass} Pass</div>
+          <div class="proj-stat"><div class="dot dot-fail"></div>${g.fail} Fail</div>
+          <div class="proj-stat"><div class="dot dot-risk"></div>${g.risk} Risk</div>
+          <div class="proj-stat"><div class="dot dot-na"></div>${g.na} N/A</div>
+          <div class="proj-stat" style="color:var(--dim)">${g.pend} Pending</div>
+        </div>
+        <div class="proj-card-footer" onclick="event.stopPropagation()">
+          <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="showAudit('${proj.id}')">Open Audit</button>
+          <button class="btn btn-ghost" title="Duplicate" onclick="duplicateProject('${proj.id}');renderDashboard()">⧉</button>
+          <button class="btn btn-ghost" title="Export JSON" onclick="exportProject('${proj.id}')">⬇</button>
+          <button class="btn btn-danger" title="Delete" onclick="if(confirm('Delete ${esc(proj.name)}? This cannot be undone.')){{deleteProject('${proj.id}');renderDashboard();}}">🗑</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AUDIT RENDER
+═══════════════════════════════════════════════════════════════ */
+function renderAudit(proj) {
+  document.getElementById('audit-proj-name').value = proj.name;
+  document.getElementById('checklist-root').innerHTML = SECTIONS.map(sec => renderSection(sec, proj)).join('');
+  updateGlobalStats(proj);
+}
+
+function renderSection(sec, proj) {
+  const st = getSectionStats(sec, proj);
+  return `
+    <div class="sec-card open" id="sec-${sec.id}">
+      <div class="sec-header" onclick="toggleSection(${sec.id})">
+        <div class="sec-icon">${sec.icon}</div>
+        <div class="sec-title">${sec.id}. ${sec.title}</div>
+        <div class="sec-meta">
+          <span class="sec-score" id="sec-score-${sec.id}">${st.done}/${sec.items.length}</span>
+          <div class="sec-pbar"><div class="sec-pbar-fill" id="sec-pbar-${sec.id}" style="width:${st.pct}%;background:${st.color}"></div></div>
+          <span class="sec-chevron">▼</span>
+        </div>
+      </div>
+      <div class="sec-body" id="sec-body-${sec.id}">
+        ${sec.items.map((text,i) => renderItem(sec.id, i, text, proj)).join('')}
+      </div>
+    </div>`;
+}
+
+function renderItem(secId, idx, text, proj) {
+  const key = itemKey(secId, idx);
+  const status = proj.results[key] || 'pending';
+  const note = (proj.notes[key] || '').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  const statuses = ['pass','fail','risk','na'];
+  const labels = {pass:'✓ Pass', fail:'✗ Fail', risk:'⚠ Risk', na:'— N/A'};
+  const btns = statuses.map(s =>
+    `<button class="status-btn btn-${s}${status===s?' active':''}"
+      onclick="setStatus('${currentProjectId}','${key}','${s}',this)">${labels[s]}</button>`
+  ).join('');
+  return `
+    <div class="item-row" id="row-${key}" data-status="${status}">
+      <div class="item-num">${secId}.${idx+1}</div>
+      <div class="item-content">
+        <div class="item-text">${text}</div>
+        <div class="item-controls">
+          ${btns}
+          <textarea class="item-note" placeholder="Add a note or finding…"
+            oninput="setNote('${currentProjectId}','${key}',this.value)">${note}</textarea>
+        </div>
+      </div>
+    </div>`;
+}
+
+function toggleSection(id) {
+  document.getElementById('sec-' + id).classList.toggle('open');
+}
+
+function updateSectionBar(secId, proj) {
+  const sec = SECTIONS.find(s => s.id === secId);
+  if (!sec) return;
+  const st = getSectionStats(sec, proj);
+  const fill = document.getElementById('sec-pbar-' + secId);
+  const score = document.getElementById('sec-score-' + secId);
+  if (fill) { fill.style.width = st.pct + '%'; fill.style.background = st.color; }
+  if (score) score.textContent = `${st.done}/${sec.items.length}`;
+}
+
+function updateGlobalStats(proj) {
+  const g = getGlobalStats(proj);
+  const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+  set('cnt-pass', g.pass); set('cnt-fail', g.fail); set('cnt-risk', g.risk);
+  set('cnt-na', g.na); set('cnt-pend', g.pend); set('cnt-total', g.total);
+  const pct = Math.round((g.pass + g.na + g.risk) / Math.max(g.total, 1) * 100);
+  const fill = document.getElementById('global-progress-fill');
+  if (fill) fill.style.width = pct + '%';
+  const score = document.getElementById('hdr-score');
+  if (score) score.textContent = g.score !== null ? g.score : '—';
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REPORT
+═══════════════════════════════════════════════════════════════ */
+function gradeInfo(score) {
+  if(score>=95) return {grade:'A+', label:'Excellent — enterprise ready',   color:'#22c55e'};
+  if(score>=85) return {grade:'A',  label:'Strong security posture',         color:'#4ade80'};
+  if(score>=75) return {grade:'B+', label:'Good — minor gaps to address',    color:'#a3e635'};
+  if(score>=65) return {grade:'B',  label:'Adequate — improvements needed',  color:'#eab308'};
+  if(score>=50) return {grade:'C',  label:'Weak — significant risks present',color:'#f97316'};
+  return              {grade:'F',  label:'Critical — do not deploy',          color:'#ef4444'};
+}
+
+function openReport() {
+  const proj = getProject(currentProjectId);
+  if (!proj) return;
+  const g = getGlobalStats(proj);
+  const now = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
+  document.getElementById('rpt-meta').textContent =
+    `${proj.name} · Auditor: ${proj.auditor || 'Unknown'} · ${now}`;
+  document.getElementById('rpt-footer-date').textContent =
+    `Generated ${new Date().toLocaleString()} · ${g.reviewed}/${g.total} items reviewed`;
+
+  const score = g.score !== null ? g.score : 0;
+  const gi = gradeInfo(score);
+  const circle = document.getElementById('rpt-circle');
+  circle.style.borderColor = gi.color; circle.style.color = gi.color;
+  document.getElementById('rpt-score-big').textContent = g.score !== null ? score : '—';
+  document.getElementById('rpt-grade').textContent = g.score !== null ? gi.grade : '—';
+  document.getElementById('rpt-grade').style.color = gi.color;
+  document.getElementById('rpt-grade-label').textContent = g.score !== null ? gi.label : 'No items reviewed yet';
+
+  document.getElementById('rpt-pills').innerHTML = [
+    {num:g.pass,label:'Passed',  col:'var(--pass2)'},
+    {num:g.fail,label:'Failed',  col:'var(--fail2)'},
+    {num:g.risk,label:'Risk',    col:'var(--risk2)'},
+    {num:g.na,  label:'N/A',     col:'var(--na2)'},
+    {num:g.pend,label:'Pending', col:'var(--dim)'},
+  ].map(p=>`<div class="rpt-pill"><div class="rpt-pill-num" style="color:${p.col}">${p.num}</div><div class="rpt-pill-label">${p.label}</div></div>`).join('');
+
+  const fails=[], risks=[];
+  SECTIONS.forEach(sec => {
+    sec.items.forEach((text,i) => {
+      const key = itemKey(sec.id,i);
+      const st = proj.results[key] || 'pending';
+      const note = proj.notes[key] || '';
+      if(st==='fail') fails.push({sec,idx:i,text,note});
+      if(st==='risk') risks.push({sec,idx:i,text,note});
+    });
+  });
+
+  const issueHtml = (arr, cls) => arr.length
+    ? arr.map(f=>`<div class="rpt-issue ${cls}"><span class="rpt-issue-id">[${f.sec.id}.${f.idx+1}]</span>${f.text}${f.note?`<span class="rpt-issue-note">📝 ${f.note}</span>`:''}</div>`).join('')
+    : `<div class="rpt-empty">${cls==='fail'?'✅ No failed items!':'No accepted risks recorded.'}</div>`;
+
+  document.getElementById('rpt-fails').innerHTML = issueHtml(fails,'fail');
+  document.getElementById('rpt-risks').innerHTML = issueHtml(risks,'risk');
+
+  document.getElementById('rpt-sections').innerHTML = SECTIONS.map(sec => {
+    const st = getSectionStats(sec, proj);
+    const color = st.fail>0?'var(--fail)':st.risk>0?'var(--risk)':st.pass>0||st.na>0?'var(--pass)':'var(--dim)';
+    const pct = sec.items.length ? Math.round((st.pass+st.na)/sec.items.length*100) : 0;
+    return `<div class="rpt-sec-row">
+      <span style="width:20px;text-align:center;flex-shrink:0">${sec.icon}</span>
+      <span class="rpt-sec-name">${sec.id}. ${sec.title}</span>
+      <span class="rpt-sec-counts">
+        ${st.pass>0?`<span style="color:var(--pass2)">✓${st.pass}</span>`:''}
+        ${st.fail>0?`<span style="color:var(--fail2)">✗${st.fail}</span>`:''}
+        ${st.risk>0?`<span style="color:var(--risk2)">⚠${st.risk}</span>`:''}
+        ${st.na>0?`<span style="color:var(--na2)">—${st.na}</span>`:''}
+      </span>
+      <div class="rpt-sec-bar"><div class="rpt-sec-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+      <span class="rpt-sec-pct">${st.done?pct+'%':'—'}</span>
+    </div>`;
+  }).join('');
+
+  const recLines = [];
+  if(fails.length>0) recLines.push(`<strong style="color:var(--fail2)">🔴 Priority 1 — Critical:</strong> Fix the ${fails.length} failed item${fails.length>1?'s':''} immediately. Do not deploy until these are resolved.`);
+  if(risks.length>0) recLines.push(`<strong style="color:var(--risk2)">🟡 Priority 2 — Review Risks:</strong> ${risks.length} accepted risk${risks.length>1?'s':''} are documented. Each needs a written justification and a remediation plan.`);
+  if(g.pend>0) recLines.push(`<strong style="color:var(--muted)">🔵 Priority 3 — Complete Audit:</strong> ${g.pend} item${g.pend>1?'s':''} still pending review.`);
+  recLines.push(`<strong style="color:var(--na2)">📦 Ongoing:</strong> Run <code>npm audit</code> / <code>composer audit</code> regularly. Rerun this checklist before every major release.`);
+  if(g.score>=85 && fails.length===0) recLines.push(`<strong style="color:var(--pass2)">🎉 Strong posture!</strong> Schedule a formal penetration test at least once a year.`);
+  document.getElementById('rpt-recs').innerHTML = recLines.map(l=>`<div style="margin-bottom:7px">• ${l}</div>`).join('');
+
+  document.getElementById('report-overlay').classList.add('open');
+}
+
+function closeReport() {
+  document.getElementById('report-overlay').classList.remove('open');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   IMPORT / EXPORT
+═══════════════════════════════════════════════════════════════ */
+function exportProject(id) {
+  const proj = getProject(id);
+  if (!proj) return;
+  download(proj.name.replace(/[^a-z0-9]/gi,'_') + '_audit.json', JSON.stringify(proj, null, 2));
+}
+
+function exportAll() {
+  download('security_audits_' + new Date().toISOString().slice(0,10) + '.json',
+    JSON.stringify(appState, null, 2));
+}
+
+function downloadMD() {
+  const date = new Date().toISOString().slice(0, 10);
+  const totalItems = SECTIONS.reduce((n, s) => n + s.items.length, 0);
+
+  const lines = [
+    '# Security Checklist',
+    '',
+    `> **${totalItems} controls across ${SECTIONS.length} sections** — OWASP Top 10:2025 + ASVS 5.0`,
+    `> Generated: ${date}`,
+    '',
+    '**Project:** _______________________________________________',
+    '**Auditor:** _______________________________________________',
+    '**Date:** _______________________________________________',
+    '',
+    '| Symbol | Meaning |',
+    '|--------|---------|',
+    '| ✅ | Done / confirmed safe |',
+    '| ❌ | Not done — must fix before go-live |',
+    '| ⚠️ | Accepted risk — documented and signed off |',
+    '| N/A | Not applicable to this project |',
+    '',
+    '---',
+    '',
+  ];
+
+  SECTIONS.forEach(sec => {
+    lines.push(`## ${sec.id}. ${sec.title}`);
+    lines.push('');
+    sec.items.forEach(item => {
+      lines.push(`- [ ] ${item}`);
+    });
+    lines.push('');
+    lines.push('---');
+    lines.push('');
+  });
+
+  lines.push('## Notes');
+  lines.push('');
+  lines.push('_Add any project-specific findings, accepted risks, or context here._');
+  lines.push('');
+  lines.push(`---`);
+  lines.push(`*Web Security Checklist — generated from [Security Auditor](https://github.com) on ${date}*`);
+
+  download(`SECURITY-CHECKLIST-${date}.md`, lines.join('\n'));
+}
+
+function download(filename, text) {
+  const a = document.createElement('a');
+  a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(text);
+  a.download = filename;
+  a.click();
+}
+
+function triggerImport() {
+  document.getElementById('file-import').click();
+}
+
+function handleImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (Array.isArray(data.projects)) {
+        let added = 0;
+        data.projects.forEach(p => {
+          if (p.id && p.name && !getProject(p.id)) {
+            appState.projects.push(p);
+            added++;
+          }
+        });
+        saveApp();
+        renderDashboard();
+        alert(`Imported ${added} project${added!==1?'s':''}.`);
+      } else if (data.id && data.name) {
+        if (!getProject(data.id)) {
+          appState.projects.unshift(data);
+        } else {
+          data.id = newId();
+          data.name += ' (Imported)';
+          appState.projects.unshift(data);
+        }
+        saveApp();
+        renderDashboard();
+        alert(`Imported project: ${data.name}`);
+      } else {
+        alert('Unrecognised file format.');
+      }
+    } catch(err) {
+      alert('Failed to parse JSON file.');
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════════════ */
+function esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function openNewProjectModal() {
+  document.getElementById('new-proj-name').value = '';
+  document.getElementById('new-proj-auditor').value = '';
+  document.getElementById('modal-new-project').classList.add('open');
+  setTimeout(() => document.getElementById('new-proj-name').focus(), 50);
+}
+
+function closeNewProjectModal() {
+  document.getElementById('modal-new-project').classList.remove('open');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EVENT WIRING
+═══════════════════════════════════════════════════════════════ */
+document.getElementById('btn-new-project').addEventListener('click', openNewProjectModal);
+document.getElementById('btn-modal-cancel').addEventListener('click', closeNewProjectModal);
+document.getElementById('modal-new-project').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-new-project')) closeNewProjectModal();
+});
+
+document.getElementById('btn-modal-create').addEventListener('click', () => {
+  const name = document.getElementById('new-proj-name').value.trim();
+  const auditor = document.getElementById('new-proj-auditor').value.trim();
+  if (!name) { document.getElementById('new-proj-name').focus(); return; }
+  const proj = createProject(name, auditor);
+  closeNewProjectModal();
+  showAudit(proj.id);
+});
+
+document.getElementById('new-proj-name').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('new-proj-auditor').focus();
+});
+document.getElementById('new-proj-auditor').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('btn-modal-create').click();
+});
+
+document.getElementById('btn-back').addEventListener('click', showDashboard);
+
+document.getElementById('btn-report').addEventListener('click', openReport);
+
+document.getElementById('report-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeReport();
+});
+
+document.getElementById('audit-proj-name').addEventListener('input', e => {
+  const proj = getProject(currentProjectId);
+  if (!proj) return;
+  proj.name = e.target.value;
+  proj.updatedAt = new Date().toISOString();
+  saveApp();
+});
+
+document.getElementById('btn-reset-audit').addEventListener('click', () => {
+  if (!confirm('Reset all items to pending? This cannot be undone.')) return;
+  resetProject(currentProjectId);
+  const proj = getProject(currentProjectId);
+  renderAudit(proj);
+});
+
+document.getElementById('btn-export-project').addEventListener('click', () => {
+  if (currentProjectId) exportProject(currentProjectId);
+});
+
+document.getElementById('btn-export-all').addEventListener('click', exportAll);
+document.getElementById('btn-import-all').addEventListener('click', triggerImport);
+document.getElementById('btn-download-md').addEventListener('click', downloadMD);
+document.getElementById('file-import').addEventListener('change', handleImport);
+
+/* ═══════════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════════ */
+loadApp();
+showDashboard();
+</script>
+</body>
+</html>

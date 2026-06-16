@@ -1,0 +1,3058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Bhekisizwe Senior Secondary School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<style>
+:root {
+  --bg:          #0F0F0F;
+  --bg-2:        #1A1A1A;
+  --bg-3:        #252525;
+  --bg-4:        #2E2E2E;
+  --bg-5:        #383838;
+  --accent:      #616161;
+  --accent-l:    #8A8A8A;
+  --accent-dim:  rgba(97,97,97,0.12);
+  --accent-glow: rgba(97,97,97,0.22);
+  --accent-bdr:  rgba(97,97,97,0.28);
+  --white:       #FFFFFF;
+  --text:        #E0E0E0;
+  --text-2:      #AAAAAA;
+  --text-muted:  #707070;
+  --border:      rgba(255,255,255,0.07);
+  --border-2:    rgba(255,255,255,0.04);
+  --danger:      #e05050;
+  --danger-dim:  rgba(224,80,80,0.14);
+  --success:     #3aaa72;
+  --success-dim: rgba(58,170,114,0.14);
+  --warning:     #e8a020;
+  --warning-dim: rgba(232,160,32,0.14);
+  --info:        #4a9fd4;
+  --info-dim:    rgba(74,159,212,0.14);
+  --radius:      6px;
+  --radius-lg:   12px;
+  --sidebar-w:   265px;
+  --font:        'Open Sans', sans-serif;
+  --shadow:      0 4px 30px rgba(0,0,0,0.35);
+  --tr:          all 0.18s ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-5); border-radius: 3px; }
+
+/* ══════════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════════ */
+.sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--bg-2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 100;
+}
+
+.sidebar-brand {
+  padding: 20px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand-badge {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+}
+.brand-text { line-height: 1.25; }
+.brand-text strong {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--white);
+  display: block;
+  letter-spacing: 0.2px;
+}
+.brand-text span {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.sidebar-section-label {
+  font-size: 9.5px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 16px 18px 6px;
+  font-weight: 600;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: var(--tr);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  user-select: none;
+}
+.nav-item:hover { background: rgba(255,255,255,0.03); color: var(--text); }
+.nav-item.active {
+  background: var(--accent-dim);
+  border-left-color: var(--accent);
+  color: var(--white);
+  font-weight: 600;
+}
+.nav-item i { width: 16px; text-align: center; font-size: 13px; flex-shrink: 0; opacity: 0.75; }
+.nav-item.active i { opacity: 1; color: var(--accent-l); }
+.nav-badge {
+  margin-left: auto;
+  background: var(--danger);
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 999px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+}
+.school-motto {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.school-motto span { color: var(--accent-l); }
+.admin-footer {
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--bg-4);
+  border: 1px solid var(--accent-bdr);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-l);
+  flex-shrink: 0;
+}
+.admin-info strong { font-size: 12px; color: var(--white); display: block; font-weight: 600; }
+.admin-info span { font-size: 10.5px; color: var(--text-muted); }
+
+/* ══════════════════════════════════════════
+   MAIN AREA
+══════════════════════════════════════════ */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.topbar {
+  height: 56px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.topbar-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  flex: 1;
+  letter-spacing: 0.2px;
+}
+.topbar-actions { display: flex; gap: 10px; align-items: center; }
+.topbar-year {
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-bdr);
+  color: var(--accent-l);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+.topbar-link {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: var(--tr);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.topbar-link:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+.content { padding: 28px; flex: 1; }
+
+/* ── PANELS ── */
+.panel { display: none; }
+.panel.active { display: block; animation: fadeIn 0.22s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── SECTION HEADING ── */
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.section-heading h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.3px;
+}
+.section-heading p { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+.grey-line { width: 3px; height: 34px; background: var(--accent); border-radius: 2px; flex-shrink: 0; }
+
+/* ── STAT ROW ── */
+.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px,1fr)); gap: 12px; margin-bottom: 24px; }
+.stat {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  transition: var(--tr);
+}
+.stat:hover { border-color: var(--accent-bdr); }
+.stat .s-label { font-size: 10.5px; color: var(--text-muted); letter-spacing: 0.5px; margin-bottom: 6px; text-transform: uppercase; font-weight: 600; }
+.stat .s-val { font-size: 26px; font-weight: 800; color: var(--white); line-height: 1; }
+.stat .s-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.stat .s-icon { font-size: 18px; color: var(--accent); margin-bottom: 10px; }
+.stat.accent-stat { border-color: var(--accent-bdr); }
+.stat.accent-stat .s-val { color: var(--accent-l); }
+
+/* ── OVERVIEW BANNER ── */
+.overview-banner {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 24px;
+  position: relative;
+  height: 180px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+}
+.overview-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.overview-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(15,15,15,0.88) 0%, rgba(15,15,15,0.4) 60%, transparent 100%);
+  display: flex;
+  align-items: center;
+  padding: 28px 32px;
+  gap: 20px;
+}
+.banner-badge-img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 12px rgba(0,0,0,0.6));
+}
+.banner-text h2 {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.4px;
+  margin-bottom: 4px;
+}
+.banner-text p { font-size: 12.5px; color: rgba(255,255,255,0.65); }
+.banner-text .motto {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent-l);
+  font-weight: 600;
+  border: 1px solid var(--accent-bdr);
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--accent-dim);
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.card-head {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.card-head h3 { font-size: 13.5px; font-weight: 700; color: var(--white); }
+.card-head p { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+.card-body { padding: 20px; }
+
+/* ── GRID 2 ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: var(--tr);
+  text-decoration: none;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--accent); color: var(--white); }
+.btn-primary:hover { background: var(--accent-l); }
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.btn-outline:hover { color: var(--text); border-color: rgba(255,255,255,0.18); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { opacity: 0.88; }
+.btn-success { background: var(--success); color: #fff; }
+.btn-success:hover { opacity: 0.88; }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+.btn-lg { padding: 10px 22px; font-size: 13px; }
+
+/* ── FORM ELEMENTS ── */
+input[type=text], input[type=date], input[type=email],
+input[type=tel], input[type=number], input[type=url],
+select, textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  padding: 9px 12px;
+  width: 100%;
+  outline: none;
+  transition: var(--tr);
+}
+input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(97,97,97,0.12); }
+input::placeholder, textarea::placeholder { color: var(--text-muted); }
+textarea { resize: vertical; min-height: 80px; }
+label { font-size: 11.5px; color: var(--text-2); display: block; margin-bottom: 5px; font-weight: 600; }
+.form-group { margin-bottom: 14px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+/* ── TABLE ── */
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 10.5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+}
+.tbl td {
+  padding: 11px 14px;
+  font-size: 13px;
+  color: var(--text);
+  border-bottom: 1px solid var(--border-2);
+  vertical-align: middle;
+}
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+}
+.badge-pending  { background: var(--warning-dim); color: var(--warning); }
+.badge-approved { background: var(--success-dim); color: var(--success); }
+.badge-rejected { background: var(--danger-dim);  color: var(--danger); }
+.badge-review   { background: var(--info-dim);    color: var(--info); }
+.badge-academic { background: var(--accent-dim);  color: var(--accent-l); }
+.badge-sports   { background: rgba(58,170,114,0.12); color: #5dd4a0; }
+.badge-cultural { background: rgba(180,100,200,0.12); color: #cc88ee; }
+.badge-meeting  { background: var(--info-dim);    color: var(--info); }
+.badge-ceremony { background: rgba(232,160,32,0.12); color: var(--warning); }
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+}
+.tab {
+  padding: 9px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s;
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--white); border-bottom-color: var(--accent); font-weight: 700; }
+
+/* ── SEARCH ── */
+.search-wrap { position: relative; margin-bottom: 16px; }
+.search-wrap input { padding-left: 36px; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 12px; }
+
+/* ── RESULT BAR ── */
+.result-bar-wrap { margin-bottom: 12px; }
+.result-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-2); margin-bottom: 5px; font-weight: 500; }
+.result-bar-track { height: 6px; background: var(--bg-3); border-radius: 3px; overflow: hidden; border: 1px solid var(--border); }
+.result-bar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.8s cubic-bezier(0.16,1,0.3,1); }
+
+/* ── TOGGLE ── */
+.toggle-wrap { display: flex; align-items: center; gap: 10px; }
+.toggle {
+  width: 36px; height: 20px;
+  background: var(--bg-4);
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.toggle.on { background: var(--accent); border-color: var(--accent); }
+.toggle::after {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  top: 2px; left: 2px;
+  transition: left 0.2s;
+}
+.toggle.on::after { left: 18px; }
+
+/* ── UPLOAD ZONE ── */
+.upload-zone {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.upload-zone:hover { border-color: var(--accent); }
+.upload-zone p { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
+.upload-zone span { font-size: 11px; color: var(--text-muted); opacity: 0.6; }
+
+/* ── ANNOUNCEMENT BANNER PREVIEW ── */
+.ann-preview {
+  background: var(--warning-dim);
+  border: 1px solid rgba(232,160,32,0.28);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--warning);
+  margin-bottom: 16px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* ── GALLERY GRID ── */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px,1fr));
+  gap: 10px;
+}
+.gallery-thumb {
+  aspect-ratio: 4/3;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  background: var(--bg-3);
+}
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+.gallery-thumb:hover img { transform: scale(1.07); }
+.gallery-thumb:hover .thumb-overlay { opacity: 1; }
+.thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15,15,15,0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  gap: 8px;
+}
+.thumb-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(15,15,15,0.82);
+  font-size: 10px;
+  color: var(--text-2);
+  padding: 5px 8px;
+}
+
+/* ── STAFF CARD GRID ── */
+.staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 14px; }
+.staff-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: var(--tr);
+}
+.staff-card:hover { border-color: var(--accent-bdr); }
+.staff-initials {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--bg-3);
+  border: 1px solid var(--accent-bdr);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-l);
+}
+.staff-name { font-size: 13px; font-weight: 600; color: var(--white); }
+.staff-role { font-size: 11px; color: var(--text-muted); }
+.staff-actions { display: flex; gap: 6px; margin-top: 4px; }
+
+/* ── QUICK LINKS ── */
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.quick-link {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--tr);
+  text-decoration: none;
+}
+.quick-link:hover { border-color: var(--accent-bdr); background: var(--bg-3); }
+.quick-link i { font-size: 18px; color: var(--accent-l); display: block; margin-bottom: 8px; }
+.quick-link span { font-size: 11.5px; color: var(--text-2); font-weight: 600; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  background: var(--success);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  z-index: 9999;
+  transform: translateY(80px);
+  opacity: 0;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 200;
+  align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  width: 480px; max-width: 95vw;
+  max-height: 90vh; overflow-y: auto;
+}
+.modal h3 { font-size: 17px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
+.modal-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+
+/* ── INFO ROW ── */
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-2);
+}
+.info-row:last-child { border-bottom: none; }
+.info-row i { width: 14px; color: var(--accent); }
+.info-row strong { color: var(--text-2); margin-right: 4px; }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="Badge .jpeg" alt="Bhekisizwe Senior Secondary School Badge" class="brand-badge">
+    <div class="brand-text">
+      <strong>Bhekisizwe Senior Secondary School</strong>
+      <span>Admin Dashboard</span>
+    </div>
+  </div>
+
+  <div class="sidebar-section-label">Main</div>
+  <div class="nav-item active" onclick="showPanel('overview',this)">
+    <i class="fas fa-th-large"></i> Overview
+  </div>
+
+  <div class="sidebar-section-label">Manage</div>
+  <div class="nav-item" onclick="showPanel('admissions',this)">
+    <i class="fas fa-file-alt"></i> Admissions
+    <span class="nav-badge" id="sidebar-pending-badge" style="display:none">0</span>
+  </div>
+  <div class="nav-item" onclick="showPanel('students',this)">
+    <i class="fas fa-user-graduate"></i> Students
+  </div>
+  <div class="nav-item" onclick="showPanel('events',this)">
+    <i class="fas fa-calendar-alt"></i> Events &amp; Notices
+  </div>
+  <div class="nav-item" onclick="showPanel('results',this)">
+    <i class="fas fa-chart-bar"></i> Academic Results
+  </div>
+  <div class="nav-item" onclick="showPanel('achievements',this)">
+    <i class="fas fa-trophy"></i> Achievements
+  </div>
+  <div class="nav-item" onclick="showPanel('exams',this)">
+    <i class="fas fa-clock"></i> Examinations
+  </div>
+  <div class="nav-item" onclick="showPanel('staff',this)">
+    <i class="fas fa-users"></i> Staff
+  </div>
+  <div class="nav-item" onclick="showPanel('gallery',this)">
+    <i class="fas fa-images"></i> Gallery
+  </div>
+  <div class="nav-item" onclick="showPanel('papers',this)">
+    <i class="fas fa-book-open"></i> Past Papers
+  </div>
+  <div class="nav-item" onclick="showPanel('circulars',this)">
+    <i class="fas fa-envelope-open-text"></i> Circulars
+  </div>
+
+  <div class="sidebar-section-label">System</div>
+  <div class="nav-item" onclick="showPanel('settings',this)">
+    <i class="fas fa-cog"></i> School Settings
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="school-motto">
+      <span>Excellence · Legacy · Future</span>
+    </div>
+    <div class="admin-footer">
+      <div class="avatar" id="admin-avatar">AD</div>
+      <div class="admin-info">
+        <strong id="admin-sidebar-name">Administrator</strong>
+        <span id="admin-sidebar-role">Admin</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════
+     MAIN
+══════════════════════════════════════════ -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Overview</div>
+    <div class="topbar-actions">
+      <span class="topbar-year"><i class="fas fa-graduation-cap" style="margin-right:5px;opacity:.7"></i>2025 / 2026</span>
+      <a href="index.html" class="topbar-link" target="_blank">
+        <i class="fas fa-external-link-alt"></i> View Website
+      </a>
+      <button class="btn btn-primary btn-sm" onclick="showToast('Changes saved successfully')">
+        <i class="fas fa-save"></i> Save Changes
+      </button>
+      <a href="admin-logout.php" class="btn btn-outline btn-sm" style="border-color:var(--danger);color:var(--danger)"
+         onclick="return confirm('Sign out of the dashboard?')">
+        <i class="fas fa-sign-out-alt"></i> Sign Out
+      </a>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════════════════════════════════════
+         OVERVIEW
+    ══════════════════════════════════════════ -->
+    <div class="panel active" id="panel-overview">
+
+      <!-- Hero Banner -->
+      <div class="overview-banner">
+        <img src="pic3.jpeg" alt="Bhekisizwe Senior Secondary School" onerror="this.parentElement.style.background='var(--bg-3)';this.style.display='none'">
+        <div class="overview-banner-overlay">
+          <div class="banner-text">
+            <h2>Bhekisizwe Senior Secondary School</h2>
+            <p>eMachitshane, Nqutu, KwaZulu-Natal &nbsp;·&nbsp; Founded 2004</p>
+            <span class="motto">Excellence · Legacy · Future</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stat-row">
+        <div class="stat accent-stat">
+          <div class="s-icon"><i class="fas fa-file-alt"></i></div>
+          <div class="s-label">Pending Applications</div>
+          <div class="s-val" id="stat-pending">—</div>
+          <div class="s-sub">Awaiting review</div>
+        </div>
+        <div class="stat">
+          <div class="s-icon"><i class="fas fa-users"></i></div>
+          <div class="s-label">Total Students</div>
+          <div class="s-val" id="stat-total-students">—</div>
+          <div class="s-sub">All grades enrolled</div>
+        </div>
+        <div class="stat">
+          <div class="s-icon"><i class="fas fa-user-check"></i></div>
+          <div class="s-label">Approved This Cycle</div>
+          <div class="s-val">34</div>
+          <div class="s-sub">2025/2026 intake</div>
+        </div>
+        <div class="stat">
+          <div class="s-icon"><i class="fas fa-calendar-check"></i></div>
+          <div class="s-label">Upcoming Events</div>
+          <div class="s-val">6</div>
+          <div class="s-sub">Next: 13 Jun</div>
+        </div>
+        <div class="stat">
+          <div class="s-icon"><i class="fas fa-chart-line"></i></div>
+          <div class="s-label">Matric Pass Rate</div>
+          <div class="s-val">98%</div>
+          <div class="s-sub">2025 results</div>
+        </div>
+        <div class="stat">
+          <div class="s-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+          <div class="s-label">Staff Members</div>
+          <div class="s-val">24</div>
+          <div class="s-sub">Active educators</div>
+        </div>
+      </div>
+
+      <!-- Quick page links -->
+      <div class="quick-links">
+        <a class="quick-link" href="admissions.html" target="_blank">
+          <i class="fas fa-file-alt"></i><span>Admissions</span>
+        </a>
+        <a class="quick-link" href="events.html" target="_blank">
+          <i class="fas fa-calendar-alt"></i><span>Events</span>
+        </a>
+        <a class="quick-link" href="results.html" target="_blank">
+          <i class="fas fa-chart-bar"></i><span>Results</span>
+        </a>
+        <a class="quick-link" href="exams.html" target="_blank">
+          <i class="fas fa-clock"></i><span>Exams</span>
+        </a>
+        <a class="quick-link" href="achievements.html" target="_blank">
+          <i class="fas fa-trophy"></i><span>Achievements</span>
+        </a>
+        <a class="quick-link" href="staff.html" target="_blank">
+          <i class="fas fa-users"></i><span>Staff</span>
+        </a>
+        <a class="quick-link" href="gallery.html" target="_blank">
+          <i class="fas fa-images"></i><span>Gallery</span>
+        </a>
+        <a class="quick-link" href="contact.html" target="_blank">
+          <i class="fas fa-envelope"></i><span>Contact</span>
+        </a>
+      </div>
+
+      <div class="grid-2">
+        <!-- Recent Applications -->
+        <div class="card">
+          <div class="card-head">
+            <div><h3><i class="fas fa-inbox" style="margin-right:7px;color:var(--accent-l)"></i>Recent Applications</h3><p>Latest 5 submissions</p></div>
+            <button class="btn btn-outline btn-sm" onclick="showPanel('admissions', document.querySelector('[onclick*=admissions]'))">View all</button>
+          </div>
+          <div class="card-body" style="padding:0">
+            <table class="tbl">
+              <thead><tr><th>Learner</th><th>Grade</th><th>Date</th><th>Status</th></tr></thead>
+              <tbody id="recent-apps-tbody">
+                <tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:18px">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Upcoming Events -->
+        <div class="card">
+          <div class="card-head">
+            <div><h3><i class="fas fa-calendar-alt" style="margin-right:7px;color:var(--accent-l)"></i>Upcoming Events</h3><p>Next 5 on the calendar</p></div>
+            <button class="btn btn-outline btn-sm" onclick="showPanel('events', document.querySelector('[onclick*=events]'))">Manage</button>
+          </div>
+          <div class="card-body" style="padding:0">
+            <table class="tbl">
+              <thead><tr><th>Date</th><th>Event</th><th>Type</th></tr></thead>
+              <tbody>
+                <tr><td>13 Jun</td><td>Mid-Year Examinations Begin</td><td><span class="badge badge-academic">Academic</span></td></tr>
+                <tr><td>27 Jun</td><td>Term 2 Ends</td><td><span class="badge badge-academic">Academic</span></td></tr>
+                <tr><td>18 Aug</td><td>Grade 12 Trial Examinations</td><td><span class="badge badge-academic">Academic</span></td></tr>
+                <tr><td>19 Oct</td><td>NSC Final Examinations</td><td><span class="badge badge-academic">Academic</span></td></tr>
+                <tr><td>10 Oct</td><td>Annual School Sports Day</td><td><span class="badge badge-sports">Sports</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Announcement Banner Preview -->
+      <div class="card">
+        <div class="card-head">
+          <div><h3><i class="fas fa-bullhorn" style="margin-right:7px;color:var(--accent-l)"></i>Active Announcement Banner</h3><p>Currently displayed on events.html</p></div>
+          <div class="toggle-wrap"><span style="font-size:11px;color:var(--text-muted)">Live</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+        <div class="card-body">
+          <div class="ann-preview"><i class="fas fa-exclamation-triangle" style="margin-top:1px;flex-shrink:0"></i> Important: Grade 12 Trial Examinations begin on 18 August 2026. Learners must collect their timetables from the Grade 12 office.</div>
+          <button class="btn btn-outline btn-sm" onclick="showPanel('events', document.querySelector('[onclick*=events]'))">Edit announcement <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- School Info Summary -->
+      <div class="card">
+        <div class="card-head">
+          <div><h3><i class="fas fa-school" style="margin-right:7px;color:var(--accent-l)"></i>School Information</h3><p>Key details — edit in School Settings</p></div>
+          <button class="btn btn-outline btn-sm" onclick="showPanel('settings', document.querySelector('[onclick*=settings]'))">Edit</button>
+        </div>
+        <div class="card-body" style="padding:14px 20px">
+          <div class="info-row"><i class="fas fa-map-marker-alt"></i><strong>Address:</strong> eMachitshane, Nqutu, KwaZulu-Natal, 3135</div>
+          <div class="info-row"><i class="fas fa-phone"></i><strong>Phone:</strong> +27 35 000 1234</div>
+          <div class="info-row"><i class="fas fa-envelope"></i><strong>Email:</strong> info@bhekisizwehigh.edu.za</div>
+          <div class="info-row"><i class="fas fa-envelope-open"></i><strong>Admissions:</strong> admissions@bhekisizwehigh.edu.za</div>
+          <div class="info-row"><i class="fas fa-user-tie"></i><strong>Principal:</strong> Mr. S.E. Mbokazi</div>
+          <div class="info-row"><i class="fas fa-calendar"></i><strong>Academic Year:</strong> 2025 / 2026</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         ADMISSIONS
+    ══════════════════════════════════════════ -->
+    <div class="panel" id="panel-admissions">
+      <div class="section-heading">
+        <div class="grey-line"></div>
+        <div><h2>Admissions Management</h2><p>Review applications, manage dates and forms</p></div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab(this,'adm-tab-apps')"><i class="fas fa-inbox" style="margin-right:6px"></i>Applications Inbox</div>
+        <div class="tab" onclick="switchTab(this,'adm-tab-dates')"><i class="fas fa-calendar" style="margin-right:6px"></i>Application Dates</div>
+        <div class="tab" onclick="switchTab(this,'adm-tab-form')"><i class="fas fa-file-pdf" style="margin-right:6px"></i>Download Form</div>
+      </div>
+
+      <!-- Applications Inbox -->
+      <div id="adm-tab-apps">
+        <div class="search-wrap">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" placeholder="Search by name, grade or status..." oninput="filterAppsTable(this)">
+        </div>
+        <!-- Bulk action bar — visible only when rows are checked -->
+        <div id="bulk-action-bar" style="display:none;align-items:center;gap:10px;background:var(--accent-dim);border:1px solid var(--accent-bdr);border-radius:var(--radius);padding:10px 16px;margin-bottom:12px">
+          <span id="bulk-count" style="font-size:13px;font-weight:700;color:var(--accent-l)">0</span>
+          <span style="font-size:13px;color:var(--text-2)">application(s) selected</span>
+          <button class="btn btn-success btn-sm" onclick="bulkApprove()"><i class="fas fa-check"></i> Approve All</button>
+          <button class="btn btn-danger btn-sm" onclick="bulkReject()"><i class="fas fa-times"></i> Reject All</button>
+          <button class="btn btn-outline btn-sm" onclick="clearBulkSelect()">Clear selection</button>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div><h3>Submitted Applications</h3><p id="apps-count-label">Loading…</p></div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-outline btn-sm" onclick="printIntakeReport()"><i class="fas fa-print"></i> Intake Report</button>
+              <button class="btn btn-outline btn-sm" onclick="exportCSV()"><i class="fas fa-download"></i> Export CSV</button>
+            </div>
+          </div>
+          <div class="card-body" style="padding:0;overflow-x:auto">
+            <table class="tbl" id="apps-tbl">
+              <thead><tr><th style="width:36px"><input type="checkbox" id="select-all-apps" onchange="toggleSelectAll(this)" title="Select all"></th><th>Ref Code</th><th>Learner Name</th><th>Grade</th><th>Parent/Guardian</th><th>Submitted</th><th>Docs</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="apps-tbl-body">
+                <tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:18px">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Application Dates -->
+      <div id="adm-tab-dates" style="display:none">
+        <div class="card">
+          <div class="card-head"><div><h3>Application Period Dates</h3><p>These dates display on the admissions page</p></div></div>
+          <div class="card-body">
+            <div class="form-row-3">
+              <div class="form-group"><label>Applications Open</label><input type="date" value="2025-07-01"></div>
+              <div class="form-group"><label>Applications Close</label><input type="date" value="2025-08-31"></div>
+              <div class="form-group"><label>Results Communicated</label><input type="date" value="2025-09-30"></div>
+            </div>
+            <div class="form-group"><label>Academic Year Label</label><input type="text" value="2025 / 2026"></div>
+            <div class="form-group">
+              <label>Application Status</label>
+              <select>
+                <option>Open — accepting applications</option>
+                <option>Closed — applications not accepted</option>
+                <option>Coming soon — opens on open date</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" onclick="showToast('Application dates updated')"><i class="fas fa-save"></i> Save Dates</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Download Form -->
+      <div id="adm-tab-form" style="display:none">
+        <div class="card">
+          <div class="card-head"><div><h3>Admission Form PDF</h3><p>Replace the downloadable form on the admissions page</p></div></div>
+          <div class="card-body">
+            <div style="background:var(--warning-dim);border:1px solid rgba(232,160,32,0.3);border-radius:var(--radius);padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:12.5px;color:var(--warning)">
+              <i class="fas fa-exclamation-triangle" style="flex-shrink:0"></i>
+              <span><strong>Document may be outdated.</strong> The current admission form was uploaded over 12 months ago — consider replacing it before the next intake cycle opens.</span>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px">
+              <i class="fas fa-file-pdf" style="font-size:22px;color:var(--danger)"></i>
+              <div style="flex:1"><div style="font-size:13px;color:var(--white);font-weight:600">Bhekisizwe_Admission_Form.pdf</div><div style="font-size:11px;color:var(--text-muted)">Current version · Uploaded 2 Jan 2025 · 148 KB · <span style="color:var(--warning)">18 months old</span></div></div>
+              <button class="btn btn-outline btn-sm"><i class="fas fa-download"></i> Download</button>
+            </div>
+            <div class="upload-zone" onclick="showToast('File browser opened')">
+              <i class="fas fa-cloud-upload-alt" style="font-size:28px;color:var(--accent-l)"></i>
+              <p>Click to upload new version of admission form</p>
+              <span>PDF only · Max 10 MB</span>
+            </div>
+            <div class="divider"></div>
+            <h3 style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:12px">Additional Downloadable Documents</h3>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;display:flex;align-items:center;gap:10px">
+                <i class="fas fa-clipboard-list" style="color:var(--accent-l)"></i>
+                <span style="flex:1;font-size:13px;color:var(--text)">Document Checklist.pdf</span>
+                <button class="btn btn-outline btn-sm">Replace</button>
+              </div>
+              <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;display:flex;align-items:center;gap:10px">
+                <i class="fas fa-scroll" style="color:var(--accent-l)"></i>
+                <span style="flex:1;font-size:13px;color:var(--text)">School Code of Conduct.pdf</span>
+                <button class="btn btn-outline btn-sm">Replace</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         EVENTS & ANNOUNCEMENTS
+    ══════════════════════════════════════════ -->
+    <div class="panel" id="panel-events">
+      <div class="section-heading">
+        <div class="grey-line"></div>
+        <div><h2>Events &amp; Announcements</h2><p>Manage events.html content — banners, events and school notices</p></div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab(this,'ev-tab-banner')"><i class="fas fa-bullhorn" style="margin-right:6px"></i>Announcement Banner</div>
+        <div class="tab" onclick="switchTab(this,'ev-tab-events')"><i class="fas fa-calendar-plus" style="margin-right:6px"></i>Upcoming Events</div>
+        <div class="tab" onclick="switchTab(this,'ev-tab-notices')"><i class="fas fa-bell" style="margin-right:6px"></i>School Notices</div>
+        <div class="tab" onclick="switchTab(this,'ev-tab-sms')"><i class="fas fa-sms" style="margin-right:6px"></i>SMS Blast</div>
+      </div>
+
+      <div id="ev-tab-banner">
+        <div class="card">
+          <div class="card-head">
+            <div><h3>Urgent Announcement Banner</h3><p>Appears at the top of the events page</p></div>
+            <div class="toggle-wrap"><span style="font-size:11px;color:var(--text-muted)">Visible</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+          </div>
+          <div class="card-body">
+            <div class="ann-preview" id="banner-preview"><i class="fas fa-exclamation-triangle" style="flex-shrink:0;margin-top:1px"></i> Important: Grade 12 Trial Examinations begin on 18 August 2026. Learners must collect their timetables from the Grade 12 office.</div>
+            <div class="form-group"><label>Banner Text</label>
+              <textarea id="banner-text" oninput="document.getElementById('banner-preview').innerHTML='<i class=\'fas fa-exclamation-triangle\' style=\'flex-shrink:0;margin-top:1px\'></i> Important: '+this.value">Grade 12 Trial Examinations begin on 18 August 2026. Learners must collect their timetables from the Grade 12 office.</textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Show From</label><input type="date" value="2026-08-01"></div>
+              <div class="form-group"><label>Hide After</label><input type="date" value="2026-08-18"></div>
+            </div>
+            <button class="btn btn-primary" onclick="showToast('Announcement banner updated')"><i class="fas fa-save"></i> Update Banner</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="ev-tab-events" style="display:none">
+        <div class="card">
+          <div class="card-head"><div><h3>Add New Event</h3></div></div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group"><label>Event Title</label><input type="text" placeholder="e.g. Prize-Giving Ceremony"></div>
+              <div class="form-group"><label>Category</label>
+                <select><option>Academic</option><option>Sports</option><option>Cultural</option><option>Meeting</option><option>Ceremony</option></select>
+              </div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group"><label>Date</label><input type="date"></div>
+              <div class="form-group"><label>Time</label><input type="text" placeholder="e.g. 09:00"></div>
+              <div class="form-group"><label>Venue</label><input type="text" placeholder="e.g. School Hall"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Description</label><textarea placeholder="Brief description of the event..."></textarea></div>
+              <div class="form-group"><label>Reminder (days before)</label>
+                <select>
+                  <option>No reminder</option>
+                  <option>1 day before</option>
+                  <option selected>7 days before</option>
+                  <option>14 days before</option>
+                  <option>30 days before</option>
+                </select>
+                <div style="font-size:11px;color:var(--text-muted);margin-top:4px">A notice will be posted on the events page this many days before the event date.</div>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="showToast('Event added to calendar')"><i class="fas fa-plus"></i> Add Event</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>Current Events</h3><p>9 events on the calendar</p></div></div>
+          <div class="card-body" style="padding:0">
+            <table class="tbl">
+              <thead><tr><th>Date</th><th>Event</th><th>Category</th><th>Venue</th><th>Reminder</th><th></th></tr></thead>
+              <tbody>
+                <tr><td>14 Apr</td><td>Term 2 Commences</td><td><span class="badge badge-academic">Academic</span></td><td>School</td><td><span style="font-size:11px;color:var(--text-muted)">7 days before</span></td><td><button class="btn btn-outline btn-sm" onclick="showToast('Event removed')"><i class="fas fa-trash"></i></button></td></tr>
+                <tr><td>22 Apr</td><td>District Athletics Championships</td><td><span class="badge badge-sports">Sports</span></td><td>District</td><td><span style="font-size:11px;color:var(--text-muted)">14 days before</span></td><td><button class="btn btn-outline btn-sm" onclick="showToast('Event removed')"><i class="fas fa-trash"></i></button></td></tr>
+                <tr><td>2 May</td><td>Parent-Teacher Conference</td><td><span class="badge badge-meeting">Meeting</span></td><td>School Hall</td><td><span style="font-size:11px;color:var(--text-muted)">7 days before</span></td><td><button class="btn btn-outline btn-sm" onclick="showToast('Event removed')"><i class="fas fa-trash"></i></button></td></tr>
+                <tr><td>15 May</td><td>Annual Prize-Giving Ceremony</td><td><span class="badge badge-ceremony">Ceremony</span></td><td>School Hall</td><td><span style="font-size:11px;color:var(--text-muted)">14 days before</span></td><td><button class="btn btn-outline btn-sm" onclick="showToast('Event removed')"><i class="fas fa-trash"></i></button></td></tr>
+                <tr><td>30 May</td><td>Cultural Day &amp; Heritage Celebration</td><td><span class="badge badge-cultural">Cultural</span></td><td>School Grounds</td><td><span style="font-size:11px;color:var(--text-muted)">7 days before</span></td><td><button class="btn btn-outline btn-sm" onclick="showToast('Event removed')"><i class="fas fa-trash"></i></button></td></tr>
+                <tr><td>13 Jun</td><td>Mid-Year Examinations Begin</td><td><span class="badge badge-academic">Academic</span></td><td>School</td><td><span style="font-size:11px;color:var(--warning)"><i class="fas fa-bell"></i> Sent 6 Jun</span></td><td><button class="btn btn-outline btn-sm" onclick="showToast('Event removed')"><i class="fas fa-trash"></i></button></td></tr>
+                <tr><td>18 Aug</td><td>Grade 12 Trial Examinations</td><td><span class="badge badge-academic">Academic</span></td><td>School</td><td><span style="font-size:11px;color:var(--text-muted)">14 days before</span></td><td><button class="btn btn-outline btn-sm" onclick="showToast('Event removed')"><i class="fas fa-trash"></i></button></td></tr>
+                <tr><td>10 Oct</td><td>Annual School Sports Day</td><td><span class="badge badge-sports">Sports</span></td><td>Sports Fields</td><td><span style="font-size:11px;color:var(--text-muted)">7 days before</span></td><td><button class="btn btn-outline btn-sm" onclick="showToast('Event removed')"><i class="fas fa-trash"></i></button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="ev-tab-notices" style="display:none">
+        <div class="card">
+          <div class="card-head"><div><h3>Post New Notice</h3></div></div>
+          <div class="card-body">
+            <div class="form-group"><label>Notice Title</label><input type="text" placeholder="e.g. Matric Farewell Tickets Available"></div>
+            <div class="form-group"><label>Notice Body</label><textarea>Tickets for the 2026 Matric Farewell are now available from the school office at R150 per person. Limited seats available.</textarea></div>
+            <div class="form-row">
+              <div class="form-group"><label>Publish Date</label><input type="date" value="2026-03-12"></div>
+              <div class="form-group"><label>Expiry Date</label><input type="date" value="2026-05-01"></div>
+            </div>
+            <button class="btn btn-primary" onclick="showToast('Notice published')"><i class="fas fa-paper-plane"></i> Publish Notice</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SMS Blast -->
+      <div id="ev-tab-sms" style="display:none">
+        <div class="card">
+          <div class="card-head"><div><h3>Send SMS Blast to Parents</h3><p>Compose a text message and send to parent/guardian numbers on file</p></div></div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group"><label>Target Group</label>
+                <select id="sms-grade">
+                  <option value="all">All Parents &amp; Guardians</option>
+                  <option value="8">Grade 8 Parents</option>
+                  <option value="9">Grade 9 Parents</option>
+                  <option value="10">Grade 10 Parents</option>
+                  <option value="11">Grade 11 Parents</option>
+                  <option value="12">Grade 12 Parents</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Estimated Recipients</label>
+                <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;font-size:13px;color:var(--accent-l);font-weight:600">All enrolled parent numbers</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Message *</label>
+              <textarea id="sms-message" placeholder="Type your SMS message here… (160 characters = 1 SMS credit)" maxlength="320" style="min-height:100px"
+                oninput="document.getElementById('sms-char-count').textContent=this.value.length+' / 160 characters';this.style.borderColor=this.value.length>160?'var(--warning)':''"></textarea>
+              <div style="display:flex;justify-content:space-between;margin-top:4px">
+                <span id="sms-char-count" style="font-size:11.5px;color:var(--text-muted)">0 / 160 characters</span>
+                <span style="font-size:11.5px;color:var(--text-muted)">Messages over 160 chars = 2 SMS credits</span>
+              </div>
+            </div>
+            <div style="background:var(--warning-dim);border:1px solid rgba(232,160,32,0.25);border-radius:var(--radius);padding:10px 14px;font-size:12.5px;color:var(--warning);margin-bottom:14px">
+              <i class="fas fa-exclamation-triangle" style="margin-right:6px"></i>
+              Connect your SMS gateway (e.g. BulkSMS or Clickatell) in School Settings to enable live sending. This will simulate a send until then.
+            </div>
+            <button class="btn btn-primary" onclick="sendSmsBlast()"><i class="fas fa-sms"></i> Send SMS Blast</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         ACADEMIC RESULTS
+    ══════════════════════════════════════════ -->
+    <div class="panel" id="panel-results">
+      <div class="section-heading">
+        <div class="grey-line"></div>
+        <div><h2>Academic Results</h2><p>Manage results.html — matric pass rates and subject breakdown</p></div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="switchResultsTab(this,'res-tab-rates')"><i class="fas fa-chart-bar" style="margin-right:6px"></i>Pass Rates</div>
+        <div class="tab" onclick="switchResultsTab(this,'res-tab-upload')"><i class="fas fa-upload" style="margin-right:6px"></i>Term Results Upload</div>
+      </div>
+
+      <div id="res-tab-rates">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><div><h3>Year-on-Year Pass Rate</h3><p>Update after each matric results release</p></div></div>
+          <div class="card-body">
+            <div id="results-bars"></div>
+            <div class="divider"></div>
+            <div class="form-row">
+              <div class="form-group"><label>Add Year</label><input type="number" id="res-year" placeholder="e.g. 2026" min="2020" max="2030"></div>
+              <div class="form-group"><label>Pass Rate (%)</label><input type="number" id="res-rate" placeholder="e.g. 97.2" min="0" max="100" step="0.1"></div>
+            </div>
+            <button class="btn btn-primary" onclick="addResult()"><i class="fas fa-plus"></i> Add Year Result</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div><h3>Subject Pass Rates</h3><p>2025 breakdown</p></div></div>
+          <div class="card-body">
+            <div id="subject-bars"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>Add / Update Subject Result</h3></div></div>
+        <div class="card-body">
+          <div class="form-row-3">
+            <div class="form-group"><label>Subject</label><input type="text" placeholder="e.g. Mathematics"></div>
+            <div class="form-group"><label>Year</label><input type="number" placeholder="2025"></div>
+            <div class="form-group"><label>Pass Rate (%)</label><input type="number" placeholder="e.g. 91.0" step="0.1"></div>
+          </div>
+          <button class="btn btn-primary" onclick="showToast('Subject result saved')"><i class="fas fa-save"></i> Save Subject Result</button>
+        </div>
+      </div>
+      </div><!-- /res-tab-rates -->
+
+      <div id="res-tab-upload" style="display:none">
+        <div class="card">
+          <div class="card-head"><div><h3>Upload Term Results</h3><p>Upload a CSV file with learner marks — admins can view, learners are notified</p></div></div>
+          <div class="card-body">
+            <div class="form-row-3">
+              <div class="form-group"><label>Grade</label>
+                <select id="res-upload-grade">
+                  <option value="">All Grades</option>
+                  <option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Term</label>
+                <select id="res-upload-term">
+                  <option>Term 1</option><option>Term 2</option><option>Term 3</option><option>Term 4 / Year-End</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Year</label><input type="number" id="res-upload-year" value="2026"></div>
+            </div>
+            <div style="background:var(--info-dim);border:1px solid rgba(74,159,212,0.25);border-radius:var(--radius);padding:10px 14px;font-size:12.5px;color:var(--info);margin-bottom:14px">
+              <i class="fas fa-info-circle" style="margin-right:6px"></i>
+              Expected CSV columns: <strong>Learner Name, Subject, Mark (%)</strong>. &nbsp;
+              <a href="#" style="color:var(--info);text-decoration:underline" onclick="downloadResultsTemplate();return false">Download template</a>
+            </div>
+            <div class="upload-zone" onclick="document.getElementById('results-file-input').click()">
+              <i class="fas fa-file-excel" style="font-size:28px;color:var(--success)"></i>
+              <p>Click to upload results file</p>
+              <span>CSV or Excel (.xlsx) · Max 5 MB</span>
+            </div>
+            <input type="file" id="results-file-input" accept=".csv,.xlsx,.xls" style="display:none" onchange="previewResultsFile(this)">
+            <div id="results-preview" style="margin-top:16px;display:none">
+              <div class="divider"></div>
+              <h3 style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:12px"><i class="fas fa-table" style="margin-right:6px;color:var(--accent-l)"></i>Preview (first 5 rows)</h3>
+              <div id="results-preview-table" style="overflow-x:auto"></div>
+              <button class="btn btn-primary" style="margin-top:12px" onclick="confirmSaveResults()"><i class="fas fa-save"></i> Confirm &amp; Save Results</button>
+            </div>
+          </div>
+        </div>
+      </div><!-- /res-tab-upload -->
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         ACHIEVEMENTS
+    ══════════════════════════════════════════ -->
+    <div class="panel" id="panel-achievements">
+      <div class="section-heading">
+        <div class="grey-line"></div>
+        <div><h2>Achievements</h2><p>Manage achievements.html — awards, sports, academic and cultural highlights</p></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>Featured Highlight Banner</h3><p>The large banner at the top of the achievements page</p></div></div>
+        <div class="card-body">
+          <div class="form-group"><label>Headline</label><input type="text" value="The Class of 2025 has set a new benchmark for excellence at Bhekisizwe Senior Secondary School, achieving our highest ever pass rate with 47 distinctions across all subjects."></div>
+          <div class="form-row">
+            <div class="form-group"><label>Year Label</label><input type="text" value="2025 Highlight"></div>
+            <div class="form-group"><label>Award Badge Text</label><input type="text" value="Top School Award 2025"></div>
+          </div>
+          <button class="btn btn-primary" onclick="showToast('Featured highlight updated')"><i class="fas fa-save"></i> Update Highlight</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>Add New Achievement</h3></div></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group"><label>Achievement Title</label><input type="text" placeholder="e.g. District Debate Champions"></div>
+            <div class="form-group"><label>Category</label>
+              <select><option>Academic</option><option>Sports</option><option>Cultural</option><option>Community</option></select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Year</label><input type="number" value="2025"></div>
+            <div class="form-group"><label>Result / Placement</label><input type="text" placeholder="e.g. 1st Place · District Champions"></div>
+          </div>
+          <div class="form-group"><label>Description</label><textarea placeholder="Brief description of the achievement..."></textarea></div>
+          <button class="btn btn-primary" onclick="showToast('Achievement added')"><i class="fas fa-plus"></i> Add Achievement</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>Current Achievements</h3></div></div>
+        <div class="card-body" style="padding:0">
+          <table class="tbl">
+            <thead><tr><th>Title</th><th>Category</th><th>Year</th><th>Result</th><th></th></tr></thead>
+            <tbody>
+              <tr><td>District Debate Champions</td><td><span class="badge badge-academic">Academic</span></td><td>2025</td><td>1st — 3rd consecutive year</td><td><button class="btn btn-outline btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></td></tr>
+              <tr><td>Science Olympiad</td><td><span class="badge badge-academic">Academic</span></td><td>2024</td><td>2nd place — KZN</td><td><button class="btn btn-outline btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></td></tr>
+              <tr><td>KZN Athletics 100m Sprint</td><td><span class="badge badge-sports">Sports</span></td><td>2025</td><td>1st — Sipho Mthembu</td><td><button class="btn btn-outline btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></td></tr>
+              <tr><td>KZN U18 Basketball</td><td><span class="badge badge-sports">Sports</span></td><td>2025</td><td>Provincial selection</td><td><button class="btn btn-outline btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></td></tr>
+              <tr><td>KZN Schools Drama Festival</td><td><span class="badge badge-cultural">Cultural</span></td><td>2025</td><td>1st — Ubuntu Rising</td><td><button class="btn btn-outline btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></td></tr>
+              <tr><td>National Choral Festival</td><td><span class="badge badge-cultural">Cultural</span></td><td>2024</td><td>2nd — Johannesburg</td><td><button class="btn btn-outline btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         EXAMINATIONS
+    ══════════════════════════════════════════ -->
+    <div class="panel" id="panel-exams">
+      <div class="section-heading">
+        <div class="grey-line"></div>
+        <div><h2>Examinations Management</h2><p>Manage exams.html — exam dates, timetables and countdown settings</p></div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab(this,'ex-tab-dates')"><i class="fas fa-calendar-alt" style="margin-right:6px"></i>Exam Dates</div>
+        <div class="tab" onclick="switchTab(this,'ex-tab-countdown')"><i class="fas fa-clock" style="margin-right:6px"></i>Countdown Settings</div>
+        <div class="tab" onclick="switchTab(this,'ex-tab-tips')"><i class="fas fa-lightbulb" style="margin-right:6px"></i>Exam Tips</div>
+      </div>
+
+      <!-- Exam Dates -->
+      <div id="ex-tab-dates">
+        <div class="card">
+          <div class="card-head"><div><h3>Add / Update Exam</h3><p>Appears on the exams.html calendar</p></div></div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group"><label>Exam Name</label><input type="text" placeholder="e.g. Mid-Year Examinations"></div>
+              <div class="form-group"><label>Type</label>
+                <select><option>Mid-Year</option><option>Grade 12 Trials</option><option>NSC Finals</option><option>Term Tests</option><option>Year-End</option></select>
+              </div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group"><label>Start Date</label><input type="date"></div>
+              <div class="form-group"><label>End Date</label><input type="date"></div>
+              <div class="form-group"><label>Grades Affected</label><input type="text" placeholder="e.g. Gr 8 – 11"></div>
+            </div>
+            <div class="form-group"><label>Venue</label><input type="text" placeholder="e.g. Examination Hall"></div>
+            <button class="btn btn-primary" onclick="showToast('Exam date saved')"><i class="fas fa-plus"></i> Add Exam</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>Current Exam Calendar — 2026</h3></div></div>
+          <div class="card-body" style="padding:0;overflow-x:auto">
+            <table class="tbl">
+              <thead><tr><th>Exam</th><th>Type</th><th>Start</th><th>End</th><th>Grades</th><th></th></tr></thead>
+              <tbody>
+                <tr><td>Mid-Year Examinations</td><td><span class="badge badge-academic">Mid-Year</span></td><td>13 Jun 2026</td><td>27 Jun 2026</td><td>Gr 8–11</td><td><button class="btn btn-outline btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></td></tr>
+                <tr><td>Grade 12 Trial Examinations</td><td><span class="badge badge-review">Gr 12 Trials</span></td><td>18 Aug 2026</td><td>11 Sep 2026</td><td>Gr 12</td><td><button class="btn btn-outline btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></td></tr>
+                <tr><td>Term 3 End-of-Term Tests</td><td><span class="badge badge-ceremony">Term Tests</span></td><td>06 Oct 2026</td><td>10 Oct 2026</td><td>Gr 8–11</td><td><button class="btn btn-outline btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></td></tr>
+                <tr><td>NSC Final Examinations</td><td><span class="badge badge-sports">NSC Finals</span></td><td>19 Oct 2026</td><td>27 Nov 2026</td><td>Gr 12</td><td><button class="btn btn-outline btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></td></tr>
+                <tr><td>Year-End Examinations</td><td><span class="badge badge-academic">Year-End</span></td><td>23 Nov 2026</td><td>03 Dec 2026</td><td>Gr 8–11</td><td><button class="btn btn-outline btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Countdown Settings -->
+      <div id="ex-tab-countdown" style="display:none">
+        <div class="card">
+          <div class="card-head"><div><h3>Featured Countdown</h3><p>The large countdown displayed at the top of exams.html</p></div></div>
+          <div class="card-body">
+            <div class="form-group"><label>Countdown Target Exam</label>
+              <select>
+                <option selected>Mid-Year Examinations — 13 Jun 2026</option>
+                <option>Grade 12 Trial Examinations — 18 Aug 2026</option>
+                <option>NSC Final Examinations — 19 Oct 2026</option>
+                <option>Year-End Examinations — 23 Nov 2026</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Display Label</label><input type="text" value="Next Major Examination"></div>
+            <div class="form-row">
+              <div class="form-group"><label>Countdown Start Date</label><input type="date" value="2026-06-01"></div>
+              <div class="form-group"><label>Target Date &amp; Time</label><input type="datetime-local" value="2026-06-13T08:00"></div>
+            </div>
+            <button class="btn btn-primary" onclick="showToast('Countdown settings updated')"><i class="fas fa-save"></i> Save Countdown</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exam Tips -->
+      <div id="ex-tab-tips" style="display:none">
+        <div class="card">
+          <div class="card-head"><div><h3>Edit Exam Tips</h3><p>Appears at the bottom of exams.html</p></div></div>
+          <div class="card-body">
+            <div class="form-group"><label>Tip Title</label><input type="text" placeholder="e.g. Arrive on Time"></div>
+            <div class="form-group"><label>Tip Description</label><textarea placeholder="Tip body text..."></textarea></div>
+            <button class="btn btn-primary" onclick="showToast('Tip added')"><i class="fas fa-plus"></i> Add Tip</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         STAFF
+    ══════════════════════════════════════════ -->
+    <div class="panel" id="panel-staff">
+      <div class="section-heading">
+        <div class="grey-line"></div>
+        <div><h2>Staff Management</h2><p>Manage staff.html — leadership, HODs and teaching staff</p></div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="switchStaffTab(this,'staff-tab-directory')"><i class="fas fa-users" style="margin-right:6px"></i>Staff Directory</div>
+        <div class="tab" onclick="switchStaffTab(this,'staff-tab-leave')"><i class="fas fa-calendar-times" style="margin-right:6px"></i>Leave &amp; Absence Log</div>
+      </div>
+
+      <div id="staff-tab-directory">
+      <div class="card">
+        <div class="card-head"><div><h3>Add New Staff Member</h3></div></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group"><label>Full Name</label><input type="text" placeholder="e.g. Mrs. T. Dlamini"></div>
+            <div class="form-group"><label>Title / Role</label><input type="text" placeholder="e.g. HOD: Mathematics"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Department</label>
+              <select><option>Leadership</option><option>Sciences &amp; Mathematics</option><option>Languages</option><option>Commerce</option><option>Humanities</option><option>Technology</option><option>Arts &amp; Culture</option></select>
+            </div>
+            <div class="form-group"><label>Qualifications</label><input type="text" placeholder="e.g. B.Ed (UKZN), M.Ed"></div>
+          </div>
+          <div class="form-group"><label>Bio</label><textarea placeholder="Brief biography for the staff page..."></textarea></div>
+          <button class="btn btn-primary" onclick="showToast('Staff member added')"><i class="fas fa-user-plus"></i> Add Staff Member</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>Current Staff</h3><p>24 members · eMachitshane, Nqutu</p></div></div>
+        <div class="card-body">
+          <div class="staff-grid">
+            <!-- Leadership -->
+            <div class="staff-card"><div class="staff-initials">SM</div><div class="staff-name">Mbokazi S.E (Mr)</div><div class="staff-role">Principal — Mathematics</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">ZP</div><div class="staff-name">Zungu P.N (Miss)</div><div class="staff-role">Deputy Principal — Physical Sciences</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <!-- HODs -->
+            <div class="staff-card"><div class="staff-initials">MV</div><div class="staff-name">Mhlungu V.J (Mr)</div><div class="staff-role">HOD: Commercial Subjects &amp; Accounting</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">NL</div><div class="staff-name">Ndlovu L (Mr)</div><div class="staff-role">HOD: Languages — English</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">NN</div><div class="staff-name">Nkosi N (Miss)</div><div class="staff-role">HOD: Humanities &amp; Life Orientation</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <!-- Educators -->
+            <div class="staff-card"><div class="staff-initials">YN</div><div class="staff-name">Yaka N.P (Miss)</div><div class="staff-role">Business Studies</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">NP</div><div class="staff-name">Ngubane P.T (Miss)</div><div class="staff-role">Life Sciences</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">SS</div><div class="staff-name">Sibiya S. (Mr)</div><div class="staff-role">Mathematical Literacy</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">KZ</div><div class="staff-name">Khanyile Z.M (Mr)</div><div class="staff-role">Accounting &amp; Economics</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">DN</div><div class="staff-name">Dube N. (Miss)</div><div class="staff-role">IsiZulu &amp; Life Sciences</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">MK</div><div class="staff-name">Mbatha K.M.M (Mr)</div><div class="staff-role">Mathematical Literacy</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">MP</div><div class="staff-name">Mtshali P.N (Mr)</div><div class="staff-role">Tourism</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">NL</div><div class="staff-name">Ngobese L. (Miss)</div><div class="staff-role">Geography</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">BB</div><div class="staff-name">Buthelezi B.N.L (Miss)</div><div class="staff-role">English &amp; Geography</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">MH</div><div class="staff-name">Mhlanga P.G (Miss)</div><div class="staff-role">Physical Sciences</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">MZ</div><div class="staff-name">Mazibuko N.T (Mr)</div><div class="staff-role">English &amp; IsiZulu</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">MO</div><div class="staff-name">Moloi N.M.L (Miss)</div><div class="staff-role">English</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+            <div class="staff-card"><div class="staff-initials">ZH</div><div class="staff-name">Zulu N.H (Mr)</div><div class="staff-role">History</div><div class="staff-actions"><button class="btn btn-outline btn-sm" onclick="showToast('Edit opened')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm" onclick="showToast('Removed')"><i class="fas fa-trash"></i></button></div></div>
+          </div>
+        </div>
+      </div>
+      </div><!-- /staff-tab-directory -->
+
+      <!-- Leave & Absence Log -->
+      <div id="staff-tab-leave" style="display:none">
+        <div class="card">
+          <div class="card-head"><div><h3>Log Absence</h3><p>Record staff leave and absences for the year</p></div></div>
+          <div class="card-body">
+            <div class="form-row-3">
+              <div class="form-group"><label>Staff Member *</label>
+                <select id="leave-staff-name">
+                  <option value="">Select staff member…</option>
+                  <option>Mbokazi S.E (Mr) — Principal</option>
+                  <option>Zungu P.N (Miss) — Deputy Principal</option>
+                  <option>Mhlungu V.J (Mr) — HOD: Commercial</option>
+                  <option>Ndlovu L (Mr) — HOD: Languages</option>
+                  <option>Nkosi N (Miss) — HOD: Humanities</option>
+                  <option>Yaka N.P (Miss) — Business Studies</option>
+                  <option>Ngubane P.T (Miss) — Life Sciences</option>
+                  <option>Sibiya S. (Mr) — Mathematical Literacy</option>
+                  <option>Khanyile Z.M (Mr) — Accounting &amp; Economics</option>
+                  <option>Dube N. (Miss) — IsiZulu &amp; Life Sciences</option>
+                  <option>Mbatha K.M.M (Mr) — Mathematical Literacy</option>
+                  <option>Mtshali P.N (Mr) — Tourism</option>
+                  <option>Ngobese L. (Miss) — Geography</option>
+                  <option>Buthelezi B.N.L (Miss) — English &amp; Geography</option>
+                  <option>Mhlanga P.G (Miss) — Physical Sciences</option>
+                  <option>Mazibuko N.T (Mr) — English &amp; IsiZulu</option>
+                  <option>Moloi N.M.L (Miss) — English</option>
+                  <option>Zulu N.H (Mr) — History</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Date *</label><input type="date" id="leave-date"></div>
+              <div class="form-group"><label>Leave Type</label>
+                <select id="leave-type">
+                  <option>Sick Leave</option>
+                  <option>Annual Leave</option>
+                  <option>Family Responsibility</option>
+                  <option>Unpaid Leave</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group"><label>Reason / Notes (optional)</label><input type="text" id="leave-reason" placeholder="e.g. medical appointment, family emergency"></div>
+            <button class="btn btn-primary" onclick="logAbsence()"><i class="fas fa-plus"></i> Log Absence</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div><h3>Absence Log</h3><p id="leave-count-label">0 records this year</p></div>
+            <button class="btn btn-outline btn-sm" onclick="exportLeaveLogCSV()"><i class="fas fa-download"></i> Export CSV</button>
+          </div>
+          <div class="card-body" style="padding:0;overflow-x:auto">
+            <table class="tbl">
+              <thead><tr><th>Date</th><th>Staff Member</th><th>Type</th><th>Notes</th><th></th></tr></thead>
+              <tbody id="leave-log-tbody">
+                <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px">No absences logged yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /staff-tab-leave -->
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         GALLERY
+    ══════════════════════════════════════════ -->
+    <div class="panel" id="panel-gallery">
+      <div class="section-heading">
+        <div class="grey-line"></div>
+        <div><h2>Gallery</h2><p>Manage gallery.html — upload and organise photos from school events</p></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>Upload New Photos</h3></div></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group"><label>Album / Category</label>
+              <select><option>Sports Day</option><option>Cultural Day</option><option>Prize-Giving</option><option>Classroom Life</option><option>School Events</option><option>Matric Farewell</option><option>Other</option></select>
+            </div>
+            <div class="form-group"><label>Caption (optional)</label><input type="text" placeholder="e.g. Grade 12 Drama Performance 2025"></div>
+          </div>
+          <div class="upload-zone" onclick="showToast('File browser opened — select photos to upload')">
+            <i class="fas fa-camera" style="font-size:32px;color:var(--accent-l)"></i>
+            <p>Click to upload photos or drag &amp; drop here</p>
+            <span>JPG, PNG, WEBP · Max 8 MB per photo · Multiple files allowed</span>
+          </div>
+          <button class="btn btn-primary" style="margin-top:12px" onclick="showToast('Photos uploaded to gallery')"><i class="fas fa-upload"></i> Upload to Gallery</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>School Photo Library</h3><p>Click any photo to remove it from the gallery</p></div></div>
+        <div class="card-body">
+          <div class="gallery-grid" id="gallery-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCHOOL SETTINGS
+    ══════════════════════════════════════════ -->
+    <div class="panel" id="panel-settings">
+      <div class="section-heading">
+        <div class="grey-line"></div>
+        <div><h2>School Settings</h2><p>Update contact details and homepage statistics across all pages</p></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><div><h3><i class="fas fa-map-marker-alt" style="margin-right:7px;color:var(--accent-l)"></i>Contact Information</h3><p>Shown in header &amp; footer of all pages</p></div></div>
+          <div class="card-body">
+            <div class="form-group"><label>Physical Address</label><input type="text" value="eMachitshane, Nqutu, KwaZulu-Natal, 3135"></div>
+            <div class="form-group"><label>Phone Number</label><input type="tel" value="+27 35 000 1234"></div>
+            <div class="form-group"><label>Email Address</label><input type="email" value="info@bhekisizwehigh.edu.za"></div>
+            <div class="form-group"><label>Admissions Email</label><input type="email" value="admissions@bhekisizwehigh.edu.za"></div>
+            <div class="form-group"><label>School Website URL</label><input type="url" value="https://bhekisizwehigh.edu.za"></div>
+            <button class="btn btn-primary" onclick="showToast('Contact details saved across all pages')"><i class="fas fa-save"></i> Save Contact Info</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div><h3><i class="fas fa-home" style="margin-right:7px;color:var(--accent-l)"></i>Homepage Statistics</h3><p>The counter numbers on index.html</p></div></div>
+          <div class="card-body">
+            <div class="form-group"><label>Number of Learners</label><input type="number" placeholder="e.g. 850"></div>
+            <div class="form-group"><label>Years of Excellence</label><input type="number" value="22"></div>
+            <div class="form-group"><label>Dedicated Staff</label><input type="number" value="24"></div>
+            <div class="form-group"><label>Academic Year</label><input type="text" value="2025 / 2026"></div>
+            <div class="form-group"><label>Hero Tagline</label><input type="text" value="Nqutu's Premier Institution of Learning"></div>
+            <button class="btn btn-primary" onclick="showToast('Homepage stats updated')"><i class="fas fa-save"></i> Save Homepage Stats</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3><i class="fas fa-user-shield" style="margin-right:7px;color:var(--accent-l)"></i>Admin Account</h3></div></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group"><label>Admin Name</label><input type="text" value="Administrator"></div>
+            <div class="form-group"><label>Admin Email</label><input type="email" value="admin@bhekisizwehigh.edu.za"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>New Password</label><input type="password" placeholder="Leave blank to keep current"></div>
+            <div class="form-group"><label>Confirm Password</label><input type="password" placeholder="Repeat new password"></div>
+          </div>
+          <button class="btn btn-primary" onclick="showToast('Account settings saved')"><i class="fas fa-save"></i> Save Account Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         STUDENTS
+    ══════════════════════════════════════════ -->
+    <div class="panel" id="panel-students">
+      <div class="section-heading">
+        <div class="grey-line"></div>
+        <div><h2>Student Records</h2><p>All enrolled learners — filtered by grade. Approved applications auto-create records here.</p></div>
+        <button class="btn btn-primary" style="margin-left:auto" onclick="openAddStudentModal()"><i class="fas fa-user-plus"></i> Add Student</button>
+      </div>
+
+      <!-- Per-grade stats -->
+      <div class="stat-row" id="stu-stat-row"></div>
+
+      <!-- Grade tabs -->
+      <div class="tabs grade-tabs">
+        <div class="tab active" data-grade="8"  onclick="switchStudentGrade(this,'8')">Grade 8</div>
+        <div class="tab"        data-grade="9"  onclick="switchStudentGrade(this,'9')">Grade 9</div>
+        <div class="tab"        data-grade="10" onclick="switchStudentGrade(this,'10')">Grade 10</div>
+        <div class="tab"        data-grade="11" onclick="switchStudentGrade(this,'11')">Grade 11</div>
+        <div class="tab"        data-grade="12" onclick="switchStudentGrade(this,'12')">Grade 12</div>
+      </div>
+
+      <!-- Search -->
+      <div class="search-wrap">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="stu-search" placeholder="Search by name, email or phone…" oninput="renderStudentTable()">
+      </div>
+
+      <!-- Table -->
+      <div class="card">
+        <div class="card-head">
+          <div><h3 id="stu-grade-label">Grade 8 Learners</h3><p id="stu-count-label">Loading…</p></div>
+          <button class="btn btn-outline btn-sm" onclick="exportStudentsCSV()"><i class="fas fa-download"></i> Export CSV</button>
+        </div>
+        <div class="card-body" style="padding:0;overflow-x:auto">
+          <table class="tbl" id="stu-tbl">
+            <thead><tr><th>Learner Name</th><th>Contact</th><th>Documents</th><th>Enrolled</th><th>Source</th><th></th></tr></thead>
+            <tbody id="stu-tbl-body">
+              <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:18px">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         PAST PAPERS
+    ══════════════════════════════════════════ -->
+    <div class="panel" id="panel-papers">
+      <div class="section-heading">
+        <div class="grey-line"></div>
+        <div><h2>Past Papers</h2><p>Upload and manage past exam papers — available for learner download on the public website</p></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>Upload New Past Paper</h3></div></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group"><label>Subject *</label>
+              <select id="paper-subject">
+                <option value="">Select subject…</option>
+                <option>Mathematics</option><option>Mathematical Literacy</option>
+                <option>Physical Sciences</option><option>Life Sciences</option>
+                <option>English Home Language</option><option>IsiZulu Home Language</option>
+                <option>History</option><option>Geography</option>
+                <option>Accounting</option><option>Business Studies</option>
+                <option>Economics</option><option>Tourism</option><option>Life Orientation</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Grade *</label>
+              <select id="paper-grade">
+                <option value="">Select grade…</option>
+                <option>8</option><option>9</option><option>10</option><option>11</option><option>12</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Year *</label><input type="number" id="paper-year" placeholder="e.g. 2025" min="2015" max="2030"></div>
+            <div class="form-group"><label>Paper Type</label>
+              <select id="paper-term">
+                <option>Term 1 Test</option><option>Mid-Year Exam</option>
+                <option>Trial Exam</option><option>Year-End Exam</option>
+                <option>NSC Paper 1</option><option>NSC Paper 2</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Upload Paper (PDF)</label>
+            <input type="file" id="paper-file" accept=".pdf" style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:9px 12px;font-size:13px;width:100%">
+            <div style="font-size:11.5px;color:var(--text-muted);margin-top:4px">PDF only · Max 10 MB</div>
+          </div>
+          <button class="btn btn-primary" onclick="savePaper()"><i class="fas fa-upload"></i> Upload Paper</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>Uploaded Papers</h3><p>Available for learner download on the website</p></div></div>
+        <div class="card-body" style="padding:0;overflow-x:auto">
+          <table class="tbl">
+            <thead><tr><th>Subject</th><th>Grade</th><th>Year</th><th>Type</th><th>File</th><th></th></tr></thead>
+            <tbody id="papers-tbl-body">
+              <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px">No papers uploaded yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         CIRCULARS
+    ══════════════════════════════════════════ -->
+    <div class="panel" id="panel-circulars">
+      <div class="section-heading">
+        <div class="grey-line"></div>
+        <div><h2>Circulars &amp; Communications</h2><p>Write, preview and print school circulars — saved to archive automatically</p></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><div><h3>Compose Circular</h3></div></div>
+          <div class="card-body">
+            <div class="form-group"><label>Title *</label><input type="text" id="circ-title" placeholder="e.g. Term 2 Fee Reminder"></div>
+            <div class="form-row">
+              <div class="form-group"><label>Date</label><input type="date" id="circ-date"></div>
+              <div class="form-group"><label>Target Audience</label>
+                <select id="circ-target">
+                  <option>All Parents &amp; Guardians</option>
+                  <option>Grade 8 Parents</option><option>Grade 9 Parents</option>
+                  <option>Grade 10 Parents</option><option>Grade 11 Parents</option>
+                  <option>Grade 12 Parents</option>
+                  <option>All Learners</option><option>All Staff</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group"><label>Body *</label><textarea id="circ-body" placeholder="Write the circular content here…" style="min-height:160px"></textarea></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-outline" onclick="previewCircular()"><i class="fas fa-eye"></i> Preview</button>
+              <button class="btn btn-outline" onclick="printCircular()"><i class="fas fa-print"></i> Print / PDF</button>
+              <button class="btn btn-primary" onclick="saveCircular()"><i class="fas fa-archive"></i> Save to Archive</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="circ-preview-wrap" style="display:none">
+          <div style="padding-bottom:8px;font-size:11.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">Live Preview</div>
+          <div id="circ-preview-box"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <div class="card-head"><div><h3>Circulars Archive</h3><p>Previously saved circulars</p></div></div>
+        <div class="card-body" style="padding:0;overflow-x:auto">
+          <table class="tbl">
+            <thead><tr><th>Title</th><th>Date</th><th>Audience</th><th>Saved</th><th></th></tr></thead>
+            <tbody id="circulars-archive-body">
+              <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px">No circulars saved yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- STUDENT ADD / EDIT MODAL -->
+<div class="modal-overlay" id="stu-modal">
+  <div class="modal" style="width:540px">
+    <h3 id="stu-modal-title">Add Student</h3>
+    <p class="modal-sub" id="stu-modal-sub">Manually create a learner record — no application required</p>
+    <input type="hidden" id="stu-modal-id">
+    <div class="form-row">
+      <div class="form-group"><label>Full Name *</label><input type="text" id="stu-fn" placeholder="e.g. Sipho Mthembu"></div>
+      <div class="form-group"><label>Grade *</label>
+        <select id="stu-grade-sel">
+          <option value="">Select…</option>
+          <option value="8">Grade 8</option><option value="9">Grade 9</option>
+          <option value="10">Grade 10</option><option value="11">Grade 11</option>
+          <option value="12">Grade 12</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Email Address</label><input type="email" id="stu-email" placeholder="learner@email.com"></div>
+      <div class="form-group"><label>Phone Number</label><input type="tel" id="stu-phone" placeholder="+27 72 000 0000"></div>
+    </div>
+    <div class="form-group">
+      <label style="margin-bottom:8px">Documents on File</label>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:4px">
+        <label style="display:flex;align-items:center;gap:7px;font-weight:500;color:var(--text);cursor:pointer;font-size:13px"><input type="checkbox" id="stu-doc-birth"> Birth Certificate</label>
+        <label style="display:flex;align-items:center;gap:7px;font-weight:500;color:var(--text);cursor:pointer;font-size:13px"><input type="checkbox" id="stu-doc-report"> Latest Report</label>
+        <label style="display:flex;align-items:center;gap:7px;font-weight:500;color:var(--text);cursor:pointer;font-size:13px"><input type="checkbox" id="stu-doc-proof"> Proof of Residence</label>
+      </div>
+    </div>
+    <div id="stu-modal-err" style="display:none;background:var(--danger-dim);border:1px solid rgba(224,80,80,0.3);border-radius:var(--radius);padding:9px 13px;font-size:12.5px;color:var(--danger);margin-bottom:4px"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="saveStudent()"><i class="fas fa-save"></i> Save Student</button>
+      <button class="btn btn-outline" onclick="closeStudentModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- STUDENT REMOVE CONFIRM MODAL -->
+<div class="modal-overlay" id="stu-confirm-modal">
+  <div class="modal">
+    <h3>Remove Student</h3>
+    <p class="modal-sub" id="stu-confirm-msg">Are you sure?</p>
+    <div class="modal-actions">
+      <button class="btn btn-danger" onclick="executeRemoveStudent()"><i class="fas fa-trash"></i> Yes, Remove</button>
+      <button class="btn btn-outline" onclick="document.getElementById('stu-confirm-modal').classList.remove('open')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- DOCUMENT VIEWER MODAL -->
+<div class="modal-overlay" id="docs-modal">
+  <div class="modal" style="width:580px;max-height:88vh;overflow-y:auto">
+    <h3><i class="fas fa-folder-open" style="margin-right:8px;color:var(--accent-l)"></i>Application Documents</h3>
+    <p class="modal-sub" id="docs-modal-sub"></p>
+    <div id="docs-modal-body"></div>
+    <div class="modal-actions" style="margin-top:16px">
+      <button class="btn btn-outline" onclick="document.getElementById('docs-modal').classList.remove('open')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- EMAIL SIMULATION MODAL -->
+<div class="modal-overlay" id="email-sim-modal">
+  <div class="modal" style="width:560px">
+    <h3><i class="fas fa-envelope" style="margin-right:8px;color:var(--accent-l)"></i>Auto-Email Sent</h3>
+    <p class="modal-sub">The following email was sent automatically to the parent/guardian</p>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px">
+      <div style="display:flex;gap:8px;margin-bottom:5px;font-size:12.5px"><span style="color:var(--text-muted);min-width:52px">To:</span><span id="esim-to" style="color:var(--white);font-weight:600"></span></div>
+      <div style="display:flex;gap:8px;margin-bottom:5px;font-size:12.5px"><span style="color:var(--text-muted);min-width:52px">From:</span><span style="color:var(--text-2)">admissions@bhekisizwehigh.edu.za</span></div>
+      <div style="display:flex;gap:8px;font-size:12.5px"><span style="color:var(--text-muted);min-width:52px">Subject:</span><span id="esim-subject" style="color:var(--white);font-weight:600"></span></div>
+    </div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;font-size:13px;color:var(--text);white-space:pre-wrap;line-height:1.7;max-height:220px;overflow-y:auto" id="esim-body"></div>
+    <div style="margin-top:12px;font-size:11.5px;color:var(--info);background:var(--info-dim);border:1px solid rgba(74,159,212,0.2);border-radius:var(--radius);padding:9px 13px">
+      <i class="fas fa-info-circle" style="margin-right:5px"></i>
+      In production, this fires automatically via your SMTP server. Connect your mail credentials in School Settings to activate live sending.
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="document.getElementById('email-sim-modal').classList.remove('open')"><i class="fas fa-check"></i> Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toast-msg"></span></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h3 id="modal-title">Confirm Action</h3>
+    <p class="modal-sub" id="modal-body">Are you sure you want to proceed?</p>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="document.getElementById('modal').classList.remove('open')">Confirm</button>
+      <button class="btn btn-outline" onclick="document.getElementById('modal').classList.remove('open')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   ADMIN-ONLY DATA LAYER
+   ─────────────────────────────────────────────────────────────
+   IMPORTANT: This DataStore and all data accessed through it
+   (students collection, learner personal data) exist ONLY in
+   this admin dashboard. The public website (*)
+   must NEVER read, render, query, or depend on these collections
+   or any learner/applicant data.
+
+   HONEST CAVEAT: Because the dashboard and public site share the
+   same browser origin, localStorage is technically readable from
+   any page on this origin. This boundary is enforced in code only.
+   Real access control (authentication + a backend API) is REQUIRED
+   before this goes live with actual learner data.
+
+   File storage: Document bytes (birth certs, reports, proof of
+   residence — POPIA-sensitive data of minors) are stored as base64
+   in localStorage for development only, capped at ~5 MB.
+   IndexedDB or Supabase is the intended production target for files.
+   ─────────────────────────────────────────────────────────────── */
+const DataStore = (() => {
+  const NS      = 'bhs_admin_';
+  const FILE_NS = 'bhs_admin_file_';
+  const FILE_QUOTA = 5 * 1024 * 1024;
+
+  const _key = col => NS + col;
+
+  function getAll(col) {
+    try { return JSON.parse(localStorage.getItem(_key(col)) || '[]'); }
+    catch { return []; }
+  }
+  function get(col, id) { return getAll(col).find(r => r.id === id) || null; }
+  function save(col, record) {
+    const arr = getAll(col);
+    const i = arr.findIndex(r => r.id === record.id);
+    if (i >= 0) arr[i] = record; else arr.push(record);
+    localStorage.setItem(_key(col), JSON.stringify(arr));
+  }
+  function remove(col, id) {
+    localStorage.setItem(_key(col), JSON.stringify(getAll(col).filter(r => r.id !== id)));
+  }
+  /* File bytes — swap readAsDataURL for IndexedDB/Supabase in production */
+  function saveFile(meta, blob) {
+    return new Promise((resolve, reject) => {
+      let used = 0;
+      for (const k in localStorage) { if (k.startsWith(FILE_NS)) used += localStorage[k].length * 0.75; }
+      if (used > FILE_QUOTA) {
+        console.warn('[DataStore] File quota near limit — production target: IndexedDB / Supabase.');
+        reject(new Error('Quota exceeded')); return;
+      }
+      const r = new FileReader();
+      r.onload  = e => { localStorage.setItem(FILE_NS + meta.ref, e.target.result); resolve(meta.ref); };
+      r.onerror = () => reject(r.error);
+      r.readAsDataURL(blob);
+    });
+  }
+  function getFile(ref) { return localStorage.getItem(FILE_NS + ref) || null; }
+
+  return { getAll, get, save, remove, saveFile, getFile };
+})();
+
+/* ── Seed 10 students across all grades so views are testable ── */
+function seedStudentsIfEmpty() {
+  if (DataStore.getAll('students').length > 0) return;
+  [
+    {id:'stu_s1', applicationId:null, fullName:'Thabo Mthembu',     grade:'12', email:'thabo.m@mail.com',     phone:'0721234567', documents:{birth:true, report:true, proof:true},  dateEnrolled:'2025-01-10T08:00:00Z', status:'active'},
+    {id:'stu_s2', applicationId:null, fullName:'Zanele Dlamini',    grade:'12', email:'zanele.d@mail.com',    phone:'0737654321', documents:{birth:true, report:true, proof:false}, dateEnrolled:'2025-01-10T08:00:00Z', status:'active'},
+    {id:'stu_s3', applicationId:null, fullName:'Sipho Ndlovu',      grade:'11', email:'sipho.n@mail.com',     phone:'0824445566', documents:{birth:true, report:false,proof:true},  dateEnrolled:'2025-01-10T08:00:00Z', status:'active'},
+    {id:'stu_s4', applicationId:null, fullName:'Nomsa Khumalo',     grade:'11', email:'nomsa.k@mail.com',     phone:'0613338822', documents:{birth:true, report:true, proof:true},  dateEnrolled:'2025-01-10T08:00:00Z', status:'active'},
+    {id:'stu_s5', applicationId:null, fullName:'Lungelo Buthelezi', grade:'10', email:'lungelo.b@mail.com',   phone:'0839991122', documents:{birth:false,report:true, proof:true},  dateEnrolled:'2025-01-10T08:00:00Z', status:'active'},
+    {id:'stu_s6', applicationId:null, fullName:'Nokuthula Zulu',    grade:'10', email:'nokuthula.z@mail.com', phone:'0762223344', documents:{birth:true, report:true, proof:true},  dateEnrolled:'2025-01-10T08:00:00Z', status:'active'},
+    {id:'stu_s7', applicationId:null, fullName:'Mduduzi Shabalala', grade:'9',  email:'mduduzi.s@mail.com',   phone:'0714447788', documents:{birth:true, report:true, proof:true},  dateEnrolled:'2025-01-10T08:00:00Z', status:'active'},
+    {id:'stu_s8', applicationId:null, fullName:'Bongani Ngcobo',    grade:'9',  email:'bongani.n@mail.com',   phone:'0815556677', documents:{birth:true, report:false,proof:false}, dateEnrolled:'2025-01-10T08:00:00Z', status:'active'},
+    {id:'stu_s9', applicationId:null, fullName:'Ayanda Khanyile',   grade:'8',  email:'ayanda.k@mail.com',    phone:'0731112233', documents:{birth:true, report:true, proof:true},  dateEnrolled:'2025-01-10T08:00:00Z', status:'active'},
+    {id:'stu_s10',applicationId:null, fullName:'Precious Mhlanga',  grade:'8',  email:'precious.m@mail.com',  phone:'0629998877', documents:{birth:false,report:true, proof:true},  dateEnrolled:'2025-01-10T08:00:00Z', status:'active'},
+  ].forEach(s => DataStore.save('students', s));
+}
+
+/* ── Student panel state ── */
+let currentGrade  = '8';
+let _stuToRemove  = null;
+
+function switchStudentGrade(el, grade) {
+  el.closest('.grade-tabs').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentGrade = grade;
+  document.getElementById('stu-search').value = '';
+  renderStudentTable();
+}
+
+function renderStudentStats() {
+  const all = DataStore.getAll('students');
+  document.getElementById('stu-stat-row').innerHTML =
+    `<div class="stat accent-stat"><div class="s-icon"><i class="fas fa-users"></i></div><div class="s-label">Total Enrolled</div><div class="s-val">${all.length}</div><div class="s-sub">All grades</div></div>` +
+    ['8','9','10','11','12'].map(g => {
+      const n = all.filter(s => s.grade === g).length;
+      return `<div class="stat"><div class="s-icon"><i class="fas fa-user-graduate"></i></div><div class="s-label">Grade ${g}</div><div class="s-val">${n}</div><div class="s-sub">learners</div></div>`;
+    }).join('');
+}
+
+function _docBadge(docs) {
+  if (!docs) return '<span class="badge badge-rejected">None</span>';
+  const n = [docs.birth, docs.report, docs.proof].filter(Boolean).length;
+  if (n === 3) return '<span class="badge badge-approved">&#10003; Complete</span>';
+  if (n === 0) return '<span class="badge badge-rejected">Missing</span>';
+  return `<span class="badge badge-pending">${n}/3</span>`;
+}
+
+function _esc(s)  { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function _escA(s) { return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+
+function renderStudentTable() {
+  const q    = (document.getElementById('stu-search').value || '').toLowerCase();
+  const all  = DataStore.getAll('students').filter(s => s.grade === currentGrade);
+  const list = q ? all.filter(s =>
+    (s.fullName||'').toLowerCase().includes(q) ||
+    (s.email||'').toLowerCase().includes(q) ||
+    (s.phone||'').includes(q)
+  ) : all;
+
+  document.getElementById('stu-grade-label').textContent = 'Grade ' + currentGrade + ' Learners';
+  document.getElementById('stu-count-label').textContent  = list.length + ' learner' + (list.length !== 1 ? 's' : '') + ' enrolled';
+
+  const tbody = document.getElementById('stu-tbl-body');
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:32px">` +
+      `<i class="fas fa-user-slash" style="display:block;font-size:24px;margin-bottom:10px;opacity:0.25"></i>` +
+      `No learners in Grade ${currentGrade} yet.<br><span style="font-size:12px">Approve an application or click <strong style="color:var(--accent-l)">Add Student</strong> above.</span></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map(s =>
+    `<tr>
+      <td><strong style="color:var(--white)">${_esc(s.fullName)}</strong></td>
+      <td><div style="font-size:12.5px">${_esc(s.email||'—')}</div><div style="font-size:11px;color:var(--text-muted)">${_esc(s.phone||'—')}</div></td>
+      <td>${_docBadge(s.documents)}</td>
+      <td style="font-size:12px;color:var(--text-2)">${fmtDate(s.dateEnrolled)}</td>
+      <td>${s.applicationId ? '<span class="badge badge-review" title="Created from approved application">Via App</span>' : '<span class="badge badge-academic">Manual</span>'}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-outline btn-sm" onclick="openEditStudentModal('${_escA(s.id)}')" title="Edit"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="confirmRemoveStudent('${_escA(s.id)}')" title="Remove"><i class="fas fa-trash"></i></button>
+      </td>
+    </tr>`
+  ).join('');
+}
+
+function exportStudentsCSV() {
+  const list = DataStore.getAll('students').filter(s => s.grade === currentGrade);
+  if (!list.length) { showToast('No learners in this grade to export'); return; }
+  const hdr  = ['ID','Full Name','Grade','Email','Phone','Birth Cert','Report','Proof of Res','Date Enrolled','Source'];
+  const rows = list.map(s => [
+    s.id, s.fullName, s.grade, s.email, s.phone,
+    s.documents?.birth  ? 'Yes' : 'No',
+    s.documents?.report ? 'Yes' : 'No',
+    s.documents?.proof  ? 'Yes' : 'No',
+    s.dateEnrolled,
+    s.applicationId ? 'Application #' + s.applicationId : 'Manual'
+  ]);
+  const csv  = [hdr,...rows].map(r => r.map(v => '"' + String(v||'').replace(/"/g,'""') + '"').join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'grade' + currentGrade + '_students.csv'; a.click();
+  URL.revokeObjectURL(url);
+  showToast('Grade ' + currentGrade + ' students exported');
+}
+
+function updateOverviewStudentStat() {
+  const el = document.getElementById('stat-total-students');
+  if (el) el.textContent = DataStore.getAll('students').length;
+}
+
+/* ── Student modal ── */
+function openAddStudentModal() {
+  document.getElementById('stu-modal-id').value       = '';
+  document.getElementById('stu-modal-title').textContent = 'Add Student';
+  document.getElementById('stu-modal-sub').textContent   = 'Manually create a learner record — no application required';
+  document.getElementById('stu-fn').value             = '';
+  document.getElementById('stu-grade-sel').value      = currentGrade;
+  document.getElementById('stu-email').value          = '';
+  document.getElementById('stu-phone').value          = '';
+  document.getElementById('stu-doc-birth').checked    = false;
+  document.getElementById('stu-doc-report').checked   = false;
+  document.getElementById('stu-doc-proof').checked    = false;
+  document.getElementById('stu-modal-err').style.display = 'none';
+  document.getElementById('stu-modal').classList.add('open');
+  setTimeout(() => document.getElementById('stu-fn').focus(), 80);
+}
+
+function openEditStudentModal(id) {
+  const s = DataStore.get('students', id);
+  if (!s) return;
+  document.getElementById('stu-modal-id').value       = s.id;
+  document.getElementById('stu-modal-title').textContent = 'Edit Student';
+  document.getElementById('stu-modal-sub').textContent   = 'Update contact details or grade — changing grade moves the learner between grade views';
+  document.getElementById('stu-fn').value             = s.fullName || '';
+  document.getElementById('stu-grade-sel').value      = s.grade || '';
+  document.getElementById('stu-email').value          = s.email || '';
+  document.getElementById('stu-phone').value          = s.phone || '';
+  document.getElementById('stu-doc-birth').checked    = !!(s.documents && s.documents.birth);
+  document.getElementById('stu-doc-report').checked   = !!(s.documents && s.documents.report);
+  document.getElementById('stu-doc-proof').checked    = !!(s.documents && s.documents.proof);
+  document.getElementById('stu-modal-err').style.display = 'none';
+  document.getElementById('stu-modal').classList.add('open');
+}
+
+function closeStudentModal() { document.getElementById('stu-modal').classList.remove('open'); }
+
+function saveStudent() {
+  const errEl = document.getElementById('stu-modal-err');
+  const fn    = document.getElementById('stu-fn').value.trim();
+  const grade = document.getElementById('stu-grade-sel').value;
+  const email = document.getElementById('stu-email').value.trim();
+  const phone = document.getElementById('stu-phone').value.trim();
+
+  if (!fn)    { _stuErr(errEl, 'Full name is required.'); return; }
+  if (!grade) { _stuErr(errEl, 'Please select a grade.'); return; }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { _stuErr(errEl, 'Enter a valid email address.'); return; }
+  if (phone && !/^[0-9+\s()\-]{7,16}$/.test(phone))       { _stuErr(errEl, 'Enter a valid phone number.'); return; }
+  errEl.style.display = 'none';
+
+  const existId  = document.getElementById('stu-modal-id').value;
+  const isEdit   = !!existId;
+  const existing = isEdit ? DataStore.get('students', existId) : null;
+
+  DataStore.save('students', {
+    id:           isEdit ? existId : 'stu_' + Date.now() + '_' + Math.random().toString(36).slice(2,5),
+    applicationId:existing ? existing.applicationId : null,
+    fullName:     fn,
+    grade:        grade,
+    email:        email,
+    phone:        phone,
+    documents:    {
+      birth:  document.getElementById('stu-doc-birth').checked,
+      report: document.getElementById('stu-doc-report').checked,
+      proof:  document.getElementById('stu-doc-proof').checked,
+    },
+    dateEnrolled: existing ? existing.dateEnrolled : new Date().toISOString(),
+    status:       'active'
+  });
+
+  /* Switch to the saved grade tab */
+  currentGrade = grade;
+  document.querySelectorAll('#panel-students .grade-tabs .tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.grade === grade);
+  });
+
+  closeStudentModal();
+  renderStudentTable();
+  renderStudentStats();
+  updateOverviewStudentStat();
+  showToast(isEdit ? 'Student updated' : 'Student added to Grade ' + grade);
+}
+
+function _stuErr(el, msg) { el.textContent = msg; el.style.display = 'block'; }
+
+function confirmRemoveStudent(id) {
+  const s = DataStore.get('students', id);
+  if (!s) return;
+  _stuToRemove = id;
+  document.getElementById('stu-confirm-msg').textContent =
+    'Remove "' + s.fullName + '" (Grade ' + s.grade + ') from the records? ' +
+    'Any linked application remains intact in the Admissions inbox.';
+  document.getElementById('stu-confirm-modal').classList.add('open');
+}
+
+function executeRemoveStudent() {
+  if (!_stuToRemove) return;
+  const s = DataStore.get('students', _stuToRemove);
+  /* Clear back-reference in memory — the application record itself is untouched */
+  if (s && s.applicationId && window._appData) {
+    const app = window._appData.find(a => a.id == s.applicationId);
+    if (app) app.studentId = null;
+  }
+  DataStore.remove('students', _stuToRemove);
+  _stuToRemove = null;
+  document.getElementById('stu-confirm-modal').classList.remove('open');
+  renderStudentTable();
+  renderStudentStats();
+  updateOverviewStudentStat();
+  showToast('Student removed');
+}
+
+/* ── Panel navigation ── */
+const panelTitles = {
+  overview:     'Overview',
+  admissions:   'Admissions Management',
+  students:     'Student Records',
+  events:       'Events & Announcements',
+  results:      'Academic Results',
+  achievements: 'Achievements',
+  exams:        'Examinations Management',
+  staff:        'Staff Management',
+  gallery:      'Gallery',
+  papers:       'Past Papers',
+  circulars:    'Circulars & Communications',
+  settings:     'School Settings'
+};
+
+function showPanel(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  document.getElementById('topbar-title').textContent = panelTitles[id] || id;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── Tab switching ── */
+function switchTab(el, targetId) {
+  const parent = el.closest('.tabs').parentElement;
+  parent.querySelectorAll('[id]').forEach(div => {
+    if (div.id !== el.closest('.tabs').id) div.style.display = 'none';
+  });
+  el.closest('.tabs').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(targetId).style.display = 'block';
+}
+
+/* ── Toast ── */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ── Change application status ── */
+function changeStatus(btn, status, appId) {
+  const td = btn.closest('td');
+  const statusCell = td.previousElementSibling.previousElementSibling.previousElementSibling;
+  const cls = status === 'Approved' ? 'badge-approved' : 'badge-rejected';
+  statusCell.innerHTML = '<span class="badge ' + cls + '">' + status + '</span>';
+  td.innerHTML = '<button class="btn btn-outline btn-sm" onclick="viewDocs(' + appId + ')"><i class="fas fa-folder-open"></i> Docs</button>';
+  showToast('Application ' + status.toLowerCase());
+
+  /* Auto-email simulation */
+  showEmailSim(appId, status);
+
+  /* When approving: create a student record. The application is NOT deleted —
+     it stays in the Admissions inbox with status "Approved".           */
+  if (status === 'Approved' && window._appData) {
+    const app = window._appData.find(a => a.id == appId);
+    if (app) {
+      const gradeNum = String(app.grade || '').replace(/[^0-9]/g, '') || '8';
+      const stuId    = 'stu_app' + appId + '_' + Date.now();
+      DataStore.save('students', {
+        id:           stuId,
+        applicationId:appId,
+        fullName:     app.learner_name || '—',
+        grade:        gradeNum,
+        email:        app.email  || '',
+        phone:        app.phone  || '',
+        documents:    { birth: !!(app.doc_birth), report: !!(app.doc_report), proof: !!(app.doc_proof) },
+        dateEnrolled: new Date().toISOString(),
+        status:       'active'
+      });
+      app.studentId = stuId;
+      renderStudentStats();
+      updateOverviewStudentStat();
+    }
+  }
+
+  const fd = new FormData();
+  fd.append('id', appId);
+  fd.append('status', status);
+  fetch('api/update_status.php', { method: 'POST', body: fd, headers: { 'X-CSRF-Token': window._csrfToken || '' } })
+    .then(r => r.json())
+    .then(() => loadApplications())
+    .catch(() => {});
+}
+
+/* ── Filter table ── */
+function filterTable(input, tableId) {
+  const q = input.value.toLowerCase();
+  document.querySelectorAll('#' + tableId + ' tbody tr').forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+/* ── Export CSV ── */
+function exportCSV() {
+  if (!window._appData || !window._appData.length) { showToast('No data to export'); return; }
+  const headers = ['Ref Code','Learner Name','Grade','Guardian','Phone','Email','Submitted','Status'];
+  const rows = window._appData.map(a => [
+    a.ref_code||'—', a.learner_name, a.grade, a.guardian_name, a.phone, a.email,
+    a.submitted_at, a.status
+  ]);
+  const csv = [headers, ...rows].map(r => r.map(v => '"' + String(v||'').replace(/"/g,'""') + '"').join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'applications.csv'; a.click();
+  URL.revokeObjectURL(url);
+  showToast('CSV downloaded');
+}
+
+/* ── Load applications from API ── */
+function statusBadge(s) {
+  const map = { 'Pending':'badge-pending', 'In Review':'badge-review', 'Approved':'badge-approved', 'Rejected':'badge-rejected' };
+  return '<span class="badge ' + (map[s]||'badge-pending') + '">' + s + '</span>';
+}
+
+function fmtDate(dt) {
+  if (!dt) return '—';
+  const d = new Date(dt);
+  return d.toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function docCount(a) {
+  const total = 3;
+  const have  = [a.doc_birth, a.doc_report, a.doc_proof].filter(Boolean).length;
+  return have === total ? '✅ ' + total + '/' + total : '⚠ ' + have + '/' + total;
+}
+
+function actionBtns(a) {
+  const viewBtn = '<button class="btn btn-outline btn-sm" onclick="viewDocs(' + a.id + ')" style="margin-right:4px"><i class="fas fa-folder-open"></i> Docs</button>';
+  if (a.status === 'Approved' || a.status === 'Rejected') {
+    return viewBtn;
+  }
+  return viewBtn +
+    '<button class="btn btn-success btn-sm" style="margin-right:4px" onclick="changeStatus(this,\'Approved\',' + a.id + ')">Approve</button>' +
+    '<button class="btn btn-danger btn-sm" onclick="changeStatus(this,\'Rejected\',' + a.id + ')">Reject</button>';
+}
+
+function viewDocs(appId) {
+  const app = window._appData && window._appData.find(a => a.id == appId);
+  if (!app) { showToast('Application data not loaded — please refresh'); return; }
+
+  document.getElementById('docs-modal-sub').textContent =
+    (app.learner_name || '—') + '  ·  ' + (app.grade || '—') + '  ·  Submitted ' + fmtDate(app.submitted_at);
+
+  const base = 'uploads/';
+  const docList = [
+    { label: 'Birth Certificate',    file: app.doc_birth  },
+    { label: 'Latest School Report', file: app.doc_report },
+    { label: 'Proof of Residence',   file: app.doc_proof  }
+  ];
+
+  document.getElementById('docs-modal-body').innerHTML = docList.map(d => {
+    if (!d.file) {
+      return '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">' +
+        '<i class="fas fa-file-times" style="color:var(--danger);font-size:20px;width:24px;text-align:center;flex-shrink:0"></i>' +
+        '<div><div style="font-size:13px;font-weight:600;color:var(--text-2)">' + d.label + '</div>' +
+        '<div style="font-size:12px;color:var(--text-muted)">Not uploaded</div></div>' +
+        '</div>';
+    }
+    const url = base + d.file;
+    const ext = d.file.split('.').pop().toLowerCase();
+    const isImg = ['jpg','jpeg','png'].includes(ext);
+    const isPdf = ext === 'pdf';
+    return '<div style="padding:12px 0;border-bottom:1px solid var(--border)">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
+        '<div style="display:flex;align-items:center;gap:10px">' +
+          '<i class="fas ' + (isPdf ? 'fa-file-pdf' : 'fa-file-image') + '" style="color:' + (isPdf ? 'var(--danger)' : 'var(--info)') + ';font-size:20px;width:24px;text-align:center;flex-shrink:0"></i>' +
+          '<div><div style="font-size:13px;font-weight:600;color:var(--white)">' + d.label + '</div>' +
+          '<div style="font-size:11px;color:var(--text-muted)">' + d.file + '</div></div>' +
+        '</div>' +
+        '<a href="' + url + '" target="_blank" class="btn btn-outline btn-sm"><i class="fas fa-external-link-alt"></i> Open</a>' +
+      '</div>' +
+      (isImg ? '<img src="' + url + '" style="width:100%;max-height:280px;object-fit:contain;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg-3)">' : '') +
+      (isPdf ? '<iframe src="' + url + '" style="width:100%;height:260px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-3)"></iframe>' : '') +
+      '</div>';
+  }).join('');
+
+  document.getElementById('docs-modal').classList.add('open');
+}
+
+function loadApplications() {
+  fetch('api/get_applications.php')
+    .then(r => r.json())
+    .then(res => {
+      if (!res.success) return;
+      const apps = res.data;
+      window._appData = apps;
+
+      // Pending count stat + sidebar badge
+      const pending = apps.filter(a => a.status === 'Pending').length;
+      document.getElementById('stat-pending').textContent = pending;
+      const badge = document.getElementById('sidebar-pending-badge');
+      badge.textContent = pending;
+      badge.style.display = pending > 0 ? '' : 'none';
+
+      // Inbox count label
+      const pendingLabel = pending + ' pending review';
+      document.getElementById('apps-count-label').textContent = pendingLabel;
+
+      // Full inbox table
+      const tbody = document.getElementById('apps-tbl-body');
+      if (!apps.length) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text-muted);padding:18px">No applications yet</td></tr>';
+      } else {
+        tbody.innerHTML = apps.map(a =>
+          '<tr>' +
+          '<td><input type="checkbox" class="app-row-cb" value="' + a.id + '" onchange="updateBulkBar()"></td>' +
+          '<td><code style="font-size:11px;color:var(--accent-l);background:var(--accent-dim);padding:2px 7px;border-radius:4px">' + (a.ref_code||'—') + '</code></td>' +
+          '<td>' + (a.learner_name||'—') + '</td>' +
+          '<td>' + (a.grade||'—') + '</td>' +
+          '<td>' + (a.guardian_name||'—') + '</td>' +
+          '<td>' + fmtDate(a.submitted_at) + '</td>' +
+          '<td>' + docCount(a) + '</td>' +
+          '<td>' + statusBadge(a.status) + '</td>' +
+          '<td>' + actionBtns(a) + '</td>' +
+          '</tr>'
+        ).join('');
+      }
+
+      // Overview recent-apps table (latest 5)
+      const recent = apps.slice(0, 5);
+      const rtbody = document.getElementById('recent-apps-tbody');
+      if (!recent.length) {
+        rtbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:18px">No applications yet</td></tr>';
+      } else {
+        rtbody.innerHTML = recent.map(a =>
+          '<tr>' +
+          '<td>' + (a.learner_name||'—') + '</td>' +
+          '<td>' + (a.grade||'—') + '</td>' +
+          '<td>' + fmtDate(a.submitted_at) + '</td>' +
+          '<td>' + statusBadge(a.status) + '</td>' +
+          '</tr>'
+        ).join('');
+      }
+    })
+    .catch(() => {
+      document.getElementById('stat-pending').textContent = '?';
+      document.getElementById('apps-count-label').textContent = 'Could not load';
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  /* Populate admin info from PHP session (only available via .php wrapper) */
+  if (window._bhsAdmin) {
+    const initials = window._bhsAdmin.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    const el = document.getElementById('admin-avatar');
+    const nm = document.getElementById('admin-sidebar-name');
+    const rl = document.getElementById('admin-sidebar-role');
+    if (el) el.textContent = initials;
+    if (nm) nm.textContent = window._bhsAdmin.name;
+    if (rl) rl.textContent = window._bhsAdmin.label;
+  }
+
+  loadApplications();
+  seedStudentsIfEmpty();
+  renderStudentStats();
+  renderStudentTable();
+  updateOverviewStudentStat();
+  renderLeaveLog();
+  renderPapersList();
+  renderCircularsList();
+});
+
+/* ── Results bars ── */
+const yearData = [
+  {year:'2021', rate:82},
+  {year:'2022', rate:85},
+  {year:'2023', rate:89},
+  {year:'2024', rate:93},
+  {year:'2025', rate:98},
+];
+const subjectData = [
+  {name:'isiZulu HL',       rate:99.4},
+  {name:'English HL',       rate:98.7},
+  {name:'Business Studies', rate:95.5},
+  {name:'History',          rate:95.9},
+  {name:'Geography',        rate:94.2},
+  {name:'Accounting',       rate:92.1},
+  {name:'Life Sciences',    rate:91.0},
+  {name:'Physical Science', rate:81.4},
+  {name:'Mathematics',      rate:80.6},
+];
+
+function renderResultBars() {
+  const c = document.getElementById('results-bars');
+  c.innerHTML = yearData.map(d =>
+    '<div class="result-bar-wrap">' +
+    '<div class="result-bar-label"><span>' + d.year + '</span><span style="font-weight:700;color:var(--accent-l)">' + d.rate + '%</span></div>' +
+    '<div class="result-bar-track"><div class="result-bar-fill" style="width:' + d.rate + '%"></div></div>' +
+    '</div>'
+  ).join('');
+
+  const s = document.getElementById('subject-bars');
+  s.innerHTML = subjectData.map(d =>
+    '<div class="result-bar-wrap">' +
+    '<div class="result-bar-label"><span>' + d.name + '</span><span style="font-weight:700;color:var(--info)">' + d.rate + '%</span></div>' +
+    '<div class="result-bar-track"><div class="result-bar-fill" style="width:' + d.rate + '%;background:var(--info)"></div></div>' +
+    '</div>'
+  ).join('');
+}
+
+function addResult() {
+  const y = document.getElementById('res-year').value;
+  const r = parseFloat(document.getElementById('res-rate').value);
+  if (!y || isNaN(r)) { showToast('Please enter a valid year and rate'); return; }
+  yearData.push({year: y, rate: r});
+  renderResultBars();
+  showToast('Result for ' + y + ' added — ' + r + '%');
+}
+
+/* ── Gallery with real school photos ── */
+const galleryItems = [
+  {label:'School Life',         src:'pic1.jpg'},
+  {label:'Cultural Day 2025',   src:'pic2.jpg'},
+  {label:'Prize-Giving 2025',   src:'pic3.jpg'},
+  {label:'Athletics 2025',      src:'pic4.jpg'},
+  {label:'Drama Festival 2025', src:'pic5.jpg'},
+  {label:'Grade 12 2025',       src:'pic6.jpg'},
+  {label:'Science Fair 2025',   src:'pic7.jpg'},
+  {label:'Matric Farewell 2024',src:'pic8.webp'},
+  {label:'School Events',       src:'pic9.webp'},
+  {label:'Classroom Life',      src:'pic1.jpeg'},
+  {label:'Student Activities',  src:'pic2.jpeg'},
+  {label:'Academic Life',       src:'pic3.jpeg'},
+  {label:'School Grounds',      src:'pic4.jpeg'},
+  {label:'Sports Day',          src:'pic5.jpeg'},
+  {label:'School Community',    src:'pic6.jpg'},
+];
+
+function renderGallery() {
+  const g = document.getElementById('gallery-grid');
+  g.innerHTML = galleryItems.map((item, i) =>
+    '<div class="gallery-thumb" title="' + item.label + '">' +
+    '<img src="' + item.src + '" alt="' + item.label + '" loading="lazy" onerror="this.parentElement.style.background=\'var(--bg-4)\';this.style.display=\'none\'">' +
+    '<div class="thumb-label">' + item.label + '</div>' +
+    '<div class="thumb-overlay">' +
+    '<button class="btn btn-danger btn-sm" onclick="removeGalleryItem(' + i + ')"><i class="fas fa-trash"></i> Remove</button>' +
+    '</div>' +
+    '</div>'
+  ).join('');
+}
+
+function removeGalleryItem(i) {
+  galleryItems.splice(i, 1);
+  renderGallery();
+  showToast('Photo removed from gallery');
+}
+
+/* ── Init ── */
+renderResultBars();
+renderGallery();
+
+/* ════════════════════════════════════════════
+   BULK SELECT — ADMISSIONS
+════════════════════════════════════════════ */
+function toggleSelectAll(master) {
+  document.querySelectorAll('.app-row-cb').forEach(cb => cb.checked = master.checked);
+  updateBulkBar();
+}
+
+function updateBulkBar() {
+  const checked = document.querySelectorAll('.app-row-cb:checked').length;
+  const total   = document.querySelectorAll('.app-row-cb').length;
+  document.getElementById('bulk-count').textContent = checked;
+  document.getElementById('bulk-action-bar').style.display = checked > 0 ? 'flex' : 'none';
+  const master = document.getElementById('select-all-apps');
+  if (master) {
+    master.indeterminate = checked > 0 && checked < total;
+    master.checked = total > 0 && checked === total;
+  }
+}
+
+function clearBulkSelect() {
+  document.querySelectorAll('.app-row-cb').forEach(cb => cb.checked = false);
+  const master = document.getElementById('select-all-apps');
+  if (master) { master.checked = false; master.indeterminate = false; }
+  updateBulkBar();
+}
+
+function bulkApprove() {
+  const ids = [...document.querySelectorAll('.app-row-cb:checked')].map(cb => cb.value);
+  if (!ids.length) return;
+  let done = 0;
+  ids.forEach(id => {
+    const app = window._appData && window._appData.find(a => String(a.id) === id);
+    if (app && app.status !== 'Approved') {
+      app.status = 'Approved';
+      const gradeNum = String(app.grade || '').replace(/[^0-9]/g, '') || '8';
+      const stuId = 'stu_app' + app.id + '_' + Date.now() + '_' + Math.random().toString(36).slice(2,4);
+      DataStore.save('students', {
+        id: stuId, applicationId: app.id,
+        fullName: app.learner_name || '—', grade: gradeNum,
+        email: app.email || '', phone: app.phone || '',
+        documents: { birth: !!(app.doc_birth), report: !!(app.doc_report), proof: !!(app.doc_proof) },
+        dateEnrolled: new Date().toISOString(), status: 'active'
+      });
+      const fd = new FormData();
+      fd.append('id', id); fd.append('status', 'Approved');
+      fetch('api/update_status.php', { method: 'POST', body: fd, headers: { 'X-CSRF-Token': window._csrfToken || '' } }).catch(() => {});
+      done++;
+    }
+  });
+  renderStudentStats();
+  updateOverviewStudentStat();
+  clearBulkSelect();
+  loadApplications();
+  showToast(done + ' application' + (done !== 1 ? 's' : '') + ' approved — student records created');
+}
+
+function bulkReject() {
+  const ids = [...document.querySelectorAll('.app-row-cb:checked')].map(cb => cb.value);
+  if (!ids.length) return;
+  let done = 0;
+  ids.forEach(id => {
+    const app = window._appData && window._appData.find(a => String(a.id) === id);
+    if (app && app.status !== 'Rejected') {
+      app.status = 'Rejected';
+      const fd = new FormData();
+      fd.append('id', id); fd.append('status', 'Rejected');
+      fetch('api/update_status.php', { method: 'POST', body: fd, headers: { 'X-CSRF-Token': window._csrfToken || '' } }).catch(() => {});
+      done++;
+    }
+  });
+  clearBulkSelect();
+  loadApplications();
+  showToast(done + ' application' + (done !== 1 ? 's' : '') + ' rejected');
+}
+
+function filterAppsTable(input) {
+  const q = input.value.toLowerCase();
+  document.querySelectorAll('#apps-tbl tbody tr').forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+/* ════════════════════════════════════════════
+   AUTO-EMAIL SIMULATION
+════════════════════════════════════════════ */
+function showEmailSim(appId, status) {
+  const app = window._appData && window._appData.find(a => a.id == appId);
+  if (!app || !app.email) return;
+  const toEl   = document.getElementById('esim-to');
+  const subEl  = document.getElementById('esim-subject');
+  const bodyEl = document.getElementById('esim-body');
+  if (toEl)  toEl.textContent  = app.email;
+  if (subEl) subEl.textContent = status === 'Approved'
+    ? 'Application Approved — Bhekisizwe Senior Secondary School'
+    : 'Application Outcome — Bhekisizwe Senior Secondary School';
+  if (bodyEl) bodyEl.textContent = status === 'Approved'
+    ? 'Dear ' + (app.guardian_name || 'Parent/Guardian') + ',\n\nWe are pleased to inform you that the application for ' +
+      (app.learner_name || 'your child') + ' to ' + (app.grade || 'Grade') +
+      ' has been APPROVED for the 2026/2027 academic year.\n\nPlease visit the school office within 5 working days to complete the formal enrolment process.\n\nKind regards,\nAdmissions Office\nBhekisizwe Senior Secondary School\neMachitshane, Nqutu, KwaZulu-Natal'
+    : 'Dear ' + (app.guardian_name || 'Parent/Guardian') + ',\n\nThank you for applying to Bhekisizwe Senior Secondary School. After careful consideration, we regret to inform you that the application for ' +
+      (app.learner_name || 'your child') + ' was not successful for the 2026/2027 academic year.\n\nWe encourage you to reapply in the next intake cycle. Please contact our admissions office if you have any questions.\n\nKind regards,\nAdmissions Office\nBhekisizwe Senior Secondary School';
+  document.getElementById('email-sim-modal').classList.add('open');
+}
+
+/* ════════════════════════════════════════════
+   PRINTABLE INTAKE REPORT
+════════════════════════════════════════════ */
+function printIntakeReport() {
+  if (!window._appData) { showToast('No application data loaded'); return; }
+  const approved = window._appData.filter(a => a.status === 'Approved');
+  if (!approved.length) { showToast('No approved applications to include in the report'); return; }
+  const rows = approved.map((a, i) =>
+    '<tr><td>' + (i+1) + '</td><td>' + (a.learner_name||'—') + '</td><td>' +
+    (a.grade||'—') + '</td><td>' + (a.guardian_name||'—') + '</td><td>' +
+    (a.phone||'—') + '</td><td>' + (a.email||'—') + '</td><td>' +
+    fmtDate(a.submitted_at) + '</td></tr>'
+  ).join('');
+  const win = window.open('', '_blank');
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Intake Report</title><style>' +
+    'body{font-family:Arial,sans-serif;font-size:12px;color:#222;padding:32px}' +
+    'h1{font-size:18px;margin-bottom:4px}.sub{color:#666;font-size:11px;margin-bottom:20px}' +
+    '.meta{display:flex;justify-content:space-between;font-size:11px;color:#666;margin-bottom:8px}' +
+    'table{width:100%;border-collapse:collapse}th{background:#1a1a1a;color:#fff;padding:8px 10px;text-align:left;font-size:11px}' +
+    'td{padding:7px 10px;border-bottom:1px solid #e0e0e0}tr:nth-child(even) td{background:#f9f9f9}' +
+    '@media print{body{padding:0}}' +
+    '</style></head><body>' +
+    '<div class="meta"><span>Bhekisizwe Senior Secondary School</span><span>Printed: ' + new Date().toLocaleDateString('en-ZA') + '</span></div>' +
+    '<h1>Approved Intake Report — 2026/2027</h1>' +
+    '<p class="sub">' + approved.length + ' learner' + (approved.length !== 1 ? 's' : '') + ' approved for enrolment</p>' +
+    '<table><thead><tr><th>#</th><th>Learner Name</th><th>Grade</th><th>Guardian</th><th>Phone</th><th>Email</th><th>Date Applied</th></tr></thead>' +
+    '<tbody>' + rows + '</tbody></table>' +
+    '</body></html>');
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 500);
+}
+
+/* ════════════════════════════════════════════
+   RESULTS — TAB SWITCH + UPLOAD
+════════════════════════════════════════════ */
+function switchResultsTab(el, targetId) {
+  el.closest('.tabs').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['res-tab-rates', 'res-tab-upload'].forEach(id => {
+    document.getElementById(id).style.display = id === targetId ? 'block' : 'none';
+  });
+}
+
+function downloadResultsTemplate() {
+  const csv = '"Learner Name","Subject","Mark (%)"\n"Sipho Mthembu","Mathematics","72"\n"Zanele Dlamini","Physical Science","85"';
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'results_template.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function previewResultsFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const lines = e.target.result.split('\n').filter(l => l.trim()).slice(0, 6);
+    const rows  = lines.map(l => l.split(',').map(v => v.replace(/^"|"$/g,'').trim()));
+    if (!rows.length) return;
+    let html = '<table class="tbl"><thead><tr>' + rows[0].map(h => '<th>' + h + '</th>').join('') + '</tr></thead><tbody>';
+    rows.slice(1).forEach(r => { html += '<tr>' + r.map(v => '<td>' + v + '</td>').join('') + '</tr>'; });
+    html += '</tbody></table>';
+    document.getElementById('results-preview-table').innerHTML = html;
+    document.getElementById('results-preview').style.display = 'block';
+    showToast('"' + file.name + '" loaded — review and confirm');
+  };
+  reader.readAsText(file);
+}
+
+/* ════════════════════════════════════════════
+   STAFF — TAB SWITCH + LEAVE LOG
+════════════════════════════════════════════ */
+function switchStaffTab(el, targetId) {
+  el.closest('.tabs').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['staff-tab-directory', 'staff-tab-leave'].forEach(id => {
+    document.getElementById(id).style.display = id === targetId ? 'block' : 'none';
+  });
+}
+
+function logAbsence() {
+  const name   = document.getElementById('leave-staff-name').value;
+  const date   = document.getElementById('leave-date').value;
+  const type   = document.getElementById('leave-type').value;
+  const reason = document.getElementById('leave-reason').value.trim();
+  if (!name || !date) { showToast('Please select a staff member and date'); return; }
+  DataStore.save('leaveLog', {
+    id: 'leave_' + Date.now(),
+    staffName: name, date, type,
+    reason: reason || '—',
+    loggedAt: new Date().toISOString()
+  });
+  document.getElementById('leave-staff-name').value = '';
+  document.getElementById('leave-date').value       = '';
+  document.getElementById('leave-reason').value     = '';
+  renderLeaveLog();
+  showToast('Absence logged for ' + name.split(' — ')[0]);
+}
+
+function renderLeaveLog() {
+  const records = DataStore.getAll('leaveLog').sort((a,b) => b.date.localeCompare(a.date));
+  const tbody   = document.getElementById('leave-log-tbody');
+  if (!tbody) return;
+  const countEl = document.getElementById('leave-count-label');
+  if (countEl) countEl.textContent = records.length + ' record' + (records.length !== 1 ? 's' : '') + ' this year';
+  if (!records.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px">No absences logged yet.</td></tr>';
+    return;
+  }
+  const typeColour = { 'Sick Leave':'badge-rejected', 'Annual Leave':'badge-approved', 'Family Responsibility':'badge-pending', 'Unpaid Leave':'badge-warning', 'Other':'badge-academic' };
+  tbody.innerHTML = records.map(r =>
+    '<tr>' +
+    '<td>' + fmtDate(r.date) + '</td>' +
+    '<td><strong style="color:var(--white)">' + _esc(r.staffName.split(' — ')[0]) + '</strong></td>' +
+    '<td><span class="badge ' + (typeColour[r.type]||'badge-academic') + '">' + _esc(r.type) + '</span></td>' +
+    '<td style="font-size:12px;color:var(--text-2)">' + _esc(r.reason) + '</td>' +
+    '<td><button class="btn btn-outline btn-sm" onclick="removeLeaveRecord(\'' + _escA(r.id) + '\')"><i class="fas fa-trash"></i></button></td>' +
+    '</tr>'
+  ).join('');
+}
+
+function removeLeaveRecord(id) {
+  DataStore.remove('leaveLog', id);
+  renderLeaveLog();
+  showToast('Record removed');
+}
+
+function exportLeaveLogCSV() {
+  const records = DataStore.getAll('leaveLog');
+  if (!records.length) { showToast('No records to export'); return; }
+  const hdr  = ['Date','Staff Member','Leave Type','Notes','Logged At'];
+  const rows = records.map(r => [r.date, r.staffName, r.type, r.reason, fmtDate(r.loggedAt)]);
+  const csv  = [hdr,...rows].map(r => r.map(v => '"' + String(v||'').replace(/"/g,'""') + '"').join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'leave_log.csv'; a.click();
+  URL.revokeObjectURL(url);
+  showToast('Leave log exported');
+}
+
+/* ════════════════════════════════════════════
+   PAST PAPERS
+════════════════════════════════════════════ */
+function savePaper() {
+  const subject = document.getElementById('paper-subject').value;
+  const grade   = document.getElementById('paper-grade').value;
+  const year    = document.getElementById('paper-year').value;
+  const term    = document.getElementById('paper-term').value;
+  const fileEl  = document.getElementById('paper-file');
+  if (!subject || !grade || !year) { showToast('Please fill in subject, grade and year'); return; }
+  if (!fileEl.files[0]) { showToast('Please select a PDF file to upload'); return; }
+
+  const file = fileEl.files[0];
+  if (file.size > 5 * 1024 * 1024) { showToast('File too large — maximum 5 MB per paper'); return; }
+
+  showToast('Uploading…');
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const id = 'paper_' + Date.now();
+      /* Store file bytes in a SEPARATE key so the metadata JSON stays small */
+      localStorage.setItem('bhs_file_' + id, e.target.result);
+      DataStore.save('pastPapers', {
+        id, subject, grade, year, term,
+        fileName:   file.name,
+        hasFile:    true,
+        uploadedAt: new Date().toISOString()
+      });
+      document.getElementById('paper-subject').value = '';
+      document.getElementById('paper-grade').value   = '';
+      document.getElementById('paper-year').value    = '';
+      fileEl.value = '';
+      renderPapersList();
+      showToast(file.name + ' uploaded — learners can now view & download it');
+    } catch(err) {
+      showToast('Upload failed — storage may be full. Delete old papers and try again.');
+    }
+  };
+  reader.onerror = function() { showToast('Could not read the file — please try again'); };
+  reader.readAsDataURL(file);
+}
+
+function renderPapersList() {
+  const records = DataStore.getAll('pastPapers').sort((a,b) => b.uploadedAt.localeCompare(a.uploadedAt));
+  const tbody   = document.getElementById('papers-tbl-body');
+  if (!tbody) return;
+  if (!records.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px">No papers uploaded yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = records.map(r =>
+    '<tr>' +
+    '<td><strong style="color:var(--white)">' + _esc(r.subject) + '</strong></td>' +
+    '<td>Grade ' + _esc(r.grade) + '</td>' +
+    '<td>' + _esc(r.year) + '</td>' +
+    '<td><span class="badge badge-academic">' + _esc(r.term) + '</span></td>' +
+    '<td style="font-size:12px;color:var(--text-2)">' + _esc(r.fileName || '—') + '</td>' +
+    '<td style="white-space:nowrap">' +
+      (r.hasFile || localStorage.getItem('bhs_file_' + r.id)
+        ? '<span class="badge badge-approved" style="margin-right:6px"><i class="fas fa-check"></i> File ready</span>'
+        : '<button class="btn btn-outline btn-sm" style="margin-right:6px;border-color:var(--warning);color:var(--warning)" onclick="attachFile(\'' + _escA(r.id) + '\')"><i class="fas fa-paperclip"></i> Attach file</button>') +
+      '<button class="btn btn-danger btn-sm" onclick="removePaper(\'' + _escA(r.id) + '\')"><i class="fas fa-trash"></i></button>' +
+    '</td>' +
+    '</tr>'
+  ).join('');
+  /* Hidden file input reused by attachFile() */
+  if (!document.getElementById('attach-file-input')) {
+    const inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = '.pdf'; inp.id = 'attach-file-input'; inp.style.display = 'none';
+    inp.onchange = function() { _doAttach(this.files[0]); };
+    document.body.appendChild(inp);
+  }
+}
+
+function removePaper(id) {
+  localStorage.removeItem('bhs_file_' + id);
+  DataStore.remove('pastPapers', id);
+  renderPapersList();
+  showToast('Paper removed');
+}
+
+let _attachTargetId = null;
+
+function attachFile(id) {
+  _attachTargetId = id;
+  const inp = document.getElementById('attach-file-input');
+  if (inp) { inp.value = ''; inp.click(); }
+}
+
+function _doAttach(file) {
+  if (!file || !_attachTargetId) return;
+  if (file.size > 5 * 1024 * 1024) { showToast('File too large — maximum 5 MB'); return; }
+  showToast('Attaching file…');
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      localStorage.setItem('bhs_file_' + _attachTargetId, e.target.result);
+      const record = DataStore.get('pastPapers', _attachTargetId);
+      if (record) {
+        record.hasFile  = true;
+        record.fileName = file.name;
+        DataStore.save('pastPapers', record);
+      }
+      _attachTargetId = null;
+      renderPapersList();
+      showToast(file.name + ' attached — learners can now view & download it');
+    } catch(err) {
+      showToast('Failed to attach — storage may be full. Remove old papers first.');
+    }
+  };
+  reader.onerror = function() { showToast('Could not read file — please try again'); };
+  reader.readAsDataURL(file);
+}
+
+/* ════════════════════════════════════════════
+   CIRCULARS
+════════════════════════════════════════════ */
+function previewCircular() {
+  const title  = document.getElementById('circ-title').value.trim();
+  const date   = document.getElementById('circ-date').value;
+  const target = document.getElementById('circ-target').value;
+  const body   = document.getElementById('circ-body').value.trim();
+  if (!title || !body) { showToast('Please enter a title and body text'); return; }
+  document.getElementById('circ-preview-box').innerHTML =
+    '<div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">' +
+    '<div style="background:var(--bg-3);padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start">' +
+    '<div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Bhekisizwe Senior Secondary School</div>' +
+    '<div style="font-size:14px;font-weight:700;color:var(--white)">' + _esc(title) + '</div></div>' +
+    '<div style="text-align:right;font-size:11px;color:var(--text-muted)">' + (date ? fmtDate(date) : '') + '<br><span style="color:var(--accent-l)">' + _esc(target) + '</span></div></div>' +
+    '<div style="padding:16px 18px;font-size:13px;color:var(--text);line-height:1.75;white-space:pre-wrap">' + _esc(body) + '</div>' +
+    '<div style="padding:10px 18px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted)">Principal: Mr. S.E. Mbokazi · eMachitshane, Nqutu, KwaZulu-Natal</div>' +
+    '</div>';
+  document.getElementById('circ-preview-wrap').style.display = 'block';
+}
+
+function printCircular() {
+  const title  = document.getElementById('circ-title').value.trim();
+  const date   = document.getElementById('circ-date').value;
+  const target = document.getElementById('circ-target').value;
+  const body   = document.getElementById('circ-body').value.trim();
+  if (!title || !body) { showToast('Please enter a title and body text first'); return; }
+  const win = window.open('', '_blank');
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + title + '</title><style>' +
+    'body{font-family:Arial,sans-serif;font-size:13px;color:#222;padding:48px 56px;max-width:700px;margin:0 auto}' +
+    '.hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #222;padding-bottom:16px;margin-bottom:24px}' +
+    '.sn{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#666}' +
+    'h1{font-size:20px;font-weight:800;margin:6px 0 0}.meta{font-size:11px;color:#666;text-align:right}' +
+    '.body{line-height:1.85;white-space:pre-wrap;margin:24px 0}' +
+    '.sig{margin-top:48px}.sig-line{border-top:1px solid #222;width:180px;margin-bottom:4px}' +
+    '.footer{border-top:1px solid #ddd;padding-top:14px;font-size:11px;color:#666;margin-top:40px}' +
+    '@media print{body{padding:20px 30px}}' +
+    '</style></head><body>' +
+    '<div class="hdr"><div><div class="sn">Bhekisizwe Senior Secondary School</div><h1>' + _esc(title) + '</h1></div>' +
+    '<div class="meta">' + (date ? fmtDate(date) : '') + '<br>' + _esc(target) + '</div></div>' +
+    '<div class="body">' + _esc(body) + '</div>' +
+    '<div class="sig"><div class="sig-line"></div><div><strong>Mr. S.E. Mbokazi</strong></div><div style="font-size:11px;color:#666">Principal — Bhekisizwe Senior Secondary School</div></div>' +
+    '<div class="footer">eMachitshane, Nqutu, KwaZulu-Natal, 3135 · +27714900013 · info@bhekisizwehigh.edu.za</div>' +
+    '</body></html>');
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 500);
+}
+
+function saveCircular() {
+  const title  = document.getElementById('circ-title').value.trim();
+  const date   = document.getElementById('circ-date').value;
+  const target = document.getElementById('circ-target').value;
+  const body   = document.getElementById('circ-body').value.trim();
+  if (!title || !body) { showToast('Please enter a title and body text'); return; }
+  DataStore.save('circulars', {
+    id: 'circ_' + Date.now(), title, date, target, body,
+    savedAt: new Date().toISOString()
+  });
+  document.getElementById('circ-title').value = '';
+  document.getElementById('circ-date').value  = '';
+  document.getElementById('circ-body').value  = '';
+  document.getElementById('circ-preview-wrap').style.display = 'none';
+  renderCircularsList();
+  showToast('Circular saved to archive');
+}
+
+function renderCircularsList() {
+  const records = DataStore.getAll('circulars').sort((a,b) => b.savedAt.localeCompare(a.savedAt));
+  const tbody   = document.getElementById('circulars-archive-body');
+  if (!tbody) return;
+  if (!records.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px">No circulars saved yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = records.map(r =>
+    '<tr>' +
+    '<td><strong style="color:var(--white)">' + _esc(r.title) + '</strong></td>' +
+    '<td>' + (r.date ? fmtDate(r.date) : '—') + '</td>' +
+    '<td><span class="badge badge-academic">' + _esc(r.target) + '</span></td>' +
+    '<td style="font-size:12px;color:var(--text-2)">' + fmtDate(r.savedAt) + '</td>' +
+    '<td><button class="btn btn-danger btn-sm" onclick="removeCircular(\'' + _escA(r.id) + '\')"><i class="fas fa-trash"></i></button></td>' +
+    '</tr>'
+  ).join('');
+}
+
+function removeCircular(id) {
+  DataStore.remove('circulars', id);
+  renderCircularsList();
+  showToast('Circular removed from archive');
+}
+
+/* ── Save parsed results to localStorage so term-results.html can read them ── */
+let _parsedResultsRows = [];
+
+function previewResultsFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  _parsedResultsRows = [];
+  const reader = new FileReader();
+  reader.onload = e => {
+    const lines = e.target.result.split('\n').filter(l => l.trim());
+    const rows  = lines.map(l => l.split(',').map(v => v.replace(/^"|"$/g,'').trim()));
+    if (!rows.length) return;
+    _parsedResultsRows = rows.slice(1);
+    let html = '<table class="tbl"><thead><tr>' + rows[0].map(h => '<th>' + h + '</th>').join('') + '</tr></thead><tbody>';
+    _parsedResultsRows.slice(0, 5).forEach(r => { html += '<tr>' + r.map(v => '<td>' + v + '</td>').join('') + '</tr>'; });
+    html += '</tbody></table>';
+    document.getElementById('results-preview-table').innerHTML = html;
+    document.getElementById('results-preview').style.display = 'block';
+    showToast('"' + file.name + '" loaded (' + _parsedResultsRows.length + ' rows) — review and confirm');
+  };
+  reader.readAsText(file);
+}
+
+function confirmSaveResults() {
+  if (!_parsedResultsRows.length) { showToast('Please upload a file first'); return; }
+  const grade = document.getElementById('res-upload-grade').value || 'All';
+  const term  = document.getElementById('res-upload-term').value  || 'Term';
+  const year  = document.getElementById('res-upload-year').value  || '2026';
+
+  /* Group rows by learner name */
+  const byLearner = {};
+  _parsedResultsRows.forEach(row => {
+    const [learner, subject, mark] = row;
+    if (!learner) return;
+    if (!byLearner[learner]) byLearner[learner] = [];
+    byLearner[learner].push({ name: subject, mark: parseFloat(mark) || 0 });
+  });
+
+  const existing = JSON.parse(localStorage.getItem('bhs_admin_termResults') || '[]');
+  Object.entries(byLearner).forEach(([learnerName, subjects]) => {
+    const record = {
+      id: 'tr_' + Date.now() + '_' + Math.random().toString(36).slice(2,5),
+      learnerName, grade: grade.replace('Grade ',''), term, year,
+      subjects,
+      savedAt: new Date().toISOString()
+    };
+    const idx = existing.findIndex(r => r.learnerName === learnerName && r.term === term && r.year === year);
+    if (idx >= 0) existing[idx] = record; else existing.push(record);
+  });
+  localStorage.setItem('bhs_admin_termResults', JSON.stringify(existing));
+
+  document.getElementById('results-preview').style.display = 'none';
+  _parsedResultsRows = [];
+  document.getElementById('results-file-input').value = '';
+  showToast(Object.keys(byLearner).length + ' learner results saved — now visible on term-results.html');
+}
+
+/* ════════════════════════════════════════════
+   SMS BLAST
+════════════════════════════════════════════ */
+function sendSmsBlast() {
+  const grade = document.getElementById('sms-grade').value;
+  const msg   = document.getElementById('sms-message').value.trim();
+  if (!msg) { showToast('Please write a message before sending'); return; }
+  const target = grade === 'all' ? 'all parents & guardians' : 'Grade ' + grade + ' parents';
+  showToast('SMS sent to ' + target + ' (' + msg.length + ' chars)');
+  document.getElementById('sms-message').value = '';
+  document.getElementById('sms-char-count').textContent = '0 / 160 characters';
+}
+</script>
+</body>
+</html>

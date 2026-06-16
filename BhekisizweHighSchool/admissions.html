@@ -1,0 +1,1132 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BPWGY17MJ7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BPWGY17MJ7');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admissions 2026/2027 | Bhekisizwe Senior Secondary School</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* =====================================================
+       ADMISSIONS PAGE — SITE-ALIGNED STYLES
+       ===================================================== */
+
+    body { background: var(--bg-secondary); }
+
+    /* ---- HERO ---- */
+    .adm-hero {
+      background:
+        linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.62)),
+        url('pic5.jpeg') center / cover no-repeat;
+      padding: 210px 0 80px;
+      position: relative;
+    }
+    .adm-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .adm-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+    .adm-badge-dot {
+      width: 6px; height: 6px;
+      background: #fff;
+      border-radius: 50%;
+      animation: admPulse 2s ease infinite;
+    }
+    @keyframes admPulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.45; transform: scale(0.65); }
+    }
+    .adm-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+      margin: 0 0 16px;
+    }
+    .adm-hero h1 span { color: var(--purple-pale); }
+    .adm-hero-p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.75;
+      max-width: 560px;
+      margin: 0;
+    }
+
+    /* ---- DATES STRIP ---- */
+    .adm-dates {
+      background: var(--purple-darkest);
+      border-top: 2px solid var(--purple-main);
+    }
+    .adm-dates-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+    }
+    .adm-date-card {
+      padding: 24px 32px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .adm-date-card:last-child { border-right: none; }
+    .adm-date-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--purple-pale);
+      margin-bottom: 6px;
+    }
+    .adm-date-val {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* ---- SECTION SHARED ---- */
+    .adm-section     { padding: 72px 0; background: var(--bg-secondary); }
+    .adm-section-alt { padding: 72px 0; background: var(--bg-primary); }
+    .adm-title-wrap  { margin-bottom: 44px; }
+    .adm-section-title {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      margin: 0 0 10px;
+    }
+    .adm-accent-line {
+      height: 3px;
+      width: 60px;
+      background: var(--purple-main);
+      border-radius: 2px;
+    }
+
+    /* ---- REQUIRED DOCS ---- */
+    .adm-docs-grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 14px;
+    }
+    .adm-doc-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      transition: var(--transition);
+    }
+    .adm-doc-card:hover {
+      border-color: var(--purple-main);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .adm-doc-card i { color: var(--purple-main); font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
+    .adm-doc-card span { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.55; }
+
+    /* ---- HOW TO APPLY STEPS ---- */
+    .adm-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(5,1fr);
+      gap: 16px;
+    }
+    .adm-step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px 18px;
+      text-align: center;
+      transition: var(--transition);
+    }
+    .adm-step-card:hover { border-color: var(--purple-main); box-shadow: var(--shadow-sm); }
+    .adm-step-num {
+      width: 44px; height: 44px;
+      background: var(--purple-main);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 800;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .adm-step-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .adm-step-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* =====================================================
+       MULTI-STEP APPLICATION FORM
+       ===================================================== */
+    .form-section {
+      padding: 72px 0;
+      background: var(--bg-secondary);
+    }
+    .form-shell {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Progress indicator */
+    .form-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .form-steps::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 7%;
+      right: 7%;
+      height: 2px;
+      background: var(--border);
+      z-index: 0;
+    }
+    .form-step {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      flex: 1;
+    }
+    .form-step .step-dot {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 13px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 6px;
+      transition: var(--transition);
+    }
+    .form-step .step-lbl {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+    }
+    .form-step.active .step-dot {
+      background: var(--purple-main);
+      border-color: var(--purple-main);
+      color: #fff;
+    }
+    .form-step.done .step-dot {
+      background: var(--purple-darkest);
+      border-color: var(--purple-darkest);
+      color: #fff;
+    }
+    .form-step.active .step-lbl,
+    .form-step.done  .step-lbl { color: var(--text-primary); }
+
+    /* Card */
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 32px 28px;
+      box-shadow: var(--shadow-md);
+    }
+    .form-panel { display: none; animation: fPanelIn .3s ease; }
+    .form-panel.active { display: block; }
+    @keyframes fPanelIn {
+      from { opacity:0; transform:translateY(10px); }
+      to   { opacity:1; transform:none; }
+    }
+    .form-panel h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .form-panel .fpanel-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    /* Fields */
+    .f-field { margin-bottom: 16px; }
+    .f-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .f-field label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+      letter-spacing: 0.2px;
+    }
+    .f-field label .req { color: #c0392b; margin-left: 2px; }
+    .f-field input,
+    .f-field select,
+    .f-field textarea {
+      width: 100%;
+      padding: 10px 13px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .f-field input:focus,
+    .f-field select:focus,
+    .f-field textarea:focus {
+      outline: none;
+      border-color: var(--purple-main);
+      box-shadow: 0 0 0 3px var(--purple-dim);
+    }
+    .f-field input.f-invalid,
+    .f-field select.f-invalid,
+    .f-field textarea.f-invalid {
+      border-color: #c0392b;
+      background: #fdf5f3;
+    }
+    .f-field textarea { resize: vertical; min-height: 72px; }
+    .f-hint {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Consent notice */
+    .f-notice {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px 18px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+      line-height: 1.65;
+    }
+    .f-notice h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+    .f-notice p { margin-bottom: 8px; }
+    .f-consent {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg-primary);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .f-consent:hover { border-color: var(--purple-main); }
+    .f-consent input[type="checkbox"] { width: auto; margin-top: 2px; flex-shrink: 0; accent-color: var(--purple-main); }
+    .f-consent span { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .f-consent.f-invalid { border-color: #c0392b; background: #fdf5f3; }
+
+    /* Review summary */
+    .f-review-group { margin-bottom: 16px; }
+    .f-review-group h4 {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--purple-main);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    .f-review-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 5px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+    .f-review-row .rk { color: var(--text-muted); }
+    .f-review-row .rv { font-weight: 600; text-align: right; max-width: 60%; }
+
+    /* Navigation buttons */
+    .form-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 28px;
+      gap: 12px;
+    }
+    .form-nav button {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 11px 28px;
+      border-radius: var(--radius-sm);
+      border: none;
+      transition: var(--transition);
+    }
+    .f-btn-next {
+      background: var(--purple-main);
+      color: #fff;
+      margin-left: auto;
+    }
+    .f-btn-next:hover { background: var(--purple-dark); transform: translateY(-1px); }
+    .f-btn-back {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border) !important;
+    }
+    .f-btn-back:hover { border-color: var(--purple-main) !important; color: var(--text-primary); }
+    .f-btn-submit {
+      background: var(--purple-darkest);
+      color: #fff;
+      margin-left: auto;
+    }
+    .f-btn-submit:hover { background: var(--purple-mid); transform: translateY(-1px); }
+    .f-btn-submit:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; transform: none; }
+
+    /* Done screen */
+    .f-done {
+      text-align: center;
+      padding: 24px 0 8px;
+    }
+    .f-done-tick {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: var(--purple-main);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      margin: 0 auto 20px;
+    }
+    .f-done h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
+    .f-done p  { font-size: 0.9rem; color: var(--text-muted); }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 900px) {
+      .adm-steps-grid { grid-template-columns: repeat(3,1fr); }
+    }
+    @media (max-width: 640px) {
+      .f-row { grid-template-columns: 1fr; }
+      .form-card { padding: 24px 16px; }
+    }
+    @media (max-width: 600px) {
+      .adm-docs-grid  { grid-template-columns: 1fr; }
+      .adm-steps-grid { grid-template-columns: 1fr 1fr; }
+      .adm-dates-grid { grid-template-columns: 1fr; }
+      .adm-date-card  { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .adm-date-card:last-child { border-bottom: none; }
+      .adm-hero { padding: 180px 0 60px; }
+    }
+    @media (max-width: 400px) {
+      .adm-steps-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bhekisizwess.co.za/admissions.html">
+  <meta property="og:url" content="https://bhekisizwess.co.za/admissions.html">
+  <meta property="og:site_name" content="Bhekisizwe Senior Secondary School">
+  <meta property="og:locale" content="en_ZA">
+  <meta property="og:image" content="https://bhekisizwess.co.za/pic5.jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Bhekisizwe Senior Secondary School campus">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Admissions | Bhekisizwe Senior Secondary School">
+  <meta name="twitter:description" content="Apply for admission to Bhekisizwe Senior Secondary School. Learn about enrolment requirements and the application process.">
+  <meta name="twitter:image" content="https://bhekisizwess.co.za/pic5.jpeg"></head>
+<body>
+
+  <!-- ===== HEADER TOP BAR ===== -->
+  <div class="header-topbar">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <a href="index.html" class="topbar-brand">
+          <img src="Badge .jpeg" alt="Bhekisizwe Senior Secondary School Badge" class="topbar-crest" loading="lazy">
+          <div class="topbar-name">
+            <span class="topbar-school">Bhekisizwe</span>
+            <span class="topbar-type">Senior Secondary School</span>
+          </div>
+        </a>
+      </div>
+      <div class="topbar-right">
+        <span><i class="fas fa-map-marker-alt"></i> eMachitshane, Nqutu, KwaZulu-Natal, 3135</span>
+        <span><i class="fas fa-phone"></i> +27714900013</span>
+        <span><i class="fas fa-envelope"></i> admin@bhekisizwess.co.za</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li class="nav-dropdown">
+          <a href="about.html">About</a>
+          <div class="dropdown-menu">
+            <a href="about.html">Our Story</a>
+            <a href="staff.html">Leadership &amp; Staff</a>
+          </div>
+        </li>
+        <li class="nav-dropdown">
+          <a href="academics.html">Academics</a>
+          <div class="dropdown-menu">
+            <a href="academics.html">Subjects &amp; Curriculum</a>
+          </div>
+        </li>
+        <li><a href="career-path.html">Career Paths</a></li>
+        <li class="nav-dropdown">
+          <a href="students.html">Students</a>
+          <div class="dropdown-menu">
+            <a href="students.html">Student Life</a>
+            <a href="results.html">Results</a>
+            <a href="achievements.html">Achievements</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="past-papers.html">Past Papers</a>
+            <a href="term-results.html">Term Results</a>
+            <a href="application-status.html">Application Status</a>
+          </div>
+        </li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="admissions.html" class="active">Admissions</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <a href="admissions.html" class="nav-cta">Apply Now</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="nav-mobile" id="navMobile">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="academics.html">Academics</a>
+    <a href="career-path.html">Career Paths</a>
+    <a href="staff.html">Staff</a>
+    <a href="results.html">Results</a>
+    <a href="achievements.html">Achievements</a>
+    <a href="events.html">Events</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="past-papers.html">Past Papers</a>
+    <a href="term-results.html">Term Results</a>
+    <a href="application-status.html">Application Status</a>
+    <a href="admissions.html" class="active">Admissions</a>
+    <a href="contact.html">Contact</a>
+    <div class="nav-mobile-divider"></div>
+    <a href="admissions.html" class="btn btn-gold btn-sm">Apply Now</a>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <section class="adm-hero">
+    <div class="adm-container">
+      <div data-aos="fade-up">
+        <div class="adm-badge">
+          <span class="adm-badge-dot"></span>
+          Now Accepting Applications — 2026 / 2027
+        </div>
+        <h1>Admissions <span>2026 / 2027</span></h1>
+        <p class="adm-hero-p">
+          Welcome to Bhekisizwe Senior Secondary School's admissions portal. We are committed to
+          selecting learners who demonstrate academic potential, good character, and a
+          desire to contribute positively to our school community.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ALREADY APPLIED BANNER ===== -->
+  <div style="background:#1A1A1A;border-top:1px solid rgba(255,255,255,0.08);padding:14px 0">
+    <div class="adm-container" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <span style="font-size:0.85rem;color:rgba(255,255,255,0.65)"><i class="fas fa-search" style="margin-right:7px;color:#9E9E9E"></i>Already submitted an application?</span>
+      <a href="application-status.html" style="display:inline-flex;align-items:center;gap:7px;background:#616161;color:#fff;font-size:0.82rem;font-weight:700;padding:7px 18px;border-radius:6px;text-decoration:none;transition:background 0.2s" onmouseover="this.style.background='#fff';this.style.color='#111'" onmouseout="this.style.background='#616161';this.style.color='#fff'">
+        Check Your Status <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- ===== APPLICATION DATES STRIP ===== -->
+  <div class="adm-dates">
+    <div class="adm-container">
+      <div class="adm-dates-grid">
+        <div class="adm-date-card">
+          <div class="adm-date-label"><i class="fas fa-door-open" style="margin-right:6px;"></i>Applications Open</div>
+          <div class="adm-date-val">1 July 2026</div>
+        </div>
+        <div class="adm-date-card">
+          <div class="adm-date-label"><i class="fas fa-hourglass-end" style="margin-right:6px;"></i>Closing Date</div>
+          <div class="adm-date-val">31 August 2026</div>
+        </div>
+        <div class="adm-date-card">
+          <div class="adm-date-label"><i class="fas fa-bell" style="margin-right:6px;"></i>Results Communicated</div>
+          <div class="adm-date-val">30 September 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HOW TO APPLY ===== -->
+  <section class="adm-section-alt">
+    <div class="adm-container">
+      <div class="adm-title-wrap" data-aos="fade-up">
+        <h2 class="adm-section-title">How to Apply — Step by Step</h2>
+        <div class="adm-accent-line"></div>
+      </div>
+      <div class="adm-steps-grid">
+        <div class="adm-step-card" data-aos="fade-up" data-aos-delay="50">
+          <div class="adm-step-num">1</div>
+          <div class="adm-step-title">Complete the Form</div>
+          <p class="adm-step-desc">Fill in all four steps of the online form below — learner details, guardian, additional info, and consent.</p>
+        </div>
+        <div class="adm-step-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="adm-step-num">2</div>
+          <div class="adm-step-title">Gather Documents</div>
+          <p class="adm-step-desc">Collect all supporting documents listed below and ensure certified copies are prepared where required.</p>
+        </div>
+        <div class="adm-step-card" data-aos="fade-up" data-aos-delay="150">
+          <div class="adm-step-num">3</div>
+          <div class="adm-step-title">Upload &amp; Submit</div>
+          <p class="adm-step-desc">Attach your supporting documents in Step 3 of the form and submit before the closing date.</p>
+        </div>
+        <div class="adm-step-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="adm-step-num">4</div>
+          <div class="adm-step-title">Confirmation</div>
+          <p class="adm-step-desc">You will receive an email confirmation once your application is received by our admissions office.</p>
+        </div>
+        <div class="adm-step-card" data-aos="fade-up" data-aos-delay="250">
+          <div class="adm-step-num">5</div>
+          <div class="adm-step-title">Await Outcome</div>
+          <p class="adm-step-desc">Results will be communicated by 30 September 2026. Successful applicants receive an official acceptance letter.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== REQUIRED SUPPORTING DOCUMENTS ===== -->
+  <section class="adm-section">
+    <div class="adm-container">
+      <div class="adm-title-wrap" data-aos="fade-up">
+        <h2 class="adm-section-title">Required Supporting Documents</h2>
+        <div class="adm-accent-line"></div>
+      </div>
+      <div class="adm-docs-grid">
+        <div class="adm-doc-card" data-aos="fade-up" data-aos-delay="50">
+          <i class="fas fa-id-card"></i>
+          <span>Certified copy of learner's birth certificate</span>
+        </div>
+        <div class="adm-doc-card" data-aos="fade-up" data-aos-delay="100">
+          <i class="fas fa-id-badge"></i>
+          <span>Certified copy of parent / guardian ID</span>
+        </div>
+        <div class="adm-doc-card" data-aos="fade-up" data-aos-delay="150">
+          <i class="fas fa-graduation-cap"></i>
+          <span>Latest school report (most recent year)</span>
+        </div>
+        <div class="adm-doc-card" data-aos="fade-up" data-aos-delay="200">
+          <i class="fas fa-home"></i>
+          <span>Proof of residence (not older than 3 months)</span>
+        </div>
+        <div class="adm-doc-card" data-aos="fade-up" data-aos-delay="250">
+          <i class="fas fa-file-alt"></i>
+          <span>Transfer letter from previous school <em style="font-size:0.78rem;color:var(--text-muted);">(if applicable)</em></span>
+        </div>
+        <div class="adm-doc-card" data-aos="fade-up" data-aos-delay="300">
+          <i class="fas fa-notes-medical"></i>
+          <span>Medical / health records <em style="font-size:0.78rem;color:var(--text-muted);">(if applicable)</em></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ONLINE APPLICATION FORM ===== -->
+  <section class="form-section" id="applyForm">
+    <div class="adm-container">
+      <div class="adm-title-wrap" data-aos="fade-up" style="text-align:center;">
+        <h2 class="adm-section-title">Online Application Form</h2>
+        <div class="adm-accent-line" style="margin:10px auto 0;"></div>
+        <p style="color:var(--text-muted);font-size:0.9rem;margin-top:12px;">Complete all four steps to submit your application for the 2026/2027 academic year.</p>
+      </div>
+
+      <div class="form-shell" data-aos="fade-up" data-aos-delay="100">
+
+        <!-- Step indicators -->
+        <div class="form-steps" id="formSteps">
+          <div class="form-step active">
+            <div class="step-dot">1</div>
+            <div class="step-lbl">Learner</div>
+          </div>
+          <div class="form-step">
+            <div class="step-dot">2</div>
+            <div class="step-lbl">Guardian</div>
+          </div>
+          <div class="form-step">
+            <div class="step-dot">3</div>
+            <div class="step-lbl">Additional</div>
+          </div>
+          <div class="form-step">
+            <div class="step-dot">4</div>
+            <div class="step-lbl">Consent</div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <form id="admForm" novalidate>
+
+            <!-- STEP 1 : LEARNER -->
+            <div class="form-panel active" data-step="0">
+              <h2>Learner details</h2>
+              <p class="fpanel-sub">Information about the learner being enrolled.</p>
+
+              <div class="f-field">
+                <label>Full name <span class="req">*</span></label>
+                <input name="learnerName" required placeholder="e.g. Sipho Bhengu">
+              </div>
+              <div class="f-row">
+                <div class="f-field">
+                  <label>Date of birth <span class="req">*</span></label>
+                  <input type="date" name="dob" required>
+                </div>
+                <div class="f-field">
+                  <label>Gender <span class="req">*</span></label>
+                  <select name="gender" required>
+                    <option value="">Select…</option>
+                    <option>Female</option>
+                    <option>Male</option>
+                    <option>Prefer not to say</option>
+                  </select>
+                </div>
+              </div>
+              <div class="f-field">
+                <label>ID / Birth certificate number <span class="req">*</span></label>
+                <input name="idNumber" required placeholder="13-digit SA ID or birth certificate number" autocomplete="off">
+                <div class="f-hint">Stored securely and used only for enrolment verification.</div>
+              </div>
+              <div class="f-row">
+                <div class="f-field">
+                  <label>Home language</label>
+                  <input name="language" placeholder="e.g. IsiZulu">
+                </div>
+                <div class="f-field">
+                  <label>Nationality</label>
+                  <input name="nationality" placeholder="e.g. South African">
+                </div>
+              </div>
+              <div class="f-row">
+                <div class="f-field">
+                  <label>Grade applying for <span class="req">*</span></label>
+                  <select name="grade" required>
+                    <option value="">Select…</option>
+                    <option>Grade 8</option>
+                    <option>Grade 9</option>
+                    <option>Grade 10</option>
+                    <option>Grade 11</option>
+                    <option>Grade 12</option>
+                  </select>
+                </div>
+                <div class="f-field">
+                  <label>Previous school</label>
+                  <input name="prevSchool" placeholder="Name of previous school">
+                </div>
+              </div>
+            </div>
+
+            <!-- STEP 2 : GUARDIAN -->
+            <div class="form-panel" data-step="1">
+              <h2>Parent / Guardian details</h2>
+              <p class="fpanel-sub">The adult responsible for this application.</p>
+
+              <div class="f-row">
+                <div class="f-field">
+                  <label>Full name <span class="req">*</span></label>
+                  <input name="guardianName" required placeholder="Full name of parent/guardian">
+                </div>
+                <div class="f-field">
+                  <label>Relationship <span class="req">*</span></label>
+                  <select name="relationship" required>
+                    <option value="">Select…</option>
+                    <option>Mother</option>
+                    <option>Father</option>
+                    <option>Legal guardian</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="f-field">
+                <label>ID number <span class="req">*</span></label>
+                <input name="guardianId" required placeholder="13-digit SA ID number" autocomplete="off">
+              </div>
+              <div class="f-row">
+                <div class="f-field">
+                  <label>Cellphone <span class="req">*</span></label>
+                  <input name="phone" type="tel" required placeholder="e.g. 071 000 0000">
+                </div>
+                <div class="f-field">
+                  <label>Email address <span class="req">*</span></label>
+                  <input name="email" type="email" required placeholder="parent@email.com">
+                </div>
+              </div>
+              <div class="f-field">
+                <label>Physical address <span class="req">*</span></label>
+                <textarea name="address" required placeholder="Street address, suburb, town, postal code"></textarea>
+              </div>
+              <div class="f-row">
+                <div class="f-field">
+                  <label>Occupation</label>
+                  <input name="occupation" placeholder="e.g. Teacher">
+                </div>
+                <div class="f-field">
+                  <label>Emergency contact number <span class="req">*</span></label>
+                  <input name="emergency" type="tel" required placeholder="Alternative number">
+                </div>
+              </div>
+            </div>
+
+            <!-- STEP 3 : ADDITIONAL -->
+            <div class="form-panel" data-step="2">
+              <h2>Additional information</h2>
+              <p class="fpanel-sub">Health needs and supporting documents.</p>
+
+              <div class="f-field">
+                <label>Medical conditions or allergies</label>
+                <textarea name="medical" placeholder="None, or describe…"></textarea>
+              </div>
+              <div class="f-field">
+                <label>Special learning needs or support required</label>
+                <textarea name="needs" placeholder="None, or describe…"></textarea>
+              </div>
+              <div class="f-field">
+                <label>Birth certificate <span style="font-weight:400;color:var(--text-muted);">(PDF or image)</span></label>
+                <input type="file" name="docBirth" accept=".pdf,.jpg,.jpeg,.png">
+                <div class="f-hint">Max 5 MB &mdash; accepted formats: PDF, JPG, PNG.</div>
+              </div>
+              <div class="f-field">
+                <label>Latest school report</label>
+                <input type="file" name="docReport" accept=".pdf,.jpg,.jpeg,.png">
+              </div>
+              <div class="f-field">
+                <label>Proof of residence</label>
+                <input type="file" name="docProof" accept=".pdf,.jpg,.jpeg,.png">
+              </div>
+            </div>
+
+            <!-- STEP 4 : CONSENT -->
+            <div class="form-panel" data-step="3">
+              <h2>Consent &amp; declaration</h2>
+              <p class="fpanel-sub">Please read the privacy notice and confirm before submitting.</p>
+
+              <div class="f-notice">
+                <h3>How we use this information</h3>
+                <p>The personal information you provide is collected by Bhekisizwe Senior Secondary School solely to assess
+                this admission application and, if successful, to enrol the learner.</p>
+                <p>It is accessible only to authorised admissions staff, is stored securely, and is kept
+                for as long as required by school policy and applicable law, after which it is deleted.</p>
+                <p>We do not sell your information or share it with third parties except where required by
+                law. You may request access to, correction of, or deletion of this information at any time
+                by contacting admissions@bhekisizwehigh.edu.za.</p>
+              </div>
+
+              <label class="f-consent" id="consentDataLabel">
+                <input type="checkbox" name="consentData" required>
+                <span>As the parent or legal guardian, I consent to Bhekisizwe Senior Secondary School collecting and
+                processing the personal information of the learner and myself for the purposes described above.
+                <span class="req">*</span></span>
+              </label>
+              <label class="f-consent" id="consentTrueLabel">
+                <input type="checkbox" name="consentTrue" required>
+                <span>I confirm that the information provided is true and correct to the best of my knowledge.
+                <span class="req">*</span></span>
+              </label>
+
+              <div id="reviewBox" style="margin-top:20px;"></div>
+            </div>
+
+            <!-- DONE -->
+            <div class="form-panel" data-step="4">
+              <div class="f-done">
+                <div class="f-done-tick"><i class="fas fa-check"></i></div>
+                <h2>Application submitted</h2>
+                <p>Thank you. Our admissions office will review your application and be in touch by email within 5 working days.</p>
+                <div style="margin:20px auto 0;max-width:340px;background:#F4F4F4;border:2px solid #616161;border-radius:10px;padding:16px 20px;text-align:center">
+                  <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:6px">Your Reference Number</div>
+                  <div id="ref-number-val" style="font-size:2.2rem;font-weight:900;color:#616161;letter-spacing:3px">—</div>
+                  <div style="font-size:12px;color:#999;margin-top:6px">Save this number — you will need it to check your application status online or by phone.</div>
+                </div>
+                <a href="application-status.html" style="display:inline-flex;align-items:center;gap:7px;margin-top:16px;padding:10px 22px;background:#616161;color:#fff;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none">
+                  <i class="fas fa-search"></i> Check Application Status
+                </a>
+              </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="form-nav" id="formNav">
+              <button type="button" class="f-btn-back" id="fBackBtn" style="visibility:hidden">
+                <i class="fas fa-arrow-left" style="font-size:12px;margin-right:6px;"></i>Back
+              </button>
+              <button type="button" class="f-btn-next" id="fNextBtn">
+                Continue <i class="fas fa-arrow-right" style="font-size:12px;margin-left:6px;"></i>
+              </button>
+              <button type="submit" class="f-btn-submit" id="fSubmitBtn" style="display:none">
+                <i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit application
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div><!-- /.form-shell -->
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-main">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-logo">
+              <img src="Badge .jpeg" alt="Bhekisizwe Senior Secondary School Badge" class="footer-crest" loading="lazy">
+              <div>
+                <div class="footer-school-name">Bhekisizwe Senior Secondary School</div>
+                <div class="footer-motto">Excellence · Legacy · Future</div>
+              </div>
+            </div>
+            <p class="footer-desc">Providing quality education in KwaZulu-Natal since 2004. Nurturing academic excellence and character development in every student.</p>
+            <div class="footer-socials">
+              <a href="#" class="footer-social"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="footer-social"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="footer-social"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="footer-social"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Quick Links</h5>
+            <div class="footer-links">
+              <a href="index.html">Home</a>
+              <a href="about.html">About Us</a>
+              <a href="academics.html">Academics</a>
+              <a href="staff.html">Our Staff</a>
+              <a href="events.html">Events</a>
+              <a href="contact.html">Contact</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Students</h5>
+            <div class="footer-links">
+              <a href="results.html">Results</a>
+              <a href="achievements.html">Achievements</a>
+              <a href="gallery.html">Gallery</a>
+              <a href="past-papers.html">Past Papers</a>
+              <a href="term-results.html">Term Results</a>
+              <a href="application-status.html">Application Status</a>
+              <a href="admissions.html">Admissions</a>
+              <a href="past-papers.html">Past Papers</a>
+              <a href="application-status.html">Application Status</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Contact Us</h5>
+            <div class="footer-contact-items">
+              <div class="footer-contact-item">
+                <span class="footer-contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+                <span class="footer-contact-text">eMachitshane, Nqutu, KwaZulu-Natal, 3135</span>
+              </div>
+              <div class="footer-contact-item">
+                <span class="footer-contact-icon"><i class="fas fa-phone"></i></span>
+                <span class="footer-contact-text">+27714900013</span>
+              </div>
+              <div class="footer-contact-item">
+                <span class="footer-contact-icon"><i class="fas fa-envelope"></i></span>
+                <span class="footer-contact-text">admin@bhekisizwess.co.za</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="footer-bottom-inner">
+          <p class="footer-copy">&copy; 2026 <span>Bhekisizwe Senior Secondary School</span>. All rights reserved.</p>
+          <p class="footer-dev">Developed by <a href="https://alphacoretech.co.za" target="_blank" rel="noopener noreferrer" style="color:var(--gold);font-weight:600;">Alphacoretech</a></p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js" integrity="sha512-RmCE+nEdKZ45TpbCJgvYvfEDz3XaiGmTTJl6GfyITW3fouks4lNTOkoMXWJ9WA6aQO+3FV8cjA6fvTosOgbCrg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="js/main.js"></script>
+  <script>
+  /* =====================================================
+     MULTI-STEP ADMISSION FORM
+     ===================================================== */
+  const admForm    = document.getElementById('admForm');
+  const panels     = [...document.querySelectorAll('.form-panel')];
+  const stepEls    = [...document.querySelectorAll('#formSteps .form-step')];
+  const backBtn    = document.getElementById('fBackBtn');
+  const nextBtn    = document.getElementById('fNextBtn');
+  const submitBtn  = document.getElementById('fSubmitBtn');
+  const LAST_STEP  = 3;
+  let current = 0;
+
+  function showStep(step) {
+    panels.forEach(p => p.classList.toggle('active', +p.dataset.step === step));
+    stepEls.forEach((el, i) => {
+      el.classList.toggle('active', i === step);
+      el.classList.toggle('done',   i <  step);
+    });
+
+    backBtn.style.visibility = step === 0 ? 'hidden' : 'visible';
+
+    const onLast    = step === LAST_STEP;
+    const onSuccess = step > LAST_STEP;
+
+    nextBtn.style.display   = (!onLast && !onSuccess) ? 'block' : 'none';
+    submitBtn.style.display = (onLast && !onSuccess)  ? 'block' : 'none';
+
+    if (onSuccess) {
+      document.getElementById('formNav').style.display   = 'none';
+      document.getElementById('formSteps').style.display = 'none';
+    }
+    if (onLast) buildReview();
+    window.scrollTo({ top: document.getElementById('applyForm').offsetTop - 160, behavior: 'smooth' });
+  }
+
+  function validateStep(step) {
+    const panel = panels[step];
+    let ok = true;
+
+    panel.querySelectorAll('[required]').forEach(el => {
+      let valid;
+      if (el.type === 'checkbox') {
+        valid = el.checked;
+        const lbl = el.closest('.f-consent');
+        if (lbl) lbl.classList.toggle('f-invalid', !valid);
+      } else {
+        valid = el.value.trim() !== '';
+        el.classList.toggle('f-invalid', !valid);
+      }
+      if (!valid && ok) { el.focus(); ok = false; }
+    });
+    return ok;
+  }
+
+  nextBtn.addEventListener('click', () => {
+    if (validateStep(current)) { current++; showStep(current); }
+  });
+  backBtn.addEventListener('click', () => { current--; showStep(current); });
+
+  admForm.addEventListener('input', e => {
+    if (e.target.classList.contains('f-invalid')) {
+      const valid = e.target.type === 'checkbox' ? e.target.checked : e.target.value.trim() !== '';
+      if (valid) {
+        e.target.classList.remove('f-invalid');
+        const lbl = e.target.closest('.f-consent');
+        if (lbl) lbl.classList.remove('f-invalid');
+      }
+    }
+  });
+
+  function buildReview() {
+    const data = new FormData(admForm);
+    const groups = {
+      'Learner':  [['Full name','learnerName'],['Date of birth','dob'],['Gender','gender'],['Grade','grade']],
+      'Guardian': [['Name','guardianName'],['Relationship','relationship'],['Phone','phone'],['Email','email']]
+    };
+    let html = '';
+    for (const [title, rows] of Object.entries(groups)) {
+      html += `<div class="f-review-group"><h4>${title}</h4>`;
+      rows.forEach(([label, key]) => {
+        html += `<div class="f-review-row">
+          <span class="rk">${label}</span>
+          <span class="rv">${data.get(key) || '—'}</span>
+        </div>`;
+      });
+      html += '</div>';
+    }
+    document.getElementById('reviewBox').innerHTML = html;
+  }
+
+  admForm.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!validateStep(LAST_STEP)) return;
+
+    const formData = new FormData(admForm);
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i>Submitting…';
+
+    fetch('../api/submit_application.php', { method: 'POST', body: formData })
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          current = LAST_STEP + 1;
+          showStep(current);
+          if (data.ref_code) {
+            document.getElementById('ref-number-val').textContent = data.ref_code;
+          }
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit application';
+          alert('Submission failed — please try again.');
+        }
+      })
+      .catch(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit application';
+        alert('Could not reach the server. Please check your connection and try again.');
+      });
+  });
+
+  showStep(0);
+  AOS.init({ duration: 700, once: true, offset: 60 });
+  </script>
+</body>
+</html>
+
+

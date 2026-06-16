@@ -1,0 +1,560 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BPWGY17MJ7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BPWGY17MJ7');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Download past exam papers by subject and grade — Bhekisizwe Senior Secondary School. Free resource for Grade 8 to Grade 12 learners.">
+  <title>Past Papers | Bhekisizwe Senior Secondary School</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .papers-hero {
+      background:
+        linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.62)),
+        url('pic2.jpeg') center / cover no-repeat;
+      padding: 200px 0 72px;
+      text-align: center;
+    }
+    .papers-hero h1 { color: #fff; font-size: clamp(1.8rem,4vw,2.8rem); margin-bottom: 12px; }
+    .papers-hero p  { color: rgba(255,255,255,0.72); font-size:1rem; max-width:540px; margin:0 auto; }
+
+    /* ── Filter bar ── */
+    .filter-bar {
+      background: #fff;
+      border-bottom: 1px solid #E0E0E0;
+      padding: 18px 0;
+      position: sticky;
+      top: 152px;
+      z-index: 90;
+    }
+    .filter-inner {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .filter-label { font-size: 0.82rem; font-weight: 600; color: #888; white-space: nowrap; }
+    .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+    .pill {
+      padding: 6px 18px;
+      border-radius: 999px;
+      border: 1px solid #E0E0E0;
+      background: transparent;
+      color: #666;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .pill:hover { border-color: #616161; color: #616161; }
+    .pill.active { background: #616161; border-color: #616161; color: #fff; }
+
+    .filter-search {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #F4F4F4;
+      border: 1px solid #E0E0E0;
+      border-radius: 8px;
+      padding: 7px 14px;
+    }
+    .filter-search input {
+      border: none; background: transparent;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13px; color: #111; outline: none; width: 180px;
+    }
+    .filter-search i { color: #aaa; font-size: 12px; }
+
+    /* ── Papers grid ── */
+    .papers-section { padding: 48px 0 80px; background: #F4F4F4; }
+    .papers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px,1fr));
+      gap: 18px;
+      margin-top: 28px;
+    }
+    .paper-card {
+      background: #fff;
+      border: 1px solid #E0E0E0;
+      border-radius: 12px;
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .paper-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.08); border-color: #616161; }
+    .paper-card-top { display: flex; align-items: flex-start; gap: 14px; }
+    .paper-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: #F4F4F4;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; color: #e05050; flex-shrink: 0;
+    }
+    .paper-subject { font-size: 0.95rem; font-weight: 700; color: #111; margin-bottom: 3px; }
+    .paper-meta { font-size: 0.78rem; color: #888; }
+    .paper-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .paper-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .tag-grade   { background: #F0F0F0; color: #555; }
+    .tag-year    { background: #EBF4FF; color: #2a6eb5; }
+    .tag-type    { background: #F0FDF4; color: #2a7a50; }
+    .paper-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 16px;
+      background: #616161;
+      color: #fff;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      font-family: 'Open Sans', sans-serif;
+      transition: background 0.2s;
+      text-decoration: none;
+    }
+    .paper-download:hover { background: #1A1A1A; }
+
+    /* ── Empty state ── */
+    .papers-empty {
+      text-align: center; padding: 64px 24px;
+      display: none;
+    }
+    .papers-empty i { font-size: 40px; color: #ccc; display: block; margin-bottom: 16px; }
+    .papers-empty h3 { font-size: 1.05rem; color: #444; margin-bottom: 8px; }
+    .papers-empty p  { font-size: 0.875rem; color: #888; }
+
+    /* ── Results bar ── */
+    .results-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .results-bar span { font-size: 0.82rem; color: #888; }
+  </style>
+
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bhekisizwess.co.za/past-papers.html">
+  <meta property="og:url" content="https://bhekisizwess.co.za/past-papers.html">
+  <meta property="og:site_name" content="Bhekisizwe Senior Secondary School">
+  <meta property="og:locale" content="en_ZA">
+  <meta property="og:image" content="https://bhekisizwess.co.za/pic5.jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Bhekisizwe Senior Secondary School campus">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Past Papers | Bhekisizwe Senior Secondary School">
+  <meta name="twitter:description" content="Download past exam papers and study resources for Bhekisizwe Senior Secondary School learners.">
+  <meta name="twitter:image" content="https://bhekisizwess.co.za/pic5.jpeg"></head>
+<body>
+
+  <!-- ===== HEADER TOP BAR ===== -->
+  <div class="header-topbar">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <a href="index.html" class="topbar-brand">
+          <img src="Badge .jpeg" alt="Bhekisizwe Senior Secondary School Badge" class="topbar-crest" loading="lazy">
+          <div class="topbar-name">
+            <span class="topbar-school">Bhekisizwe</span>
+            <span class="topbar-type">Senior Secondary School</span>
+          </div>
+        </a>
+      </div>
+      <div class="topbar-right">
+        <span><i class="fas fa-map-marker-alt"></i> eMachitshane, Nqutu, KwaZulu-Natal, 3135</span>
+        <span><i class="fas fa-phone"></i> +27714900013</span>
+        <span><i class="fas fa-envelope"></i> admin@bhekisizwess.co.za</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li class="nav-dropdown"><a href="about.html">About</a>
+          <div class="dropdown-menu">
+            <a href="about.html">Our Story</a>
+            <a href="staff.html">Leadership &amp; Staff</a>
+          </div>
+        </li>
+        <li class="nav-dropdown"><a href="academics.html">Academics</a>
+          <div class="dropdown-menu">
+            <a href="academics.html">Subjects &amp; Curriculum</a>
+          </div>
+        </li>
+        <li><a href="career-path.html">Career Paths</a></li>
+        <li class="nav-dropdown"><a href="students.html" class="active">Students</a>
+          <div class="dropdown-menu">
+            <a href="students.html">Student Life</a>
+            <a href="results.html">Results</a>
+            <a href="achievements.html">Achievements</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="past-papers.html">Past Papers</a>
+            <a href="term-results.html">Term Results</a>
+          </div>
+        </li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="admissions.html">Admissions</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <a href="admissions.html" class="nav-cta">Apply Now</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="nav-mobile" id="navMobile">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="academics.html">Academics</a>
+    <a href="career-path.html">Career Paths</a>
+    <a href="students.html">Students</a>
+    <a href="results.html">Results</a>
+    <a href="achievements.html">Achievements</a>
+    <a href="events.html">Events</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="past-papers.html" class="active">Past Papers</a>
+    <a href="term-results.html">Term Results</a>
+    <a href="admissions.html">Admissions</a>
+    <a href="contact.html">Contact</a>
+    <div class="nav-mobile-divider"></div>
+    <a href="admissions.html" class="btn btn-gold btn-sm">Apply Now</a>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <section class="papers-hero">
+    <div class="container">
+      <div data-aos="fade-up">
+        <div class="adm-badge" style="margin-bottom:16px">
+          <span class="adm-badge-dot"></span>
+          Grade 8 – Grade 12
+        </div>
+        <h1>Past Exam Papers</h1>
+        <p>Download past tests, mid-year and year-end exam papers by subject and grade to help you prepare for your next assessment.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FILTER BAR ===== -->
+  <div class="filter-bar">
+    <div class="filter-inner">
+      <span class="filter-label">Grade:</span>
+      <div class="filter-pills" id="grade-pills">
+        <button class="pill active" data-grade="all" onclick="setGrade(this,'all')">All Grades</button>
+        <button class="pill" data-grade="8"  onclick="setGrade(this,'8')">Grade 8</button>
+        <button class="pill" data-grade="9"  onclick="setGrade(this,'9')">Grade 9</button>
+        <button class="pill" data-grade="10" onclick="setGrade(this,'10')">Grade 10</button>
+        <button class="pill" data-grade="11" onclick="setGrade(this,'11')">Grade 11</button>
+        <button class="pill" data-grade="12" onclick="setGrade(this,'12')">Grade 12</button>
+      </div>
+      <div class="filter-search">
+        <i class="fas fa-search"></i>
+        <input type="text" id="paper-search" placeholder="Search subject…" oninput="renderPapers()">
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAPERS ===== -->
+  <section class="papers-section">
+    <div class="container">
+      <div class="results-bar">
+        <span id="papers-count-label">Loading…</span>
+        <span style="font-size:0.78rem;color:#aaa">Papers are uploaded by school administration</span>
+      </div>
+      <div class="papers-grid" id="papers-grid"></div>
+      <div class="papers-empty" id="papers-empty">
+        <i class="fas fa-folder-open"></i>
+        <h3>No papers found</h3>
+        <p id="papers-empty-msg">Try selecting a different grade or clearing your search.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-main">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-logo">
+              <img src="Badge .jpeg" alt="Bhekisizwe Senior Secondary School Badge" class="footer-crest" loading="lazy">
+              <div>
+                <div class="footer-school-name">Bhekisizwe Senior Secondary School</div>
+                <div class="footer-motto">Excellence &middot; Legacy &middot; Future</div>
+              </div>
+            </div>
+            <p class="footer-desc">Providing quality education in KwaZulu-Natal since 2004. Nurturing academic excellence and character development in every student.</p>
+            <div class="footer-socials">
+              <a href="#" class="footer-social"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="footer-social"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="footer-social"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="footer-social"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Quick Links</h5>
+            <div class="footer-links">
+              <a href="index.html">Home</a>
+              <a href="about.html">About Us</a>
+              <a href="academics.html">Academics</a>
+              <a href="staff.html">Our Staff</a>
+              <a href="events.html">Events</a>
+              <a href="contact.html">Contact</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Students</h5>
+            <div class="footer-links">
+              <a href="results.html">Results</a>
+              <a href="achievements.html">Achievements</a>
+              <a href="gallery.html">Gallery</a>
+              <a href="admissions.html">Admissions</a>
+              <a href="past-papers.html">Past Papers</a>
+              <a href="application-status.html">Application Status</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Contact Us</h5>
+            <div class="footer-contact-items">
+              <div class="footer-contact-item">
+                <span class="footer-contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+                <span class="footer-contact-text">eMachitshane, Nqutu, KwaZulu-Natal, 3135</span>
+              </div>
+              <div class="footer-contact-item">
+                <span class="footer-contact-icon"><i class="fas fa-phone"></i></span>
+                <span class="footer-contact-text">+27714900013</span>
+              </div>
+              <div class="footer-contact-item">
+                <span class="footer-contact-icon"><i class="fas fa-envelope"></i></span>
+                <span class="footer-contact-text">admin@bhekisizwess.co.za</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="footer-bottom-inner">
+          <p class="footer-copy">&copy; 2026 <span>Bhekisizwe Senior Secondary School</span>. All rights reserved.</p>
+          <p class="footer-dev">Developed by <a href="https://alphacoretech.co.za" target="_blank" rel="noopener noreferrer" style="color:var(--gold);font-weight:600;">Alphacoretech</a></p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js" integrity="sha512-RmCE+nEdKZ45TpbCJgvYvfEDz3XaiGmTTJl6GfyITW3fouks4lNTOkoMXWJ9WA6aQO+3FV8cjA6fvTosOgbCrg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="js/main.js"></script>
+  <script>
+  /* =====================================================
+     PAST PAPERS — reads from admin dashboard localStorage
+     ===================================================== */
+
+  /* Seed papers shown when admin has not uploaded anything yet */
+  const SEED_PAPERS = [
+    { id:'seed1', subject:'Mathematics',          grade:'12', year:'2025', term:'NSC Paper 1',    fileName:'Maths_P1_2025.pdf' },
+    { id:'seed2', subject:'Mathematics',          grade:'12', year:'2025', term:'NSC Paper 2',    fileName:'Maths_P2_2025.pdf' },
+    { id:'seed3', subject:'Physical Sciences',    grade:'12', year:'2025', term:'NSC Paper 1',    fileName:'PhySci_P1_2025.pdf' },
+    { id:'seed4', subject:'Physical Sciences',    grade:'12', year:'2025', term:'NSC Paper 2',    fileName:'PhySci_P2_2025.pdf' },
+    { id:'seed5', subject:'English Home Language',grade:'12', year:'2025', term:'NSC Paper 1',    fileName:'English_P1_2025.pdf' },
+    { id:'seed6', subject:'English Home Language',grade:'12', year:'2025', term:'NSC Paper 2',    fileName:'English_P2_2025.pdf' },
+    { id:'seed7', subject:'Life Sciences',        grade:'12', year:'2025', term:'NSC Paper 1',    fileName:'LifeSci_P1_2025.pdf' },
+    { id:'seed8', subject:'Accounting',           grade:'12', year:'2025', term:'NSC Paper 1',    fileName:'Accounting_2025.pdf' },
+    { id:'seed9', subject:'Business Studies',     grade:'12', year:'2025', term:'NSC Paper 1',    fileName:'BusStudies_2025.pdf' },
+    { id:'seed10',subject:'Mathematics',          grade:'12', year:'2024', term:'NSC Paper 1',    fileName:'Maths_P1_2024.pdf' },
+    { id:'seed11',subject:'Mathematics',          grade:'12', year:'2024', term:'NSC Paper 2',    fileName:'Maths_P2_2024.pdf' },
+    { id:'seed12',subject:'History',              grade:'12', year:'2025', term:'NSC Paper 1',    fileName:'History_P1_2025.pdf' },
+    { id:'seed13',subject:'Geography',            grade:'12', year:'2025', term:'NSC Paper 1',    fileName:'Geography_P1_2025.pdf' },
+    { id:'seed14',subject:'Mathematics',          grade:'11', year:'2025', term:'Year-End Exam',  fileName:'Maths_Gr11_2025.pdf' },
+    { id:'seed15',subject:'Physical Sciences',    grade:'11', year:'2025', term:'Year-End Exam',  fileName:'PhySci_Gr11_2025.pdf' },
+    { id:'seed16',subject:'Mathematics',          grade:'10', year:'2025', term:'Mid-Year Exam',  fileName:'Maths_Gr10_Mid2025.pdf' },
+    { id:'seed17',subject:'English Home Language',grade:'10', year:'2025', term:'Year-End Exam',  fileName:'English_Gr10_2025.pdf' },
+    { id:'seed18',subject:'Mathematics',          grade:'9',  year:'2025', term:'Year-End Exam',  fileName:'Maths_Gr9_2025.pdf' },
+    { id:'seed19',subject:'Natural Sciences',     grade:'9',  year:'2025', term:'Mid-Year Exam',  fileName:'NatSci_Gr9_Mid2025.pdf' },
+    { id:'seed20',subject:'Mathematics',          grade:'8',  year:'2025', term:'Year-End Exam',  fileName:'Maths_Gr8_2025.pdf' },
+  ];
+
+  let activeGrade = 'all';
+
+  function setGrade(el, grade) {
+    document.querySelectorAll('#grade-pills .pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    activeGrade = grade;
+    renderPapers();
+  }
+
+  function getPapers() {
+    try {
+      const stored = JSON.parse(localStorage.getItem('bhs_admin_pastPapers') || '[]');
+      return stored.length > 0 ? stored : SEED_PAPERS;
+    } catch { return SEED_PAPERS; }
+  }
+
+  function renderPapers() {
+    const q = (document.getElementById('paper-search').value || '').toLowerCase();
+    let papers = getPapers();
+
+    if (activeGrade !== 'all') papers = papers.filter(p => String(p.grade) === activeGrade);
+    if (q) papers = papers.filter(p =>
+      (p.subject||'').toLowerCase().includes(q) ||
+      (p.year||'').toLowerCase().includes(q) ||
+      (p.term||'').toLowerCase().includes(q)
+    );
+
+    const grid  = document.getElementById('papers-grid');
+    const empty = document.getElementById('papers-empty');
+    const count = document.getElementById('papers-count-label');
+
+    if (!papers.length) {
+      grid.innerHTML = '';
+      empty.style.display = 'block';
+      document.getElementById('papers-empty-msg').textContent =
+        q ? 'No papers match "' + q + '". Try a different search term.' : 'No papers available for this grade yet. Check back after the next upload.';
+      count.textContent = '0 papers';
+      return;
+    }
+
+    empty.style.display = 'none';
+    count.textContent = papers.length + ' paper' + (papers.length !== 1 ? 's' : '') + ' available';
+
+    grid.innerHTML = papers.map(p =>
+      '<div class="paper-card">' +
+      '<div class="paper-card-top">' +
+      '<div class="paper-icon"><i class="fas fa-file-pdf"></i></div>' +
+      '<div><div class="paper-subject">' + esc(p.subject) + '</div>' +
+      '<div class="paper-meta">' + esc(p.fileName) + '</div></div>' +
+      '</div>' +
+      '<div class="paper-tags">' +
+      '<span class="paper-tag tag-grade">Grade ' + esc(p.grade) + '</span>' +
+      '<span class="paper-tag tag-year">' + esc(p.year) + '</span>' +
+      '<span class="paper-tag tag-type">' + esc(p.term) + '</span>' +
+      '</div>' +
+      (paperHasFile(p)
+        ? '<div style="display:flex;gap:8px">' +
+            '<button class="paper-download" style="flex:1" onclick="viewPaper(\'' + escA(p.id) + '\')">' +
+              '<i class="fas fa-eye"></i> View' +
+            '</button>' +
+            '<button class="paper-download" style="flex:1;background:#1A1A1A" onclick="downloadPaper(\'' + escA(p.id) + '\')">' +
+              '<i class="fas fa-download"></i> Download' +
+            '</button>' +
+          '</div>'
+        : '<button class="paper-download" style="background:#9E9E9E;cursor:default" onclick="showSampleMsg()">' +
+            '<i class="fas fa-book"></i> Demo paper' +
+          '</button>'
+      ) +
+      '</div>'
+    ).join('');
+  }
+
+  function dataURLtoBlob(dataURL) {
+    const [header, b64] = dataURL.split(',');
+    const mime = header.match(/:(.*?);/)[1];
+    const bytes = atob(b64);
+    const arr   = new Uint8Array(bytes.length);
+    for (let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
+    return new Blob([arr], { type: mime });
+  }
+
+  function getFileData(id) {
+    /* 1. New approach: dedicated key set by current dashboard code */
+    const byKey = localStorage.getItem('bhs_file_' + id);
+    if (byKey) return byKey;
+    /* 2. Old approach fallback: fileData was stored inline on the paper record */
+    const paper = getPapers().find(p => p.id === id);
+    return (paper && paper.fileData) ? paper.fileData : null;
+  }
+
+  function paperHasFile(p) {
+    if (p.hasFile) return true;       /* new upload */
+    if (p.fileData) return true;      /* old inline upload */
+    if (localStorage.getItem('bhs_file_' + p.id)) return true;
+    return false;
+  }
+
+  function viewPaper(id) {
+    const fileData = getFileData(id);
+    if (!fileData) { showDownloadToast('File not found — please re-upload this paper from the dashboard'); return; }
+    const blob = dataURLtoBlob(fileData);
+    const url  = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(() => URL.revokeObjectURL(url), 15000);
+  }
+
+  function downloadPaper(id) {
+    const papers   = getPapers();
+    const paper    = papers.find(p => p.id === id);
+    const fileData = getFileData(id);
+    if (!fileData) { showDownloadToast('File not found — please re-upload this paper from the dashboard'); return; }
+    const blob = dataURLtoBlob(fileData);
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = (paper && paper.fileName) ? paper.fileName : 'paper.pdf';
+    a.click();
+    URL.revokeObjectURL(url);
+    showDownloadToast((paper && paper.fileName) ? paper.fileName : 'paper.pdf');
+  }
+
+  function showSampleMsg() {
+    showDownloadToast('Demo paper — go to the Admin Dashboard → Past Papers to upload real files');
+  }
+
+  function showDownloadToast(fileName) {
+    let toast = document.getElementById('dl-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'dl-toast';
+      toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#3aaa72;color:#fff;font-size:13px;font-weight:600;padding:12px 20px;border-radius:8px;z-index:9999;display:flex;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,0.15);transition:all 0.3s;opacity:0;transform:translateY(20px)';
+      document.body.appendChild(toast);
+    }
+    toast.innerHTML = '<i class="fas fa-check-circle"></i> Downloading ' + fileName;
+    setTimeout(() => { toast.style.opacity = '1'; toast.style.transform = 'translateY(0)'; }, 10);
+    setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(20px)'; }, 3000);
+  }
+
+  function esc(s)  { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function escA(s) { return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+
+  renderPapers();
+  AOS.init({ duration: 700, once: true, offset: 60 });
+  </script>
+</body>
+</html>
