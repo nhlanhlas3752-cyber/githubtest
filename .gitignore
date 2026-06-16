@@ -22,3 +22,16 @@ ss_*.jpg
 # OS files
 Thumbs.db
 .DS_Store
+
+## .NET / ASP.NET Core
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.vscode/
+publish/
+
+## Secrets / local overrides
+appsettings.*.local.json
+secrets.json
